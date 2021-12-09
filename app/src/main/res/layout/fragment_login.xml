@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Startup.loginFragment"
+    android:background="@color/final_master">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_loginbot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="LOGIN"
+        android:textColor="@color/white"
+        android:background="@drawable/norm_bot_curved_dark"
+        app:layout_constraintBottom_toTopOf="@+id/login_cacelbot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_passwordedittext" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_forgotpassbot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/final_master"
+        android:text="Forgotten Password"
+        android:textColor="@color/final_itemcolor"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintBottom_toTopOf="@+id/login_loginbot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_passwordedittext" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login_cacelbot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textColor="@color/white"
+        android:background="@drawable/norm_bot_curved_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_loginbot" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/login_accounidedittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:textColorHint="@color/final_itemcolor"
+        android:hint="Registered Account Id"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_passwordedittext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/login_passwordedittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:textColorHint="@color/final_itemcolor"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_loginbot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_accounidedittext" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
