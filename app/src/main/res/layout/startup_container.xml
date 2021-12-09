@@ -15,13 +15,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
-            android:name="com.rejointech.planeta.Startup.Onboarding1Fragment"
-            android:id="@+id/fragmentContainerView"
+        <FrameLayout
+            android:id="@+id/startupviewcontainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-
     </RelativeLayout>
 
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 
 
@@ -32,7 +33,7 @@ public class Onboarding2Fragment extends Fragment {
         forward_bot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new loginFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new loginFragment()).commit();
             }
         });
         return root;

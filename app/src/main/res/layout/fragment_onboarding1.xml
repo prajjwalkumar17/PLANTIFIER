@@ -7,6 +7,15 @@
     tools:context=".Startup.Onboarding1Fragment"
     android:background="@color/final_itemcolor">
 
+       <ImageView
+           android:layout_width="390dp"
+           android:layout_height="400dp"
+           app:layout_constraintBottom_toTopOf="@+id/forward_bot"
+           android:src="@drawable/splash_logo"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
        <androidx.appcompat.widget.AppCompatButton
            android:id="@+id/forward_bot"
            android:layout_width="wrap_content"
