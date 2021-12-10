@@ -1,5 +1,6 @@
 package com.rejointech.planeta.Startup;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -8,13 +9,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 
 
 public class Onboarding2Fragment extends Fragment {
-    AppCompatButton forward_bot;
+    AppCompatButton onboarding2_loginbot;
+    AppCompatButton onboarding2_skipfornowbot;
+    LinearLayout onboarding2_Registerbot;
 
 
 
@@ -29,11 +33,28 @@ public class Onboarding2Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root=inflater.inflate(R.layout.fragment_onboarding2, container, false);
-        forward_bot=root.findViewById(R.id.forward_bot1);
-        forward_bot.setOnClickListener(new View.OnClickListener() {
+        onboarding2_loginbot =root.findViewById(R.id.onboarding2_loginbot);
+        onboarding2_skipfornowbot =root.findViewById(R.id.onboarding2_skipfornowbot);
+        onboarding2_Registerbot =root.findViewById(R.id.onboarding2_Registerbot);
+        onboarding2_Registerbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new loginFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerFragment()).addToBackStack(null).commit();
+
+            }
+        });
+
+        onboarding2_skipfornowbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), HomeActivityContainer.class);
+                startActivity(intent);
+            }
+        });
+        onboarding2_loginbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new loginFragment()).addToBackStack(null).commit();
             }
         });
         return root;

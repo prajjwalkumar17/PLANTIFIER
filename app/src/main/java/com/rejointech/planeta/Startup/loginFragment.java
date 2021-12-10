@@ -15,6 +15,7 @@ import com.rejointech.planeta.R;
 
 public class loginFragment extends Fragment {
     AppCompatButton login_loginbot;
+    AppCompatButton login_registerbot;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,14 @@ public class loginFragment extends Fragment {
         // Inflate the layout for this fragment
         View root=inflater.inflate(R.layout.fragment_login, container, false);
         login_loginbot=root.findViewById(R.id.login_loginbot);
+        login_registerbot=root.findViewById(R.id.login_registerbot);
+        login_registerbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerFragment()).addToBackStack(null).commit();
+            }
+        });
+
         login_loginbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
