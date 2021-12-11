@@ -67,6 +67,8 @@ public class HomeActivityContainer extends AppCompatActivity implements
         navController = Navigation.findNavController(this, R.id.maincontainerview);
         rotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
         botnav = findViewById(R.id.botnav);
+        botnav.setBackground(null);
+        botnav.getMenu().getItem(2).setEnabled(false);
         completebotnav = findViewById(R.id.completebotnav);
 
 
