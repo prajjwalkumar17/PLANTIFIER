@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.NotesFragment"
+    android:background="@color/white">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="35dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <include layout="@layout/recycleritemshareandnote"
+                android:id="@+id/itemm1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp" />
+            <include layout="@layout/recycleritemshareandnote"
+                android:id="@+id/itemm2"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_below="@id/itemm1"/>
+
+            <include layout="@layout/recycleritemshareandnote"
+                android:id="@+id/itemm3"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_below="@id/itemm2"/>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

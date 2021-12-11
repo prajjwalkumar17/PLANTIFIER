@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/sliderpageree"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:sliderAnimationDuration="900"
+        app:sliderAutoCycleDirection="right"
+        app:sliderAutoCycleEnabled="true"
+        app:sliderIndicatorAnimationDuration="900"
+        app:sliderIndicatorEnabled="true"
+        app:sliderIndicatorGravity="center_horizontal|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorPadding="3dp"
+        app:sliderIndicatorRadius="2dp"
+        app:sliderIndicatorSelectedColor="@color/final_itemcolor"
+        app:sliderIndicatorUnselectedColor="@color/final_master"
+        app:sliderScrollTimeInSec="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:sliderStartAutoCycle="true" />
+
+    <!--  <com.denzcoskun.imageslider.ImageSlider
+          android:id="@+id/sliderpageree"
+          android:layout_width="match_parent"
+          android:layout_height="160dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_bias="0" />-->
+
+
+    <LinearLayout
+        android:id="@+id/sliderdotcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:elevation="5dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/sliderpageree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sliderpageree"
+        app:layout_constraintVertical_bias="0.9">
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

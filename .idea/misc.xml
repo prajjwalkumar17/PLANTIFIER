@@ -3,28 +3,37 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Planeta/app/src/main/res/drawable/botgreenwithoutborder.xml" value="0.23489583333333333" />
+        <entry key="..\:/Planeta/app/src/main/res/drawable/botregisterunfilledgreenborder.xml" value="0.1287037037037037" />
+        <entry key="..\:/Planeta/app/src/main/res/drawable/botvedrectonbord2.xml" value="0.23489583333333333" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/curvedrectonbord2bot.xml" value="0.403125" />
+        <entry key="..\:/Planeta/app/src/main/res/drawable/ic_img.xml" value="0.75" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/norm_bot_curved_dark.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/notificon.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/registerunfilledgreenborderbot.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/tool_navicon.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/toolbar.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/font/baloo_bhaina.xml" value="0.4171875" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/activity_home_container.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/activity_home_container.xml" value="0.22" />
         <entry key="..\:/Planeta/app/src/main/res/layout/activity_main.xml" value="0.21875" />
         <entry key="..\:/Planeta/app/src/main/res/layout/activity_onboarding1.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/content_main.xml" value="0.38697916666666665" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_dashboard.xml" value="0.3729166666666667" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_dashboard.xml" value="0.267515923566879" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_feed.xml" value="0.3729166666666667" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_login.xml" value="0.21875" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_notes.xml" value="0.2046875" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_onboarding1.xml" value="0.3729166666666667" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_onboarding2.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_register.xml" value="0.33" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_registerconformation.xml" value="0.3729166666666667" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_registerotpvalidation.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/hometoolbar.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/imgslider.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/nav_header.xml" value="0.3763586956521739" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/recyclerdisportalitem.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/recycleritemshareandnote.xml" value="0.22" />
         <entry key="..\:/Planeta/app/src/main/res/layout/startup_container.xml" value="0.25" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/toolbardiscussionporttal.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/menu/botnav_menu.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/menu/nav_menu.xml" value="0.1" />
       </map>

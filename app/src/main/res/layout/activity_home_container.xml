@@ -6,14 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Container.HomeActivityContainer"
-    tools:openDrawer="start"
-    android:background="@color/master_primary">
-    <include
-        layout="@layout/hometoolbar"
-        android:id="@+id/tool"
-        android:layout_marginTop="15dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+   >
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,6 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </RelativeLayout>
+    <include
+        layout="@layout/hometoolbar"
+        android:id="@+id/tool"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="wrap_content"
@@ -34,22 +33,32 @@
             android:id="@+id/completebotnav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/final_master"
+            app:fabCradleMargin="12dp"
+            app:fabCradleRoundedCornerRadius="12dp"
+            app:fabCradleVerticalOffset="4dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/final_master">
+            android:backgroundTint="@color/white">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/botnav"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/final_master"
-                android:backgroundTint="@color/final_master"
-                app:itemIconTint="@color/final_secondary"
-                app:itemRippleColor="@color/final_secondary"
-                app:itemTextColor="@color/final_secondary"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                app:itemIconTint="@color/final_master"
+                app:itemRippleColor="@color/final_master"
+                app:itemTextColor="@color/final_master"
                 android:layout_marginEnd="16dp"
                 app:menu="@menu/botnav_menu" />
         </com.google.android.material.bottomappbar.BottomAppBar>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/final_master"
+            android:src="@drawable/iconadd"
+            app:layout_anchor="@id/completebotnav" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -57,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:headerLayout="@layout/nav_header"
-        android:backgroundTint="@color/final_master"
+        android:backgroundTint="@color/final_itemcolor"
         android:scrollbarStyle="insideOverlay"
         android:layout_gravity="start"
         android:scrollbarAlwaysDrawVerticalTrack="true"
