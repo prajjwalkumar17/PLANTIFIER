@@ -1,63 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-<group android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_menu_profile"
+            android:id="@+id/nav_menu_dashboard"
+            android:iconTint="@color/white"
+            android:menuCategory="secondary"
+            android:title="Dashboard" />
 
+        <item
+            android:id="@+id/nav_menu_account"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
             android:title="My Profile" />
 
-        <item
-            android:id="@+id/nav_menu_mystats"
 
+        <item
+            android:id="@+id/nav_menu_quiz"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-
-            android:title="My Stats" />
+            android:title="Quizes" />
         <item
-            android:id="@+id/nav_menu_mywallet"
-
+            android:id="@+id/nav_menu_notes"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-
-            android:title="Wallet" />
-        <item
-            android:id="@+id/nav_menu_leaderboard"
-
-            android:iconTint="@color/white"
-            android:menuCategory="secondary"
-
-            android:title="Leaderboard" />
-        <item
-            android:id="@+id/nav_menu_myplayedquiz"
-
-            android:iconTint="@color/white"
-            android:menuCategory="secondary"
-
-            android:title="Played Quizes" />
-        <item
-            android:id="@+id/nav_menu_myreferrals"
-
-            android:iconTint="@color/white"
-            android:menuCategory="secondary"
-
-            android:title="Referrals" />
+            android:title="Notes" />
         <item
             android:id="@+id/nav_menu_settings"
-
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-
             android:title="Settings" />
         <item
             android:id="@+id/nav_menu_tutorial"
-
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-
             android:title="Tutorials" />
+        <item
+            android:id="@+id/nav_menu_share"
+            android:iconTint="@color/white"
+            android:menuCategory="secondary"
+            android:title="Share" />
     </group>
     <group android:checkableBehavior="single">
         <item

@@ -8,11 +8,15 @@
         android:title="Notes" />
     <item
         android:id="@+id/botnav_menu_dashboard"
-        android:icon="@drawable/icondashboard"
+        android:icon="@drawable/icontree"
 
         android:title="Dashboard" />
     <item
-        android:id="@+id/botnav_menu_toadd"
+        android:id="@+id/nully"
+        android:title="Add" />
+
+    <item
+        android:id="@+id/botnav_menu_share"
         android:icon="@drawable/iconshare"
         android:title="Add" />
 
