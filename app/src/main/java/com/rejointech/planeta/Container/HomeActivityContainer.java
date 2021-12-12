@@ -21,10 +21,15 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.rejointech.planeta.CommonInterfaces.botnavController;
+import com.rejointech.planeta.Fragments.AccountsFragment;
+import com.rejointech.planeta.Fragments.CameraFragment;
 import com.rejointech.planeta.Fragments.DashboardFragment;
 import com.rejointech.planeta.Fragments.NotesFragment;
+import com.rejointech.planeta.Fragments.QuizFragment;
+import com.rejointech.planeta.Fragments.ShareFragment;
 import com.rejointech.planeta.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,6 +42,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
     ImageView navBotimg;
     View tool;
     NavController navController;
+    FloatingActionButton home_fab;
     Animation rotate;
     BottomNavigationView botnav;
     BottomAppBar completebotnav;
@@ -44,6 +50,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
     ProgressBar nav_progress;
     CircleImageView nav_dp;
     String usrtoken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +74,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
         navController = Navigation.findNavController(this, R.id.maincontainerview);
         rotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
         botnav = findViewById(R.id.botnav);
+        home_fab = findViewById(R.id.home_fab);
         botnav.setBackground(null);
         botnav.getMenu().getItem(2).setEnabled(false);
         completebotnav = findViewById(R.id.completebotnav);
@@ -77,6 +85,14 @@ public class HomeActivityContainer extends AppCompatActivity implements
         nav_view.setNavigationItemSelectedListener(this);
         manageBottomNavigation(botnav);
         botnav.getMenu().findItem(R.id.botnav_menu_dashboard).setChecked(true);
+
+        home_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).addToBackStack(null).commit();
+
+            }
+        });
     }
 
 
@@ -87,15 +103,18 @@ public class HomeActivityContainer extends AppCompatActivity implements
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.botnav_menu_notes:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()  ).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()).addToBackStack(null).commit();
 
                         break;
                     case R.id.botnav_menu_dashboard:
                         getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new DashboardFragment()).addToBackStack(null).commit();
                         break;
+                    case R.id.botnav_menu_share:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new ShareFragment()).addToBackStack(null).commit();
+                        break;
                     case R.id.botnav_menu_account:
 //                        SharedPreferences sharedPreferences = HomeActivityContainer.this.getSharedPreferences(Constants.METAPTEF, MODE_PRIVATE);
-////                      getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new contactusFragment()).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new AccountsFragment()).addToBackStack(null).commit();
 //                        CustomTabsIntent.Builder customtabintent = new CustomTabsIntent.Builder();
 ////                      customtabintent.setToolbarColor(Color.parseColor("#0080000"));
 //                        opencustomtabyy(HomeActivity.this, customtabintent.build(), Uri.parse(sharedPreferences.getString(Constants.contactUs, "data not found")));
@@ -174,6 +193,34 @@ public class HomeActivityContainer extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.nav_menu_account:
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new AccountsFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.nav_menu_dashboard:
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new DashboardFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.nav_menu_notes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.nav_menu_quiz:
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new QuizFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.nav_menu_share:
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new ShareFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.nav_menu_settings:
+                break;
+            case R.id.nav_menu_tutorial:
+                break;
+            case R.id.nav_menu_telegram:
+                break;
+            case R.id.nav_menu_Instagram:
+                break;
+            case R.id.nav_menu_Youtube:
+                break;
+        }
+        closeDrawer(drawer);
+        return true;
     }
 }

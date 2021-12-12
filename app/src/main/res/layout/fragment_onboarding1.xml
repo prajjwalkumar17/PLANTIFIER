@@ -10,22 +10,11 @@
        <ImageView
            android:layout_width="390dp"
            android:layout_height="400dp"
-           app:layout_constraintBottom_toTopOf="@+id/forward_bot"
-           android:src="@drawable/splash_logo"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
 
-       <androidx.appcompat.widget.AppCompatButton
-           android:id="@+id/forward_bot"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:background="@drawable/draw_forwrd_arrow"
+           android:src="@drawable/splash_logo"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintVertical_bias=".9"
-           app:layout_constraintHorizontal_bias=".9"
            app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

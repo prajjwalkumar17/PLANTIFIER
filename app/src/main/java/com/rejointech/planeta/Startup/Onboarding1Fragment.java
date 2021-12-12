@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,7 @@ import com.rejointech.planeta.R;
 
 
 public class Onboarding1Fragment extends Fragment {
-    AppCompatButton forward_bot;
+
 
 
 
@@ -27,13 +29,25 @@ public class Onboarding1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root=inflater.inflate(R.layout.fragment_onboarding1, container, false);
-        forward_bot=root.findViewById(R.id.forward_bot);
-        forward_bot.setOnClickListener(new View.OnClickListener() {
+
+
+
+        Handler mainLooperHandler = new Handler(Looper.getMainLooper());
+
+        mainLooperHandler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new Onboarding2Fragment()).addToBackStack(null).commit();
+            public void run() {
+                if(getActivity()!=null){
+
+                    Fragment mFragmentB = new Onboarding2Fragment();
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.startupviewcontainer, mFragmentB, "FRAGMENTB")
+                            .commit();
+                }
             }
-        });
+        }, 2000);
+
         return root;
     }
 }
