@@ -15,6 +15,7 @@ import com.rejointech.planeta.R;
 
 public class CameraFragment extends Fragment {
 ImageView cameraback;
+ImageView camera_cameraopen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ ImageView cameraback;
         // Inflate the layout for this fragment
         View root =inflater.inflate(R.layout.fragment_camera, container, false);
         cameraback=root.findViewById(R.id.cameraback);
+        camera_cameraopen=root.findViewById(R.id.camera_cameraopen);
 
         return root;
     }

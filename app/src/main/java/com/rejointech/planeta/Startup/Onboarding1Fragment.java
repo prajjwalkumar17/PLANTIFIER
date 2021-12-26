@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.Constants;
 
 
 public class Onboarding1Fragment extends Fragment {
@@ -46,7 +47,7 @@ public class Onboarding1Fragment extends Fragment {
                             .commit();
                 }
             }
-        }, 2000);
+        }, Constants.SPLASH_TIMEOUT);
 
         return root;
     }
