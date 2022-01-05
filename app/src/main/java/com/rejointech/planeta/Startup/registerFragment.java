@@ -1,7 +1,9 @@
 package com.rejointech.planeta.Startup;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
@@ -10,10 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class registerFragment extends Fragment {
@@ -25,12 +38,17 @@ public class registerFragment extends Fragment {
     AppCompatEditText register_phoneedittext;
     AppCompatEditText register_passwordedittext;
     AppCompatEditText register_passwordconfirmedittext;
+    private Context thiscontext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    @Override
+    public void onAttach(@NonNull @NotNull Context context) {
+        super.onAttach(context);
+        thiscontext = context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,6 +106,38 @@ public class registerFragment extends Fragment {
 
     private void RegisterUser(String name, String email, String phone, String passwordConfirmed, String password) {
         String url =Constants.signupurl;
+        APICall.okhttpmaster().newCall(
+                APICall.post4signup(APICall.urlbuilderforhttp(url),
+                        APICall.buildrequestbody4signup(name,
+                                email,
+                                phone,
+                                passwordConfirmed,
+                                password))
+        ).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String myResponse = response.body().string();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject responsez = new JSONObject(myResponse);
+                            CommonMethods.LOGthesite(Constants.LOG,responsez.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+            }
+        });
+
     }
 
 }
