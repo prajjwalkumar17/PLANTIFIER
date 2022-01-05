@@ -68,11 +68,27 @@
         android:layout_margin="30dp"
         android:hint="Password"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/register_registerbot"
+        app:layout_constraintBottom_toTopOf="@+id/register_passwordconfirmedittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_phoneedittext" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/register_passwordconfirmedittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:hint="Confirm Password"
+        android:textColorHint="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/register_registerbot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_passwordedittext" />
+
+
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register_registerbot"
