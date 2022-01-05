@@ -111,7 +111,6 @@ public class registerFragment extends Fragment {
                         APICall.buildrequestbody4signup(name,
                                 email,
                                 phone,
-
                                 passwordConfirmed,
                                 password))
 
