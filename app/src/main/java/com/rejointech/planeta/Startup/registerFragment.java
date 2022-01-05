@@ -113,6 +113,7 @@ public class registerFragment extends Fragment {
                                 phone,
                                 passwordConfirmed,
                                 password))
+
         ).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
