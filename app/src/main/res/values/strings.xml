@@ -12,7 +12,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="donthaveaccount_register">Don’t have an Account? </string>
+
+
     <string name="register">Register</string>
+    <string name="Registger_Maindetails">Signup</string>
+    <string name="Register_Token">token</string>
 
 
 </resources>

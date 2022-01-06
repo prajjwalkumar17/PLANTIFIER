@@ -1,16 +1,16 @@
 package com.rejointech.planeta.Startup;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,11 +43,13 @@ public class registerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onAttach(@NonNull @NotNull Context context) {
         super.onAttach(context);
         thiscontext = context;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,19 +75,22 @@ public class registerFragment extends Fragment {
         register_registerbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
-                String Name = Objects.requireNonNull(register_nameedittext.getText()).toString();
-                String Email = Objects.requireNonNull(register_emailedittext.getText()).toString();
-                String Phone = Objects.requireNonNull(register_phoneedittext.getText()).toString();
-                String PasswordConfirmed = Objects.requireNonNull(register_passwordconfirmedittext.getText()).toString();
-                String Password = Objects.requireNonNull(register_passwordedittext.getText()).toString();
+                String Name = register_nameedittext.getText().toString();
+                String Email = register_emailedittext.getText().toString();
+                String Phone = register_phoneedittext.getText().toString();
+                String PasswordConfirmed = register_passwordconfirmedittext.getText().toString();
+                String Password = register_passwordedittext.getText().toString();
 
-                if(register_nameedittext.getText() != null &&
-                        register_emailedittext.getText() != null &&
-                        register_phoneedittext.getText() != null &&
-                        register_passwordconfirmedittext != null &&
-                        register_passwordedittext !=null
-                && Password.equals(PasswordConfirmed)){
+
+                if (Name.length() == 0 ||
+                        Email.length() == 0 ||
+                        Phone.length() == 0 ||
+                        Password.length() == 0 ||
+                        PasswordConfirmed.length() == 0 ||
+                        !Password.equals(PasswordConfirmed)) {
+                    CommonMethods.DisplayShortTOAST(thiscontext, "Check the filled details Properly");
+
+                } else {
                     RegisterUser(Name,
                             Email,
                             Phone,
@@ -105,7 +109,7 @@ public class registerFragment extends Fragment {
     }
 
     private void RegisterUser(String name, String email, String phone, String passwordConfirmed, String password) {
-        String url =Constants.signupurl;
+        String url = Constants.signupurl;
         APICall.okhttpmaster().newCall(
                 APICall.post4signup(APICall.urlbuilderforhttp(url),
                         APICall.buildrequestbody4signup(name,
@@ -117,7 +121,12 @@ public class registerFragment extends Fragment {
         ).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage().toString());
+                    }
+                });
             }
 
             @Override
@@ -128,7 +137,16 @@ public class registerFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject responsez = new JSONObject(myResponse);
-                            CommonMethods.LOGthesite(Constants.LOG,responsez.toString());
+                            JSONObject Signup = responsez.getJSONObject(getString(R.string.Registger_Maindetails));
+                            String token = responsez.optString(getString(R.string.Register_Token));
+                            String name = Signup.optString("name");
+                            String email = Signup.optString("email");
+                            String phone = Signup.optString("phone");
+                            String role = Signup.optString("role");
+                            Savedatatoprefs(token, name, email, phone, role);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -139,6 +157,17 @@ public class registerFragment extends Fragment {
             }
         });
 
+    }
+
+    private void Savedatatoprefs(String token, String name, String email, String phone, String role) {
+        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.token, token);
+        editor.putString(Constants.prefregistername, name);
+        editor.putString(Constants.prefregisteremail, email);
+        editor.putString(Constants.prefregisterphone, phone);
+        editor.putString(Constants.prefregisterrole, role);
+        editor.apply();
     }
 
 }
