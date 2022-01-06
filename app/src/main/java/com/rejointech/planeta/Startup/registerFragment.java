@@ -1,6 +1,7 @@
 package com.rejointech.planeta.Startup;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,14 +75,12 @@ public class registerFragment extends Fragment {
         register_registerbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
                 String Name = register_nameedittext.getText().toString();
                 String Email = register_emailedittext.getText().toString();
                 String Phone = register_phoneedittext.getText().toString();
                 String PasswordConfirmed = register_passwordconfirmedittext.getText().toString();
                 String Password = register_passwordedittext.getText().toString();
 
-//                CommonMethods.LOGthesite(Constants.LOG, Name + Email + Phone + Password + PasswordConfirmed);
 
                 if (Name.length() == 0 ||
                         Email.length() == 0 ||
@@ -138,7 +137,16 @@ public class registerFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject responsez = new JSONObject(myResponse);
-                            CommonMethods.LOGthesite(Constants.LOG, responsez.toString());
+                            JSONObject Signup = responsez.getJSONObject(getString(R.string.Registger_Maindetails));
+                            String token = responsez.optString(getString(R.string.Register_Token));
+                            String name = Signup.optString("name");
+                            String email = Signup.optString("email");
+                            String phone = Signup.optString("phone");
+                            String role = Signup.optString("role");
+                            Savedatatoprefs(token, name, email, phone, role);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -149,6 +157,17 @@ public class registerFragment extends Fragment {
             }
         });
 
+    }
+
+    private void Savedatatoprefs(String token, String name, String email, String phone, String role) {
+        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.token, token);
+        editor.putString(Constants.prefregistername, name);
+        editor.putString(Constants.prefregisteremail, email);
+        editor.putString(Constants.prefregisterphone, phone);
+        editor.putString(Constants.prefregisterrole, role);
+        editor.apply();
     }
 
 }

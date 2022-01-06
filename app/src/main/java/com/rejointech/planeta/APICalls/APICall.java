@@ -37,9 +37,9 @@ public class APICall {
                 .addFormDataPart("name", Name)
                 .addFormDataPart("email", Email)
                 .addFormDataPart("phone", Phone)
-                .addFormDataPart("role", "test")
                 .addFormDataPart("password", Password)
                 .addFormDataPart("passwordConfirm", PasswordConfirmed)
+                .addFormDataPart("role", "test")
                 .build();
     }
 
