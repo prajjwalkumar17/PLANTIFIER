@@ -13,4 +13,5 @@ public class Constants {
     public static String prefregisterphone = "prefregisterphone";
     public static String prefregisterrole = "prefregisterrole";
     public static String token = "prefregistertoken";
+    public static String signinurl = baseurl + "v1/user/login";
 }

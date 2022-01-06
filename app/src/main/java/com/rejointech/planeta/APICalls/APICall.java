@@ -24,7 +24,6 @@ public class APICall {
                 .url(url)
                 .post(requestBody)
                 .build();
-
     }
 
     public static RequestBody buildrequestbody4signup(String Name,
@@ -40,6 +39,15 @@ public class APICall {
                 .addFormDataPart("password", Password)
                 .addFormDataPart("passwordConfirm", PasswordConfirmed)
                 .addFormDataPart("role", "test")
+                .build();
+    }
+
+    public static RequestBody buildrequestbody4signin(String Email,
+                                                      String Password) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("email", Email)
+                .addFormDataPart("password", Password)
                 .build();
     }
 
