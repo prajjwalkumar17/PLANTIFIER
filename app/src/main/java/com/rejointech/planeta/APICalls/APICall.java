@@ -26,6 +26,14 @@ public class APICall {
                 .build();
     }
 
+    public static Request get4profiledata(String url, String userauthtoken) {
+        return new Request.Builder()
+                .header("Authorization", userauthtoken)
+                .url(url)
+                .build();
+
+    }
+
     public static Request post4ootpverificfation(String url, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
