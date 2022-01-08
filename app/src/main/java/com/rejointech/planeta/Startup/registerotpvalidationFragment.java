@@ -139,7 +139,6 @@ public class registerotpvalidationFragment extends Fragment {
         confrmotp_otpedittext = root.findViewById(R.id.confrmotp_otpedittext);
         confrmotp_verify = root.findViewById(R.id.confrmotp_verify);
         textView8 = root.findViewById(R.id.textView8);
-        CommonMethods.LOGthesite(Constants.LOG, email);
         String text = "Please confirm your 4 digit OTP. which is sent on " + email;
         textView8.setText(text);
 
