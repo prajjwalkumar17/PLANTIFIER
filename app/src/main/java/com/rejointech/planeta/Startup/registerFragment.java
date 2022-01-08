@@ -139,13 +139,17 @@ public class registerFragment extends Fragment {
                             JSONObject responsez = new JSONObject(myResponse);
                             JSONObject Signup = responsez.getJSONObject(getString(R.string.Registger_Maindetails));
                             String token = responsez.optString(getString(R.string.Register_Token));
+                            String status = responsez.optString("status");
                             String name = Signup.optString("name");
                             String email = Signup.optString("email");
                             String phone = Signup.optString("phone");
                             String role = Signup.optString("role");
                             Savedatatoprefs(token, name, email, phone, role);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
+                            if (status.equals("success")) {
+//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).addToBackStack(null).commit();
 
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
