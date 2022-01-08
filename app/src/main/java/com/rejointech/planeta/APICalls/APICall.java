@@ -26,6 +26,13 @@ public class APICall {
                 .build();
     }
 
+    public static Request post4ootpverificfation(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
+
     public static RequestBody buildrequestbody4signup(String Name,
                                                       String Email,
                                                       String Phone,
@@ -49,6 +56,16 @@ public class APICall {
                 .addFormDataPart("email", Email)
                 .addFormDataPart("password", Password)
                 .build();
+    }
+
+    public static RequestBody buildreq4otpverification(String email,
+                                                       String otp) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("otp", otp)
+                .addFormDataPart("email", email)
+                .build();
+
     }
 
 
