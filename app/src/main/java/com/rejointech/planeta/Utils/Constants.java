@@ -8,6 +8,7 @@ public class Constants {
     public static String signupurl = baseurl + "v1/user/signup";
     public static String verifyotpurl = baseurl + "v1/user/verifyOtp";
     public static String signinurl = baseurl + "v1/user/login";
+    public static String profileurl = baseurl + "v1/user/me";
 
 
     public static String prefregistername = "prefregistername";
