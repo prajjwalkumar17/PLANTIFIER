@@ -80,6 +80,17 @@ public class AccountsFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject responsez = new JSONObject(myresponse);
+                            String status = responsez.optString("status");
+                            JSONObject data = responsez.optJSONObject("data");
+                            String name = data.optString("name");
+                            String email = data.optString("email");
+                            String phone = data.optString("phone");
+
+                            if (status.equals("success")) {
+                                account_nameedittext.setText("name");
+                                account_emaileditext.setText("email");
+                                account_phoneeditext.setText("phone");
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
