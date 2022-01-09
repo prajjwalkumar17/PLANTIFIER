@@ -87,9 +87,9 @@ public class AccountsFragment extends Fragment {
                             String phone = data.optString("phone");
 
                             if (status.equals("success")) {
-                                account_nameedittext.setText("name");
-                                account_emaileditext.setText("email");
-                                account_phoneeditext.setText("phone");
+                                account_nameedittext.setText(name);
+                                account_emaileditext.setText(email);
+                                account_phoneeditext.setText(phone);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

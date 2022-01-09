@@ -96,7 +96,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:textColor="@color/black"
-            android:hint="Prajjwal Kumar"
+            android:hint="Name"
             android:padding="10dp"
             android:textColorHint="@color/black" />
     </LinearLayout>
@@ -126,7 +126,7 @@
             android:layout_marginStart="30dp"
             android:textColor="@color/black"
             android:layout_marginEnd="30dp"
-            android:hint="talk2prajjwal@gmail.com"
+            android:hint="Email"
             android:padding="10dp"
             android:textColorHint="@color/black" />
     </LinearLayout>
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:hint="8894567021"
+            android:hint="Mob"
             android:padding="10dp"
             android:textColorHint="@color/black" />
     </LinearLayout>
