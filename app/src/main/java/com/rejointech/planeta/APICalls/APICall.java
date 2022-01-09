@@ -1,6 +1,7 @@
 package com.rejointech.planeta.APICalls;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.rejointech.planeta.Utils.Constants;
 
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
@@ -28,7 +29,7 @@ public class APICall {
 
     public static Request get4profiledata(String url, String userauthtoken) {
         return new Request.Builder()
-                .header("Authorization", userauthtoken)
+                .header("Authorization", Constants.bearer + userauthtoken)
                 .url(url)
                 .build();
 
