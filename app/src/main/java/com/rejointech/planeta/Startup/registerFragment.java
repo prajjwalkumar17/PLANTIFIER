@@ -13,7 +13,9 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
@@ -150,7 +152,6 @@ public class registerFragment extends Fragment {
                             if (status.equals("success")) {
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
                                 sendotptophone(phone);
 
                             }
@@ -167,32 +168,7 @@ public class registerFragment extends Fragment {
 
     }
 
-    private void sendotptophone(String phone) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+91" + phone,
-                60,
-                TimeUnit.SECONDS,
-                getActivity(),
-                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                    }
 
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
-                    }
-
-                    @Override
-                    public void onCodeSent(@NonNull String backendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                        editor = preferences.edit();
-                        editor.putString(Constants.prerrfbackendotp, backendotp);
-                        editor.apply();
-
-                    }
-                }
-        );
-    }
 
     private void Savedatatoprefs(String token, String name, String email, String phone, String role) {
         preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
@@ -204,5 +180,45 @@ public class registerFragment extends Fragment {
         editor.putString(Constants.prefregisterrole, role);
         editor.apply();
     }
+
+
+    private void sendotptophone(String phone) {
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String backendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//                String mResendToken = backendotp;
+                editor = preferences.edit();
+                editor.putString(Constants.prerrfbackendotp, backendotp);
+                editor.apply();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
+
+            }
+        };
+
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber("+91" + phone)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(getActivity())                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+
+
+    }
+
 
 }

@@ -20,22 +20,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class registerotpvalidationFragment extends Fragment {
     ImageView confrmotp_gobckbot;
@@ -44,7 +38,7 @@ public class registerotpvalidationFragment extends Fragment {
     SharedPreferences sharedPreferences;
     Context thiscontext;
     TextView textView8;
-    String email, phone, backendotp, otp;
+    String phone, backendotp, otp;
 
 
     @Override
@@ -72,31 +66,20 @@ public class registerotpvalidationFragment extends Fragment {
         confrmotp_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer,new registerconformationFragment()).addToBackStack(null).commit();
                 otp = confrmotp_otpedittext.getText().toString().trim();
                 if (otp.length() == 0) {
                     CommonMethods.DisplayShortTOAST(thiscontext, "Please enter a valid OTP");
                 } else {
                     verifyphoneotp(otp, backendotp);
-//                    verifyOTP(otp);
                 }
             }
         });
-
         confrmotp_resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendotptophone(phone);
             }
         });
-
-//        confrmotp_resend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                verifyOTP();
-//            }
-//        });
-
         confrmotp_gobckbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,8 +88,43 @@ public class registerotpvalidationFragment extends Fragment {
         });
     }
 
+    private void verifyphoneotp(String otp, String backendotp) {
+        if (backendotp != null && otp != null) {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(backendotp, otp);
 
-    private void verifyOTP(String otp) {
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                CommonMethods.LOGthesite(Constants.LOG, "signInWithCredential:success");
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
+                                FirebaseUser user = task.getResult().getUser();
+                            } else {
+                                // Sign in failed, display a message and update the UI
+                                CommonMethods.DisplayShortTOAST(thiscontext, "Check Internet Connection - Sign in Failed");
+                                if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                    // The verification code entered was invalid
+                                    CommonMethods.DisplayShortTOAST(thiscontext, "Invalid OTP");
+                                }
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                    CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                }
+            });
+        } else {
+            CommonMethods.DisplayShortTOAST(thiscontext, "Check Internet Connection");
+        }
+    }
+
+
+ /*   private void verifyOTP(String otp) {
         String url = Constants.verifyotpurl;
         APICall.okhttpmaster().newCall(APICall.post4ootpverificfation(
                 APICall.urlbuilderforhttp(url),
@@ -148,6 +166,36 @@ public class registerotpvalidationFragment extends Fragment {
             }
         });
     }
+*/
+
+    private void sendotptophone(String phone) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String newbackendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                verifyphoneotp(otp, newbackendotp);
+            }
+        };
+
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber("+91" + phone)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(getActivity())                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
 
     private void InitViews(View root) {
         sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
@@ -162,60 +210,5 @@ public class registerotpvalidationFragment extends Fragment {
         String text = "Please confirm your 4 digit OTP. which is sent on " + "+91" + phone;
         textView8.setText(text);
 
-    }
-
-    private void verifyphoneotp(String otp, String backendotp) {
-        if (backendotp != null && otp != null) {
-            PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(
-                    backendotp, otp
-            );
-            FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
-
-                            } else {
-                                CommonMethods.DisplayShortTOAST(thiscontext, "Enter the correct OTP");
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
-                }
-            });
-
-        } else {
-            CommonMethods.DisplayShortTOAST(thiscontext, "Check Internet Connection");
-        }
-
-    }
-
-
-    private void sendotptophone(String phone) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+91" + phone,
-                60,
-                TimeUnit.SECONDS,
-                getActivity(),
-                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    @Override
-                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
-                    }
-
-                    @Override
-                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
-                    }
-
-                    @Override
-                    public void onCodeSent(@NonNull String newbackendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                        verifyphoneotp(otp, newbackendotp);
-                    }
-                }
-        );
     }
 }
