@@ -12,6 +12,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
@@ -22,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,11 +36,9 @@ public class registerFragment extends Fragment {
 
     AppCompatButton register_loginbot;
     AppCompatButton register_registerbot;
-    AppCompatEditText register_nameedittext;
-    AppCompatEditText register_emailedittext;
-    AppCompatEditText register_phoneedittext;
-    AppCompatEditText register_passwordedittext;
-    AppCompatEditText register_passwordconfirmedittext;
+    AppCompatEditText register_nameedittext, register_emailedittext, register_phoneedittext, register_passwordedittext, register_passwordconfirmedittext;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     private Context thiscontext;
 
     @Override
@@ -84,7 +86,7 @@ public class registerFragment extends Fragment {
 
                 if (Name.length() == 0 ||
                         Email.length() == 0 ||
-                        Phone.length() == 0 ||
+                        Phone.length() != 10 ||
                         Password.length() == 0 ||
                         PasswordConfirmed.length() == 0 ||
                         !Password.equals(PasswordConfirmed)) {
@@ -124,7 +126,7 @@ public class registerFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage().toString());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }
@@ -146,8 +148,10 @@ public class registerFragment extends Fragment {
                             String role = Signup.optString("role");
                             Savedatatoprefs(token, name, email, phone, role);
                             if (status.equals("success")) {
-//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).addToBackStack(null).commit();
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).addToBackStack(null).commit();
+//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
+//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
+                                sendotptophone(phone);
 
                             }
 
@@ -163,9 +167,36 @@ public class registerFragment extends Fragment {
 
     }
 
+    private void sendotptophone(String phone) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+91" + phone,
+                60,
+                TimeUnit.SECONDS,
+                getActivity(),
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String backendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        editor = preferences.edit();
+                        editor.putString(Constants.prerrfbackendotp, backendotp);
+                        editor.apply();
+
+                    }
+                }
+        );
+    }
+
     private void Savedatatoprefs(String token, String name, String email, String phone, String role) {
-        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        editor = preferences.edit();
         editor.putString(Constants.token, token);
         editor.putString(Constants.prefregistername, name);
         editor.putString(Constants.prefregisteremail, email);
