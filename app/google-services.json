@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1022822683976",
+    "project_id": "plantifier-53a7f",
+    "storage_bucket": "plantifier-53a7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022822683976:android:6a8a433dd066e195ee0f7d",
+        "android_client_info": {
+          "package_name": "com.rejointech.planeta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022822683976-qciq4vt1pg11dbnlufdqsi7vlvn8ej62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rejointech.planeta",
+            "certificate_hash": "4cc7a2d2c7bd7c5849374be098f7c75270ff6d6c"
+          }
+        },
+        {
+          "client_id": "1022822683976-jere2ubh4r3pggob444bj360j7aml4q0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBBsCzZp-m6bucRN00VdmNZreBppZVnfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022822683976-jere2ubh4r3pggob444bj360j7aml4q0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
