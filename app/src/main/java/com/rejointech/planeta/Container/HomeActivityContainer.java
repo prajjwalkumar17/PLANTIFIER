@@ -1,6 +1,5 @@
 package com.rejointech.planeta.Container;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,15 +33,11 @@ import com.rejointech.planeta.Fragments.QuizFragment;
 import com.rejointech.planeta.Fragments.ShareFragment;
 import com.rejointech.planeta.R;
 
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class HomeActivityContainer extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        botnavController.botVisibilityController,
-        EasyPermissions.PermissionCallbacks {
+        botnavController.botVisibilityController {
     NavigationView nav_view;
     DrawerLayout drawer;
     ImageView navBotimg;
@@ -96,46 +91,11 @@ public class HomeActivityContainer extends AppCompatActivity implements
         home_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getpermissions();
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).addToBackStack(null).commit();
+
             }
         });
     }
-
-    private void getpermissions() {
-        String[] perms = {
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-        };
-
-        if (EasyPermissions.hasPermissions(HomeActivityContainer.this, perms)) {
-            //Permission already granted
-        } else {
-            EasyPermissions.requestPermissions(HomeActivityContainer.this,
-                    "APP needs to get these Permissions in order to work properly",
-                    102,
-                    perms);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        if (requestCode == 102) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).addToBackStack(null).commit();
-        }
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-
-    }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

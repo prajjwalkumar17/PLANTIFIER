@@ -2,11 +2,11 @@ package com.rejointech.planeta.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +84,7 @@ public class CameraFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, Constants.CAMERA_PICK_PHOTO_FOR_AVATAR);
 
             }
@@ -96,33 +97,39 @@ public class CameraFragment extends Fragment {
         if (requestCode == Constants.CAMERA_PIC_REQUEST) {
             if (data != null) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                CommonMethods.LOGthesite(Constants.LOG, "The Image bitmap is   " + image.toString());
                 //TODO Adding code for getiing path
                 // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri tempUri = getImageUri(thiscontext, image);
-                File finalFile = new File(getRealPathFromURI(tempUri));
-                Postpicfromcamera(finalFile);
+                Uri tempUri = data.getData();
+                uploadtheseledimage(image);
+
             }
 
 
         } else if (requestCode == Constants.CAMERA_PICK_PHOTO_FOR_AVATAR) {
             if (data == null) {
-                //Display an error
                 CommonMethods.LOGthesite(Constants.LOG, "We have an Error");
                 return;
             }
-//                InputStream inputStream = thiscontext.getContentResolver().openInputStream(data.getData());
-//                Bitmap images = (Bitmap) data.getExtras().get("data");
-//                Uri tempUri = getImageUri(thiscontext, images);
-//                File finalFile = new File(getRealPathFromURI(tempUri));
-//                Postpicfromcamera(finalFile);
-
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
+            Uri path = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(thiscontext.getContentResolver(), path);
+                uploadtheseledimage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    private void uploadtheseledimage(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        byte[] imageinByte = byteArrayOutputStream.toByteArray();
+        String encoded_pic = Base64.encodeToString(imageinByte, Base64.DEFAULT);
+        CommonMethods.LOGthesite(Constants.LOG, encoded_pic);
+    }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+
+  /*  public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
@@ -141,7 +148,7 @@ public class CameraFragment extends Fragment {
             }
         }
         return path;
-    }
+    }*/
 
     private void InitViews(View root) {
         cameraback = root.findViewById(R.id.cameraback);
