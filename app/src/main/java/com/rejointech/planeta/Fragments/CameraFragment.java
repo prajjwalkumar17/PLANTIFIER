@@ -21,11 +21,11 @@ import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -125,7 +125,7 @@ public class CameraFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         byte[] imageinByte = byteArrayOutputStream.toByteArray();
         String encoded_pic = Base64.encodeToString(imageinByte, Base64.DEFAULT);
-        CommonMethods.LOGthesite(Constants.LOG, encoded_pic);
+        Postpicfromcamera(encoded_pic);
     }
 
 
@@ -157,10 +157,10 @@ public class CameraFragment extends Fragment {
     }
 
 
-    private void Postpicfromcamera(File finalFile) {
+    private void Postpicfromcamera(String encoded_string) {
         APICall.okhttpmaster().newCall(
                 APICall.post4imageupload(APICall.urlbuilderforhttp(Constants.camerauploaderurl),
-                        APICall.buildrequstbody4imageupload(finalFile))).enqueue(new Callback() {
+                        APICall.buildrequstbody4imageupload(encoded_string))).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
@@ -173,14 +173,15 @@ public class CameraFragment extends Fragment {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final String myResponse = response.body().string();
+                final String rResponse = response.body().string();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            JSONObject myResponsez = new JSONObject(myResponse);
-                            CommonMethods.LOGthesite(Constants.LOG, myResponse);
-
+                            JSONObject myResponsez = new JSONObject(rResponse);
+                            String status = myResponsez.optString("status");
+                            String results = myResponsez.optString("results");
+                            JSONArray data = myResponsez.optJSONArray("data");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
