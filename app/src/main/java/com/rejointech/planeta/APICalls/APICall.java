@@ -3,7 +3,10 @@ package com.rejointech.planeta.APICalls;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rejointech.planeta.Utils.Constants;
 
+import java.io.File;
+
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,6 +42,21 @@ public class APICall {
         return new Request.Builder()
                 .url(url)
                 .post(requestBody)
+                .build();
+    }
+
+    public static Request post4imageupload(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
+
+
+    public static RequestBody buildrequstbody4imageupload(File file) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("plantImage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
                 .build();
     }
 
