@@ -42,6 +42,21 @@ public class APICall {
                 .build();
     }
 
+    public static Request post4imageupload(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
+
+
+    public static RequestBody buildrequstbody4imageupload(String encodedstring) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("plantImage", encodedstring)
+                .build();
+    }
+
     public static RequestBody buildrequestbody4signup(String Name,
                                                       String Email,
                                                       String Phone,

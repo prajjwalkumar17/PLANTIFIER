@@ -52,6 +52,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
     CircleImageView nav_dp;
     String usrtoken;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +96,6 @@ public class HomeActivityContainer extends AppCompatActivity implements
             }
         });
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -228,4 +228,6 @@ public class HomeActivityContainer extends AppCompatActivity implements
         closeDrawer(drawer);
         return true;
     }
+
+
 }
