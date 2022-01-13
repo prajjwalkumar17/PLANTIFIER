@@ -10,9 +10,10 @@
     <ImageView
         android:id="@+id/onboard_img"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_processing"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/lady"
         app:layout_constraintBottom_toTopOf="@+id/onboard_heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -1,6 +1,7 @@
 package com.rejointech.planeta.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Startup.Startup_container;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
@@ -31,10 +33,11 @@ public class AccountsFragment extends Fragment {
 
     AppCompatEditText account_nameedittext, account_emaileditext, account_phoneeditext;
     AppCompatButton account_logoutbot, account_submitbot;
-    TextView account_updatedetailbot;
+    TextView account_updatedetailbot, account_updatedpbot;
     SharedPreferences sharedPreferences;
     String token;
     Context thiscontext;
+    SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,15 +101,26 @@ public class AccountsFragment extends Fragment {
                 });
             }
         });
-
-
     }
 
     private void ButtonClicks() {
         account_logoutbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonMethods.DisplayShortTOAST(thiscontext, "You are going to be Logged out");
+                sharedPreferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString(Constants.LOGGEDIN, "notloggedin");
+                editor.apply();
+                Intent intent = new Intent(getActivity(), Startup_container.class);
+                startActivity(intent);
+            }
+        });
 
+        account_updatedpbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectandaddImagetofirebase();
             }
         });
 
@@ -122,6 +136,10 @@ public class AccountsFragment extends Fragment {
         });
     }
 
+    private void selectandaddImagetofirebase() {
+
+    }
+
     private void updatedetails(String name, String phone) {
     }
 
@@ -129,6 +147,7 @@ public class AccountsFragment extends Fragment {
         account_nameedittext = root.findViewById(R.id.account_nameedittext);
         account_emaileditext = root.findViewById(R.id.account_emaileditext);
         account_phoneeditext = root.findViewById(R.id.account_phoneeditext);
+        account_updatedpbot = root.findViewById(R.id.account_updatedpbot);
         edittextinput(false);
         account_logoutbot = root.findViewById(R.id.account_logoutbot);
         account_submitbot = root.findViewById(R.id.account_submitbot);

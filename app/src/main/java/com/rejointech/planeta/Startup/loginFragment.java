@@ -32,6 +32,8 @@ public class loginFragment extends Fragment {
     AppCompatButton login_loginbot, login_registerbot;
     AppCompatEditText login_accounidedittext, login_passwordedittext;
     Context thiscontext;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,10 @@ public class loginFragment extends Fragment {
                                     String token = responsee.optString("token");
                                     Addatatoprefs(token);
                                     if (statuscode.equals("200")) {
+                                        preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+                                        editor = preferences.edit();
+                                        editor.putString(Constants.LOGGEDIN, "loggedin");
+                                        editor.apply();
                                         Intent intent = new Intent(getActivity(), HomeActivityContainer.class);
                                         startActivity(intent);
                                     } else {
@@ -119,8 +125,8 @@ public class loginFragment extends Fragment {
     }
 
     private void Addatatoprefs(String token) {
-        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        editor = preferences.edit();
         editor.putString(Constants.token, token);
         editor.apply();
     }

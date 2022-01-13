@@ -1,7 +1,9 @@
 package com.rejointech.planeta.Container;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.CommonInterfaces.botnavController;
 import com.rejointech.planeta.Fragments.AccountsFragment;
 import com.rejointech.planeta.Fragments.CameraFragment;
@@ -32,8 +34,18 @@ import com.rejointech.planeta.Fragments.NotesFragment;
 import com.rejointech.planeta.Fragments.QuizFragment;
 import com.rejointech.planeta.Fragments.ShareFragment;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.CommonMethods;
+import com.rejointech.planeta.Utils.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class HomeActivityContainer extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -47,10 +59,9 @@ public class HomeActivityContainer extends AppCompatActivity implements
     Animation rotate;
     BottomNavigationView botnav;
     BottomAppBar completebotnav;
-    TextView nav_name, nav_email, nav_filledandtotalentries;
-    ProgressBar nav_progress;
+    TextView nav_name, nav_email;
     CircleImageView nav_dp;
-    String usrtoken;
+    String token;
 
 
     @Override
@@ -58,6 +69,10 @@ public class HomeActivityContainer extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home_container);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        token = sharedPreferences.getString(Constants.token, "No data found!!!");
+        GetprofileData();
+
         defaultfragmentonstartup(savedInstanceState);
         muticals();
     }
@@ -68,6 +83,45 @@ public class HomeActivityContainer extends AppCompatActivity implements
         }
     }
 
+    private void GetprofileData() {
+        String url = Constants.profileurl;
+        APICall.okhttpmaster().newCall(APICall.get4profiledata(APICall.urlbuilderforhttp(url), token)).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommonMethods.DisplayShortTOAST(HomeActivityContainer.this, e.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String myresponse = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject responsez = new JSONObject(myresponse);
+                            String status = responsez.optString("status");
+                            JSONObject data = responsez.optJSONObject("data");
+                            String name = data.optString("name");
+                            String email = data.optString("email");
+                            String phone = data.optString("phone");
+
+                            if (status.equals("success")) {
+                                nav_name.setText(name);
+                                nav_email.setText(email);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
     private void muticals() {
         nav_view = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer);
@@ -81,6 +135,9 @@ public class HomeActivityContainer extends AppCompatActivity implements
         botnav.getMenu().getItem(2).setEnabled(false);
         completebotnav = findViewById(R.id.completebotnav);
 
+        View headerView = nav_view.getHeaderView(0);
+        nav_name = headerView.findViewById(R.id.nav_name);
+        nav_email = headerView.findViewById(R.id.nav_email);
 
         NavigationUI.setupWithNavController(nav_view, navController);
         NavigationUI.setupWithNavController(botnav, navController);
