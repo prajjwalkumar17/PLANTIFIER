@@ -20,6 +20,9 @@
             android:name=".Container.HomeActivityContainer"
             android:exported="true" />
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
             android:name=".Startup.Startup_container"
             android:requestLegacyExternalStorage="true"
             android:exported="true">

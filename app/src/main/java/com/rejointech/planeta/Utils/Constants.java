@@ -13,7 +13,7 @@ public class Constants {
     public static String verifyotpurl = baseurl + "v1/user/verifyOtp";
     public static String signinurl = baseurl + "v1/user/login";
     public static String profileurl = baseurl + "v1/user/me/";
-    public static String camerauploaderurl = baseurl + "v1/plant/getDetails";
+    public static String camerauploaderurl = baseurl + "v1/plant/createPost";
 
 
     public static String prefregistername = "prefregistername";

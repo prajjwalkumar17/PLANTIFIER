@@ -42,6 +42,7 @@ public class registerFragment extends Fragment {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private Context thiscontext;
+    String Name, Email, Phone, Password, PasswordConfirmed;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,11 +80,11 @@ public class registerFragment extends Fragment {
         register_registerbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Name = register_nameedittext.getText().toString();
-                String Email = register_emailedittext.getText().toString();
-                String Phone = register_phoneedittext.getText().toString();
-                String PasswordConfirmed = register_passwordconfirmedittext.getText().toString();
-                String Password = register_passwordedittext.getText().toString();
+                Name = register_nameedittext.getText().toString();
+                Email = register_emailedittext.getText().toString();
+                Phone = register_phoneedittext.getText().toString();
+                PasswordConfirmed = register_passwordconfirmedittext.getText().toString();
+                Password = register_passwordedittext.getText().toString();
 
 
                 if (Name.length() == 0 ||
@@ -95,11 +96,8 @@ public class registerFragment extends Fragment {
                     CommonMethods.DisplayShortTOAST(thiscontext, "Check the filled details Properly");
 
                 } else {
-                    RegisterUser(Name,
-                            Email,
-                            Phone,
-                            PasswordConfirmed,
-                            Password);
+                    CommonMethods.DisplayLongTOAST(thiscontext, "wait for some time don't Press anything \nVerification still in progress");
+                    sendotptophone(Phone);
                 }
             }
         });
@@ -152,7 +150,7 @@ public class registerFragment extends Fragment {
                             if (status.equals("success")) {
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
-                                sendotptophone(phone);
+
 
                             }
 
@@ -198,16 +196,18 @@ public class registerFragment extends Fragment {
 
             @Override
             public void onCodeSent(@NonNull String backendotp, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//                String mResendToken = backendotp;
+                preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
                 editor = preferences.edit();
                 editor.putString(Constants.prerrfbackendotp, backendotp);
                 editor.apply();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
-
+                RegisterUser(Name,
+                        Email,
+                        Phone,
+                        PasswordConfirmed,
+                        Password);
             }
         };
-
-
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber("+91" + phone)       // Phone number to verify
@@ -216,9 +216,5 @@ public class registerFragment extends Fragment {
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
-
     }
-
-
 }
