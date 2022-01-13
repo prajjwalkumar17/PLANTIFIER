@@ -1,12 +1,10 @@
 package com.rejointech.planeta.Startup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import com.rejointech.planeta.Fragments.DashboardFragment;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.rejointech.planeta.R;
 
 public class Startup_container extends AppCompatActivity {
@@ -21,6 +19,6 @@ public class Startup_container extends AppCompatActivity {
     }
 
     private void addfragmentforfirst() {
-        getSupportFragmentManager().beginTransaction().add(R.id.startupviewcontainer,new Onboarding1Fragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.startupviewcontainer, new splashFragment()).commit();
     }
 }

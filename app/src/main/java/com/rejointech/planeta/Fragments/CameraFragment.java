@@ -186,12 +186,9 @@ public class CameraFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
         });
     }
-
-
 }
