@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<AdapterSearchresultsfromupload.viewrecycler> {
@@ -24,13 +26,17 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
     @NonNull
     @Override
     public AdapterSearchresultsfromupload.viewrecycler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclersearchresultsfromupload, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_camera_results, parent, false);
         return new viewrecycler(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdapterSearchresultsfromupload.viewrecycler holder, int position) {
-
+        try {
+            JSONArray array = object.getJSONArray("kadk");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

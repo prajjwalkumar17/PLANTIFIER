@@ -48,7 +48,6 @@ public class AccountsFragment extends Fragment {
     String token;
     Context thiscontext;
     CircleImageView circleImageView;
-
     Uri imageUri;
 
     @Override

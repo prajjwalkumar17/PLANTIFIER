@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -34,23 +32,24 @@
                     android:layout_height="wrap_content"
                     android:text="aloe vera"
                     android:textSize="18sp"
-                    android:textColor="@color/final_itemcolor"/>
+                    android:textColor="@color/final_itemcolor" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Asphodelaceae"
-                    android:textColor="@color/final_itemcolor"/>
+                    android:textColor="@color/final_itemcolor" />
             </LinearLayout>
         </LinearLayout>
 
-        <include
-            android:id="@+id/slider"
-            layout="@layout/imgslider"
-            android:layout_width="match_parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_below="@+id/recyclerportallin1"
-            android:layout_height="wrap_content" />
+    <include
+        android:id="@+id/slider"
+        layout="@layout/imgslider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recyclerportallin1"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

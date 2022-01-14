@@ -27,6 +27,13 @@ public class APICall {
                 .build();
     }
 
+    public static Request patch4updateprofile(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .patch(requestBody)
+                .url(url)
+                .build();
+    }
+
     public static Request get4profiledata(String url, String userauthtoken) {
         return new Request.Builder()
                 .header("Authorization", Constants.bearer + userauthtoken)

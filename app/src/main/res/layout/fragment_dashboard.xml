@@ -15,21 +15,28 @@
             android:layout_height="match_parent">
 
 
-    <include layout="@layout/recyclerdisportalitem"
-        android:id="@+id/itemm1"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp" />
-    <include layout="@layout/recyclerdisportalitem"
-        android:id="@+id/itemm2"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_margin="20dp"
-        android:layout_below="@id/itemm1"/>
+            <include
+                android:id="@+id/itemm1"
+                layout="@layout/recyclerdisportalitem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp" />
 
-            <include layout="@layout/recyclerdisportalitem"
-        android:id="@+id/itemm3"
-        android:layout_height="wrap_content"
+            <include
+                layout="@layout/recyclerdisportalitem"
+                android:id="@+id/itemm2"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_below="@id/itemm1" />
+
+            <include
+                layout="@layout/recyclerdisportalitem"
+                android:id="@+id/itemm3"
+                android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
         android:layout_below="@id/itemm2"/>
