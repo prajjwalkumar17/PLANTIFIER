@@ -17,28 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 
 public class CameraFragment extends Fragment {
     ImageView cameraback, camera_cameraopen, camera_imgselect;
-    Context thiscontext;
     private static final int REQUEST_STORAGE = 112;
+    Context thiscontext;
     String token;
+    String encoded_pic;
+    Bitmap image;
 
 
     @Override
@@ -58,7 +51,6 @@ public class CameraFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
         InitViews(root);
         ButtonClicks();
-
         return root;
     }
 
@@ -80,7 +72,6 @@ public class CameraFragment extends Fragment {
 
             }
         });
-
         camera_imgselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,22 +83,14 @@ public class CameraFragment extends Fragment {
             }
         });
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CAMERA_PIC_REQUEST) {
             if (data != null) {
-                Bitmap image = (Bitmap) data.getExtras().get("data");
-                //TODO Adding code for getiing path
-                // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-                Uri tempUri = data.getData();
-
+                image = (Bitmap) data.getExtras().get("data");
                 uploadtheseledimage(image);
-
             }
-
-
         } else if (requestCode == Constants.CAMERA_PICK_PHOTO_FOR_AVATAR) {
             if (data == null) {
                 CommonMethods.LOGthesite(Constants.LOG, "We have an Error");
@@ -127,8 +110,14 @@ public class CameraFragment extends Fragment {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         byte[] imageinByte = byteArrayOutputStream.toByteArray();
-        String encoded_pic = Base64.encodeToString(imageinByte, Base64.DEFAULT);
-        Postpicfromcamera(encoded_pic);
+        encoded_pic = Base64.encodeToString(imageinByte, Base64.DEFAULT);
+
+        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.CAMERAPREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.prefcamerapicencoded, encoded_pic);
+        editor.apply();
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new CameraIdentificationFragment()).commit();
     }
 
 
@@ -139,9 +128,7 @@ public class CameraFragment extends Fragment {
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
     }
-
-
-    private void Postpicfromcamera(String encoded_string) {
+/*    private void Postpicfromcamera(String encoded_string) {
         APICall.okhttpmaster().newCall(
                 APICall.post4imageupload(APICall.urlbuilderforhttp(Constants.camerauploaderurl)
                         , token
@@ -175,5 +162,5 @@ public class CameraFragment extends Fragment {
                 });
             }
         });
-    }
+    }*/
 }
