@@ -102,6 +102,7 @@ public class CameraFragment extends Fragment {
                 //TODO Adding code for getiing path
                 // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
                 Uri tempUri = data.getData();
+
                 uploadtheseledimage(image);
 
             }

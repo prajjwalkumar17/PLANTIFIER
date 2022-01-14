@@ -2,6 +2,7 @@ package com.rejointech.planeta.Utils;
 
 public class Constants {
     public static final String REGISTERPREFS = "REGISTERPREFS";
+    public static final String ACOOUNTSPREF = "REGISTERPREFS";
     public static final int CAMERA_PIC_REQUEST = 123;
     public static final int CAMERA_PICK_PHOTO_FOR_AVATAR = 111;
     public static int SPLASH_TIMEOUT = 2000;
@@ -22,4 +23,6 @@ public class Constants {
     public static String prefregisterrole = "prefregisterrole";
     public static String token = "prefregistertoken";
     public static String prerrfbackendotp = "prefbackendotp";
+
+    public static String prefprofilepic = "profilepic";
 }

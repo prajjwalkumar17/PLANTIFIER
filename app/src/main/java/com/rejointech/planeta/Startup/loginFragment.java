@@ -59,7 +59,6 @@ public class loginFragment extends Fragment {
     private void ButtonClicks() {
         login_registerbot.setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerFragment()).addToBackStack(null).commit();
-
         });
 
         login_loginbot.setOnClickListener(new View.OnClickListener() {
