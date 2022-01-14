@@ -2,25 +2,25 @@ package com.rejointech.planeta.Startup;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+
 import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 
 
-public class Onboarding2Fragment extends Fragment {
+public class spalshLoginFragment extends Fragment {
     AppCompatButton onboarding2_loginbot;
     AppCompatButton onboarding2_skipfornowbot;
     LinearLayout onboarding2_Registerbot;
 
 
+//TODO it will open only first time
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

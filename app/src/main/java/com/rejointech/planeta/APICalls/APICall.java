@@ -42,9 +42,10 @@ public class APICall {
                 .build();
     }
 
-    public static Request post4imageupload(String url, RequestBody requestBody) {
+    public static Request post4imageupload(String url, String userauthtoken, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
+                .header("Authorization", Constants.bearer + userauthtoken)
                 .post(requestBody)
                 .build();
     }
@@ -53,7 +54,7 @@ public class APICall {
     public static RequestBody buildrequstbody4imageupload(String encodedstring) {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("plantImage", encodedstring)
+                .addFormDataPart("base64", encodedstring)
                 .build();
     }
 
