@@ -16,23 +16,26 @@
         android:id="@+id/cameraresult_mypic"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:layout_marginBottom="5dp"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
         android:layout_below="@+id/cameraresult_toolbar"
         android:src="@color/final_itemcolor" />
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/cameraresult_mypic"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="55dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cameraresult_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="10dp" />
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </RelativeLayout>

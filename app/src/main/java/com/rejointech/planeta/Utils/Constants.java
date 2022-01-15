@@ -12,10 +12,10 @@ public class Constants {
     public static String baseurl = "https://plantifier.herokuapp.com/api/";
     public static String bearer = "Bearer ";
     public static String signupurl = baseurl + "v1/user/signup";
-    public static String verifyotpurl = baseurl + "v1/user/verifyOtp";
     public static String signinurl = baseurl + "v1/user/login";
     public static String profileurl = baseurl + "v1/user/me/";
     public static String camerauploaderurl = baseurl + "v1/plant/createPost";
+    public static String updateprofileurl = baseurl + "v1/user";
 
 
     public static String prefregistername = "prefregistername";
@@ -27,4 +27,5 @@ public class Constants {
 
     public static String prefprofilepic = "profilepic";
     public static String prefcamerapicencoded = "cameraclicked";
+    public static String prefregisterid = "prefregisterid";
 }

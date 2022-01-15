@@ -146,7 +146,8 @@ public class registerFragment extends Fragment {
                             String email = Signup.optString("email");
                             String phone = Signup.optString("phone");
                             String role = Signup.optString("role");
-                            Savedatatoprefs(token, name, email, phone, role);
+                            String id = Signup.optString("_id");
+                            Savedatatoprefs(token, name, email, phone, role, id);
                             if (status.equals("success")) {
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
 //                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
@@ -167,14 +168,14 @@ public class registerFragment extends Fragment {
     }
 
 
-
-    private void Savedatatoprefs(String token, String name, String email, String phone, String role) {
+    private void Savedatatoprefs(String token, String name, String email, String phone, String role, String id) {
         preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.putString(Constants.token, token);
         editor.putString(Constants.prefregistername, name);
         editor.putString(Constants.prefregisteremail, email);
         editor.putString(Constants.prefregisterphone, phone);
+        editor.putString(Constants.prefregisterid, id);
         editor.putString(Constants.prefregisterrole, role);
         editor.apply();
     }

@@ -17,12 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class CameraFragment extends Fragment {
@@ -83,6 +92,7 @@ public class CameraFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,7 +127,7 @@ public class CameraFragment extends Fragment {
         editor.putString(Constants.prefcamerapicencoded, encoded_pic);
         editor.apply();
 
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new CameraIdentificationFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraIdentificationFragment()).commit();
     }
 
 
@@ -128,7 +138,8 @@ public class CameraFragment extends Fragment {
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
     }
-/*    private void Postpicfromcamera(String encoded_string) {
+
+    private void Postpicfromcamera(String encoded_string) {
         APICall.okhttpmaster().newCall(
                 APICall.post4imageupload(APICall.urlbuilderforhttp(Constants.camerauploaderurl)
                         , token
@@ -162,5 +173,5 @@ public class CameraFragment extends Fragment {
                 });
             }
         });
-    }*/
+    }
 }
