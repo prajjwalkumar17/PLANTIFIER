@@ -42,18 +42,20 @@ public class APICall {
 
     }
 
-    public static Request post4ootpverificfation(String url, RequestBody requestBody) {
-        return new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build();
-    }
-
     public static Request post4imageupload(String url, String userauthtoken, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
                 .header("Authorization", Constants.bearer + userauthtoken)
                 .post(requestBody)
+                .build();
+    }
+
+    public static RequestBody buildrequest4updatingprofile(String id, String name, String email) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name", name)
+                .addFormDataPart("email", email)
+                .addFormDataPart("id", id)
                 .build();
     }
 
@@ -90,15 +92,6 @@ public class APICall {
                 .build();
     }
 
-    public static RequestBody buildreq4otpverification(String email,
-                                                       String otp) {
-        return new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("otp", otp)
-                .addFormDataPart("email", email)
-                .build();
-
-    }
 
 
 }

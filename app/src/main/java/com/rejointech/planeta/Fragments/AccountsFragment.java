@@ -49,6 +49,7 @@ public class AccountsFragment extends Fragment {
     Context thiscontext;
     CircleImageView circleImageView;
     Uri imageUri;
+    private String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -188,6 +189,7 @@ public class AccountsFragment extends Fragment {
         circleImageView = root.findViewById(R.id.circleImageView);
         sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
+        id = sharedPreferences.getString(Constants.prefregisterid, "No data found!!!");
         sharedPreferences = thiscontext.getSharedPreferences(Constants.ACOOUNTSPREF, Context.MODE_PRIVATE);
         String imageuri = sharedPreferences.getString(Constants.prefprofilepic, "No data found!!!");
         if (!imageuri.equals("No data found!!!")) {
@@ -196,6 +198,32 @@ public class AccountsFragment extends Fragment {
     }
 
     private void updatedetails(String name, String phone) {
+        APICall.okhttpmaster().newCall(APICall.patch4updateprofile(
+                APICall.urlbuilderforhttp(Constants.updateprofileurl)
+                , APICall.buildrequest4updatingprofile(id, name, phone)
+        )).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String myResponse = response.body().string();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+
     }
 
     private void edittextinput(Boolean value) {

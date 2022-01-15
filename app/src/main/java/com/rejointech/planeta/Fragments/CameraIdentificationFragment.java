@@ -22,7 +22,6 @@ import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,6 +64,7 @@ public class CameraIdentificationFragment extends Fragment {
     private void Init_views(View root) {
         cameraresult_mypic = root.findViewById(R.id.cameraresult_mypic);
         cameraresult_recyclerview = root.findViewById(R.id.cameraresult_recyclerview);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(thiscontext, 1, GridLayoutManager.VERTICAL, false);
         cameraresult_recyclerview.setLayoutManager(gridLayoutManager);
         cameraresult_recyclerview.addItemDecoration(new DecorationForRecyclerView(thiscontext, R.dimen.dp_2));
@@ -102,9 +102,6 @@ public class CameraIdentificationFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject myResponsez = new JSONObject(rResponse);
-                            String status = myResponsez.optString("status");
-                            String results = myResponsez.optString("results");
-                            JSONArray data = myResponsez.optJSONArray("data");
                             adapterSearchresultsfromupload = new AdapterSearchresultsfromupload(myResponsez);
                             cameraresult_recyclerview.setAdapter(adapterSearchresultsfromupload);
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/final_master"
+    android:background="@color/white"
     tools:context=".Startup.loginFragment">
 
 
@@ -12,9 +12,9 @@
         android:id="@+id/login_forgotpassbot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/final_master"
+        android:background="@color/white"
         android:text="Forgotten Password"
-        android:textColor="@color/final_itemcolor"
+        android:textColor="@color/final_master"
         app:layout_constraintEnd_toEndOf="@+id/login_passwordedittext"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="@+id/login_passwordedittext"
@@ -69,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@drawable/norm_bot_curved_dark"
+            android:background="@drawable/botgreenwithoutborder"
             android:gravity="center_vertical|center_horizontal"
             android:text="LOGIN"
             android:layout_marginEnd="10dp"
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@drawable/norm_bot_curved_dark"
+            android:background="@drawable/botgreenwithoutborder"
             android:text="Register"
             android:layout_marginStart="10dp"
             android:textColor="@color/white"
