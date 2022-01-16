@@ -34,9 +34,6 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
         this.object = object;
     }
 
-    public AdapterSearchresultsfromupload() {
-    }
-
     @NonNull
     @Override
     public AdapterSearchresultsfromupload.viewrecycler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

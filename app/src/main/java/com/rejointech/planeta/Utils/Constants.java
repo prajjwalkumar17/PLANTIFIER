@@ -16,6 +16,7 @@ public class Constants {
     public static String profileurl = baseurl + "v1/user/me/";
     public static String camerauploaderurl = baseurl + "v1/plant/createPost";
     public static String updateprofileurl = baseurl + "v1/user";
+    public static String dashboardmainurl = baseurl + "v1/plant/getAllPosts";
 
 
     public static String prefregistername = "prefregistername";
