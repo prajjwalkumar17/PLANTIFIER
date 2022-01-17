@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,13 +22,14 @@ import java.util.ArrayList;
 
 public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.viewholder> {
     JSONObject object;
-    int length = 5;
+    int length;
     String species_scientificname;
     String family_scientifiname;
     String percentagetoprint;
     String createdBy;
     ArrayList<String> resultImages_array;
-    JSONArray lengtharray;
+    JSONArray resultImages;
+    Adapterimgsliderdashboard adapterSliderdashboard;
 
     public AdapterDashboard(JSONObject object) {
         this.object = object;
@@ -48,6 +51,9 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             holder.recycleritem_dashboard_text_familyname.setText(family_scientifiname);
             holder.recycleritem_dashboard_text_createdbyname.setText(createdBy);
 
+            holder.sliderpagermainlayout.setSliderAdapter(adapterSliderdashboard);
+            holder.sliderpagermainlayout.setIndicatorAnimation(IndicatorAnimationType.WORM);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,38 +63,44 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         String status = object.optString("status");
         JSONArray dataarray = object.optJSONArray("data");
         JSONObject data = dataarray.optJSONObject(position);
-        createdBy = data.optJSONObject("createdBy").optString("name");
+        JSONObject createdByObj = data.optJSONObject("createdBy");
+        if (createdByObj != null) {
+            createdBy = createdByObj.optString("name");
+        }
         String timestamp = data.optString("timeStamp");
         String wikkipediaLink = data.optString("wikkipediaLink");
-        JSONArray userUploadedImage = data.getJSONArray("userUploadedImage");
+        JSONArray userUploadedImage = data.optJSONArray("userUploadedImage");
         String userimage = userUploadedImage.optString(0);
 
-//        JSONArray resultImages = data.getJSONArray("resultImages");
-//        resultImages_array = new ArrayList<String>();
-//
-//        for (int i = 0; i < resultImages.length(); i++) {
-//            resultImages_array.add(resultImages.getString(i));
-//        }
 
         JSONArray posts = data.optJSONArray("posts");
         JSONObject postobject = posts.optJSONObject(position);
-        String score = postobject.optString("score");
-        String postid = postobject.optString("_id");
-        Double percentage_match = Double.parseDouble(score) * 100.0;
-        percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
+        if (postobject != null) {
+            JSONObject species = postobject.optJSONObject("species");
+            species_scientificname = species.optString("scientificNameWithoutAuthor");
+            String species_scientificnametrue = species.optString("scientificName");
+            JSONObject genus = species.optJSONObject("genus");
+            String genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
+            JSONObject family = species.optJSONObject("family");
+            family_scientifiname = family.optString("scientificNameWithoutAuthor");
+            JSONArray common_namesarray = species.optJSONArray("commonNames");
+            ArrayList<String> common_names = new ArrayList<String>();
+            for (int i = 0; i < common_namesarray.length(); i++) {
+                common_names.add(common_namesarray.getString(i));
+            }
 
-        JSONObject species = postobject.optJSONObject("species");
-        species_scientificname = species.optString("scientificNameWithoutAuthor");
-        String species_scientificnametrue = species.optString("scientificName");
-        JSONObject genus = species.optJSONObject("genus");
-        String genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
-        JSONObject family = species.optJSONObject("family");
-        family_scientifiname = family.optString("scientificNameWithoutAuthor");
-        JSONArray common_namesarray = species.optJSONArray("commonNames");
-//        ArrayList<String> common_names = new ArrayList<String>();
-//        for (int i = 0; i < common_namesarray.length(); i++) {
-//            common_names.add(common_namesarray.getString(i));
-//        }
+            String score = postobject.optString("score");
+            String postid = postobject.optString("_id");
+            Double percentage_match = Double.parseDouble(score) * 100.0;
+            percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
+
+            resultImages = postobject.optJSONArray("images");
+         /*   resultImages_array = new ArrayList<String>();
+            for (int i = 0; i < resultImages.length(); i++) {
+                resultImages_array.add(resultImages.getString(i));
+            }*/
+            adapterSliderdashboard = new Adapterimgsliderdashboard(resultImages);
+        }
     }
 
     public boolean indexExists(final ArrayList<String> list, final int index) {
@@ -105,6 +117,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         private TextView recycleritem_dashboard_text_speciesname, recycleritem_dashboard_text_familyname,
                 recycleritem_dashboard_text_createdbyname;
         private ImageView recycleritem_dashboard_bot_note;
+        private SliderView sliderpagermainlayout;
 
         public viewholder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +129,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             recycleritem_dashboard_text_familyname = itemView.findViewById(R.id.recycleritem_dashboard_text_familyname);
             recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleritem_dashboard_text_createdbyname);
             recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleritem_dashboard_bot_note);
+            sliderpagermainlayout = itemView.findViewById(R.id.sliderpageree);
         }
     }
 }

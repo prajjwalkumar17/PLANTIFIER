@@ -11,8 +11,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
-import com.rejointech.planeta.Utils.CommonMethods;
-import com.rejointech.planeta.Utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -111,15 +109,12 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
 
     @Override
     public int getItemCount() {
-//            if(object.optString("status").equals("success")) {
         try {
             length = object.optJSONObject("data").getJSONArray("posts").length();
             return length;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//            }
-        CommonMethods.LOGthesite(Constants.LOG, String.valueOf(length));
         return length;
     }
 
