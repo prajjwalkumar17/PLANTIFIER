@@ -42,6 +42,13 @@ public class APICall {
 
     }
 
+    public static Request get4alldashboarditems(String url) {
+        return new Request.Builder()
+                .url(url)
+                .build();
+
+    }
+
     public static Request post4imageupload(String url, String userauthtoken, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)

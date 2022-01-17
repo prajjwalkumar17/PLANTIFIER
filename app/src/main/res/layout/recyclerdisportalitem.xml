@@ -50,7 +50,7 @@
             </LinearLayout>
 
             <include
-                android:id="@+id/slider"
+                android:id="@+id/sliderpagermainlayoutfornotes"
                 layout="@layout/imgslider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/slider"
+                android:layout_below="@id/sliderpagermainlayoutfornotes"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
