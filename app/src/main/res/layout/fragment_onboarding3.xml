@@ -40,7 +40,7 @@
         android:id="@+id/onboard_desc"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="The video call feature can be accessed from anywhere in your house to help you."
+        android:text="Capture a Plant and we'll\ntell you about it."
         android:textAlignment="center"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
