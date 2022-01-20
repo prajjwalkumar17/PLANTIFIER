@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.SliderView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,9 +26,8 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     String family_scientifiname;
     String percentagetoprint;
     String createdBy;
-    ArrayList<String> resultImages_array;
     JSONArray resultImages;
-    Adapterimgsliderdashboard adapterSliderdashboard;
+
 
     public AdapterDashboard(JSONObject object) {
         this.object = object;
@@ -46,20 +44,16 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     @Override
     public void onBindViewHolder(@NonNull AdapterDashboard.viewholder holder, int position) {
         try {
-            extractdata(position);
+            extractdata(position, holder);
             holder.recycleritem_dashboard_text_speciesname.setText(species_scientificname);
             holder.recycleritem_dashboard_text_familyname.setText(family_scientifiname);
             holder.recycleritem_dashboard_text_createdbyname.setText(createdBy);
-
-            holder.sliderpagermainlayout.setSliderAdapter(adapterSliderdashboard);
-            holder.sliderpagermainlayout.setIndicatorAnimation(IndicatorAnimationType.WORM);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void extractdata(int position) throws JSONException {
+    private void extractdata(int position, viewholder holder) throws JSONException {
         String status = object.optString("status");
         JSONArray dataarray = object.optJSONArray("data");
         JSONObject data = dataarray.optJSONObject(position);
@@ -67,14 +61,19 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         if (createdByObj != null) {
             createdBy = createdByObj.optString("name");
         }
+
         String timestamp = data.optString("timeStamp");
         String wikkipediaLink = data.optString("wikkipediaLink");
         JSONArray userUploadedImage = data.optJSONArray("userUploadedImage");
         String userimage = userUploadedImage.optString(0);
+        Picasso.get()
+                .load(userimage)
+                .error(R.drawable.icon_pic_error)
+                .into(holder.imageviewfordashboard);
 
 
         JSONArray posts = data.optJSONArray("posts");
-        JSONObject postobject = posts.optJSONObject(position);
+        JSONObject postobject = posts.optJSONObject(0);
         if (postobject != null) {
             JSONObject species = postobject.optJSONObject("species");
             species_scientificname = species.optString("scientificNameWithoutAuthor");
@@ -95,11 +94,6 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
 
             resultImages = postobject.optJSONArray("images");
-         /*   resultImages_array = new ArrayList<String>();
-            for (int i = 0; i < resultImages.length(); i++) {
-                resultImages_array.add(resultImages.getString(i));
-            }*/
-            adapterSliderdashboard = new Adapterimgsliderdashboard(resultImages);
         }
     }
 
@@ -117,7 +111,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         private TextView recycleritem_dashboard_text_speciesname, recycleritem_dashboard_text_familyname,
                 recycleritem_dashboard_text_createdbyname;
         private ImageView recycleritem_dashboard_bot_note;
-        private SliderView sliderpagermainlayout;
+        private ImageView imageviewfordashboard;
 
         public viewholder(@NonNull View itemView) {
             super(itemView);
@@ -129,7 +123,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             recycleritem_dashboard_text_familyname = itemView.findViewById(R.id.recycleritem_dashboard_text_familyname);
             recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleritem_dashboard_text_createdbyname);
             recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleritem_dashboard_bot_note);
-            sliderpagermainlayout = itemView.findViewById(R.id.sliderpageree);
+            imageviewfordashboard = itemView.findViewById(R.id.imageviewfordashboard);
         }
     }
 }
