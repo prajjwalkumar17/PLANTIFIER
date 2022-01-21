@@ -21,4 +21,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#87DF21</color>
     <color name="yellow_pale">#D7E1C50D</color>
+    <color name="greylight">#C1D5C5</color>
+    <color name="final_lightestgreen">#F7FEE7</color>
 </resources>
