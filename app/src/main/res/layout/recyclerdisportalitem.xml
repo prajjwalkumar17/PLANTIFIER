@@ -50,7 +50,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageviewfordashboard"
+                android:id="@+id/recycleropendashboard_image"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginEnd="30dp"
@@ -61,7 +61,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imageviewfordashboard"
+                android:layout_below="@id/recycleropendashboard_image"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
@@ -76,7 +76,7 @@
                     android:textColor="@color/final_itemcolor" />
 
                 <TextView
-                    android:id="@+id/recycleritem_dashboard_text_createdbyname"
+                    android:id="@+id/recycleropendashboard_picby"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/recycleritem_dashboard_createdby"
@@ -86,7 +86,7 @@
 
 
                 <ImageView
-                    android:id="@+id/recycleritem_dashboard_bot_note"
+                    android:id="@+id/recycleropendashboard_wiki_bot"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"

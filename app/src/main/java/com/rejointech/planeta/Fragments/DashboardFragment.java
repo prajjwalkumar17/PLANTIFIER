@@ -80,7 +80,7 @@ public class DashboardFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject myResponsez = new JSONObject(rResponse);
-                            adapterDashboard = new AdapterDashboard(myResponsez);
+                            adapterDashboard = new AdapterDashboard(myResponsez, thiscontext);
                             dashboard_recyclerview.setAdapter(adapterDashboard);
 
                         } catch (JSONException e) {

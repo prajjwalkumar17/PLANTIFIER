@@ -133,7 +133,7 @@
                 app:tint="@color/final_master" />
 
             <TextView
-                android:id="@+id/recycler_camera_results_text_percentage"
+                android:id="@+id/recycleropendashboard_Percentage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"

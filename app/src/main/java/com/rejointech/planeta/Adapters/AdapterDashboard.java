@@ -1,5 +1,7 @@
 package com.rejointech.planeta.Adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 
 public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.viewholder> {
     JSONObject object;
+    Context thiscontext;
     int length;
     String species_scientificname;
     String family_scientifiname;
@@ -29,10 +33,10 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     JSONArray resultImages;
 
 
-    public AdapterDashboard(JSONObject object) {
+    public AdapterDashboard(JSONObject object, Context thiscontext) {
         this.object = object;
+        this.thiscontext = thiscontext;
     }
-
 
     @NonNull
     @Override
@@ -92,8 +96,12 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             String postid = postobject.optString("_id");
             Double percentage_match = Double.parseDouble(score) * 100.0;
             percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
-
             resultImages = postobject.optJSONArray("images");
+
+            //TODO add shared pref here
+            SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS, Context.MODE_PRIVATE);
+
+
         }
     }
 
@@ -121,9 +129,9 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         private void init_views(View itemView) {
             recycleritem_dashboard_text_speciesname = itemView.findViewById(R.id.recycleritem_dashboard_text_speciesname);
             recycleritem_dashboard_text_familyname = itemView.findViewById(R.id.recycleritem_dashboard_text_familyname);
-            recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleritem_dashboard_text_createdbyname);
-            recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleritem_dashboard_bot_note);
-            imageviewfordashboard = itemView.findViewById(R.id.imageviewfordashboard);
+            recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleropendashboard_picby);
+            recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleropendashboard_wiki_bot);
+            imageviewfordashboard = itemView.findViewById(R.id.recycleropendashboard_image);
         }
     }
 }

@@ -7,6 +7,9 @@
     android:background="@color/white"
     android:backgroundTint="@color/final_lightestgreen"
     tools:context=".Fragments.OpenDashboardFragment">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,6 +21,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/recycleropendashboard_backbot"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="20dp"
@@ -48,6 +52,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/recycleropendashboard_speciename"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="aloe vera"
@@ -55,6 +60,7 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/recycleropendashboard_familyname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Asphodelaceae"
@@ -62,6 +68,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/recycleropendashboard_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -73,7 +80,7 @@
 
 
         <ImageView
-            android:id="@+id/imageviewfordashboard"
+            android:id="@+id/recycleropendashboard_image"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_below="@+id/recyclerportallin1"
@@ -103,7 +110,7 @@
                 app:tint="@color/final_master" />
 
             <TextView
-                android:id="@+id/recycler_camera_results_text_percentage"
+                android:id="@+id/recycleropendashboard_Percentage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -118,7 +125,7 @@
             android:id="@+id/rellytttu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageviewfordashboard"
+            android:layout_below="@id/recycleropendashboard_image"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
@@ -145,6 +152,7 @@
                         android:textColor="@color/final_itemcolor" />
 
                     <TextView
+                        android:id="@+id/recycleropendashboard_familynametextin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -174,6 +182,7 @@
                         android:textColor="@color/final_itemcolor" />
 
                     <TextView
+                        android:id="@+id/recycleropendashboard_genusnameinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -203,6 +212,7 @@
                         android:textColor="@color/final_itemcolor" />
 
                     <TextView
+                        android:id="@+id/recycleropendashboard_speciesnameinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -227,7 +237,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/recycleritem_dashboard_text_createdbyname"
+                        android:id="@+id/recycleropendashboard_picby"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/recycleritem_dashboard_createdby"
@@ -238,7 +248,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/recycleritem_dashboard_bot_note"
+                android:id="@+id/recycleropendashboard_wiki_bot"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_alignParentTop="true"
@@ -269,6 +279,7 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/recycleropendashboard_commonname1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sunflower"
@@ -277,6 +288,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/recycleropendashboard_commonname2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Common sunflower"
@@ -285,6 +297,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/recycleropendashboard_commonname3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ocľiul a soarilui"
@@ -326,4 +339,6 @@
         </LinearLayout>
 
     </RelativeLayout>
+</ScrollView>
+
 </RelativeLayout>

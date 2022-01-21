@@ -134,7 +134,7 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
             recycler_camera_results_bot_confirm = itemView.findViewById(R.id.recycler_camera_results_bot_confirm);
             recycler_camera_results_text_plantname = itemView.findViewById(R.id.recycler_camera_results_text_plantname);
             recycler_camera_results_text_familyname = itemView.findViewById(R.id.recycler_camera_results_text_familyname);
-            recycler_camera_results_text_percentage = itemView.findViewById(R.id.recycler_camera_results_text_percentage);
+            recycler_camera_results_text_percentage = itemView.findViewById(R.id.recycleropendashboard_Percentage);
             recycler_camera_results_bot_wikipedia = itemView.findViewById(R.id.recycler_camera_results_bot_wikipedia);
             recycler_camera_results_image3 = itemView.findViewById(R.id.recycler_camera_results_image3);
             recycler_camera_results_image2 = itemView.findViewById(R.id.recycler_camera_results_image2);

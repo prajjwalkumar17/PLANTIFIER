@@ -6,6 +6,7 @@ public class Constants {
     public static final String CAMERAPREFS = "CAMERAPREFS";
     public static final int CAMERA_PIC_REQUEST = 123;
     public static final int CAMERA_PICK_PHOTO_FOR_AVATAR = 111;
+    public static final String DASHHBOARDPREFS = "DASHHBOARDPREFS";
     public static int SPLASH_TIMEOUT = 2000;
     public static String LOGGEDIN = "notloggedin";
     public static String LOG = "###-----------LOG IS HEre BIG ONE-------------------###############";
