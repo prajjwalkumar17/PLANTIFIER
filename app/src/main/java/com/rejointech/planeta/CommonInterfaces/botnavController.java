@@ -16,6 +16,8 @@ public interface botnavController {
         public void setbotVisible();
 
         public void setfabinvisible();
+
+        public void setfabvisible();
     }
 
 

@@ -3,6 +3,8 @@ package com.rejointech.planeta.APICalls;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rejointech.planeta.Utils.Constants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -12,7 +14,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class APICall {
     public static OkHttpClient okhttpmaster() {
-        return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build();
+        return new OkHttpClient.Builder()
+                .readTimeout(20, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY)).build();
     }
 
     public static String urlbuilderforhttp(String url) {

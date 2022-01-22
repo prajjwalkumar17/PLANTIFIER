@@ -19,7 +19,6 @@ import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
-import com.rejointech.planeta.WebviewFragment;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -51,7 +50,6 @@ public class OpenDashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_open_dashboard, container, false);
-        initScreen();
         Init_views(root);
         retrievedatafromprefandset();
         button_clicks();
@@ -65,6 +63,7 @@ public class OpenDashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new DashboardFragment()).commit();
+
             }
         });
     }

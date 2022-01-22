@@ -19,13 +19,19 @@ import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterSearchresultsfromupload;
 import com.rejointech.planeta.Decoration.DecorationForRecyclerView;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.RecyclerClickInterface.RecyclerSearchresultsInterface;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,12 +39,27 @@ import okhttp3.Response;
 
 public class CameraIdentificationFragment extends Fragment {
     Context thiscontext;
-    String token;
+    String token, name;
     String encoded_pic;
     ImageView cameraresult_mypic;
     RecyclerView cameraresult_recyclerview;
     AdapterSearchresultsfromupload adapterSearchresultsfromupload;
+    RecyclerSearchresultsInterface recyclerSearchresultsInterface;
 
+
+    JSONArray resultImages;
+    String species_scientificname;
+    String family_scientifiname;
+    String percentagetoprint;
+    String createdBy;
+    String timestamp;
+    String wikkipediaLink;
+    String userimage;
+    String species_scientificnametrue;
+    String genus_scientifiname;
+    Set<String> commonnamesset = new HashSet<String>();
+    String score;
+    String postid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +80,67 @@ public class CameraIdentificationFragment extends Fragment {
     }
 
     private void Button_Clicks() {
+        recyclerSearchresultsInterface = new RecyclerSearchresultsInterface() {
+            @Override
+            public void onItemClick(View v, int position, JSONObject object) {
+
+                JSONObject data = object.optJSONObject("data");
+
+                JSONObject createdByObj = data.optJSONObject("createdBy");
+                if (createdByObj != null) {
+                    createdBy = createdByObj.optString("name");
+                }
+
+                timestamp = data.optString("timeStamp");
+                wikkipediaLink = data.optString("wikkipediaLink");
+                JSONArray userUploadedImage = data.optJSONArray("userUploadedImage");
+                userimage = userUploadedImage.optString(0);
+
+
+                JSONArray posts = data.optJSONArray("posts");
+                JSONObject postobject = posts.optJSONObject(position);
+                if (postobject != null) {
+                    JSONObject species = postobject.optJSONObject("species");
+                    species_scientificname = species.optString("scientificNameWithoutAuthor");
+                    species_scientificnametrue = species.optString("scientificName");
+                    JSONObject genus = species.optJSONObject("genus");
+                    genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
+                    JSONObject family = species.optJSONObject("family");
+                    family_scientifiname = family.optString("scientificNameWithoutAuthor");
+
+                    JSONArray common_namesarray = species.optJSONArray("commonNames");
+                    ArrayList<String> common_names = new ArrayList<String>();
+                    for (int i = 0; i < common_namesarray.length(); i++) {
+                        common_names.add(common_namesarray.optString(i));
+                    }
+                    commonnamesset.addAll(common_names);
+                    resultImages = postobject.optJSONArray("images");
+
+                    score = postobject.optString("score");
+                    postid = postobject.optString("_id");
+                    Double percentage_match = Double.parseDouble(score) * 100.0;
+                    percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
+
+                    SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Constants.prefdashboardcreatedby, name);
+                    editor.putString(Constants.prefdashboardtimestamp, timestamp);
+                    editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
+                    editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
+                    editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
+                    editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
+                    editor.putString(Constants.prefdashboardgenus_postid, postid);
+                    editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
+                    editor.apply();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
+                }
+            }
+
+        };
     }
 
     private void Init_views(View root) {
@@ -72,6 +154,7 @@ public class CameraIdentificationFragment extends Fragment {
 
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
+        name = sharedPreferences.getString(Constants.prefregistername, "You");
         SharedPreferences sharedPreferencess = thiscontext.getSharedPreferences(Constants.CAMERAPREFS, Context.MODE_PRIVATE);
         encoded_pic = sharedPreferencess.getString(Constants.prefcamerapicencoded, "No data found!!!");
         byte[] imageAsBytes = Base64.decode(encoded_pic.getBytes(), Base64.DEFAULT);
@@ -102,9 +185,13 @@ public class CameraIdentificationFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject myResponsez = new JSONObject(rResponse);
-                            adapterSearchresultsfromupload = new AdapterSearchresultsfromupload(myResponsez);
-                            cameraresult_recyclerview.setAdapter(adapterSearchresultsfromupload);
-
+                            if (myResponsez.optString("status").equals("fail")) {
+                                CommonMethods.DisplayLongTOAST(thiscontext, "Image not clear enough to get results\nTry again");
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).commit();
+                            } else {
+                                adapterSearchresultsfromupload = new AdapterSearchresultsfromupload(myResponsez, recyclerSearchresultsInterface);
+                                cameraresult_recyclerview.setAdapter(adapterSearchresultsfromupload);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

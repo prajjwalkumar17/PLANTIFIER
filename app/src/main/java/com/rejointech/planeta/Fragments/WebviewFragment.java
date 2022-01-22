@@ -1,4 +1,4 @@
-package com.rejointech.planeta;
+package com.rejointech.planeta.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.Container.HomeActivityContainer;
+import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.Constants;
 
 

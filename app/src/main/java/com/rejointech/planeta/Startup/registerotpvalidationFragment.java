@@ -199,7 +199,7 @@ public class registerotpvalidationFragment extends Fragment {
     private void InitViews(View root) {
         sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
 //        email = sharedPreferences.getString(Constants.prefregisteremail, "No data found!!!");
-        phone = sharedPreferences.getString(Constants.prefregisterphone, "No data found!!!");
+        phone = sharedPreferences.getString(Constants.prefregisterphone.toString(), "xxxx-xxxx-xx");
         backendotp = sharedPreferences.getString(Constants.prerrfbackendotp, "No data found!!!");
         confrmotp_gobckbot = root.findViewById(R.id.confrmotp_gobckbot);
         confrmotp_resend = root.findViewById(R.id.confrmotp_resend);

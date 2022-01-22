@@ -119,8 +119,8 @@ public class DashboardFragment extends Fragment {
                     commonnamesset.addAll(common_names);
                     resultImages = postobject.optJSONArray("images");
 
-                    score = postobject.optString("score");
                     postid = postobject.optString("_id");
+                    score = postobject.optString("score");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
                     percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
 

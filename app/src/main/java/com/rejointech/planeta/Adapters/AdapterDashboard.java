@@ -87,7 +87,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         userimage = userUploadedImage.optString(0);
         Picasso.get()
                 .load(userimage)
-                .error(R.drawable.icon_pic_error)
+                .error(R.drawable.icontree)
                 .into(holder.imageviewfordashboard);
 
 

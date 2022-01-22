@@ -85,11 +85,11 @@
                 android:id="@+id/recyclerallnotes_image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:layout_below="@+id/recyclerportallin1"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/plantimg" />
+                android:layout_below="@+id/recyclerportallin1"
+                android:src="@drawable/icontree" />
 
             <LinearLayout
                 android:layout_width="100dp"

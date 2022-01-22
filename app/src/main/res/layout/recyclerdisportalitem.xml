@@ -53,10 +53,10 @@
                 android:id="@+id/recyclerallnotes_image"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_marginEnd="30dp"
                 android:layout_below="@+id/recyclerportallin1"
                 android:layout_marginStart="30dp"
-                android:scaleType="centerCrop" />
+                android:layout_marginEnd="30dp"
+                android:scaleType="fitXY" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
