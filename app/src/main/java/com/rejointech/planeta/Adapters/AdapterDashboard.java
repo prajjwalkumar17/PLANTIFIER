@@ -148,7 +148,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             recycleritem_dashboard_text_familyname = itemView.findViewById(R.id.recycleritem_dashboard_text_familyname);
             recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleropendashboard_picby);
             recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleropendashboard_wiki_bot);
-            imageviewfordashboard = itemView.findViewById(R.id.recycleropendashboard_image);
+            imageviewfordashboard = itemView.findViewById(R.id.recyclerallnotes_image);
         }
 
         @Override

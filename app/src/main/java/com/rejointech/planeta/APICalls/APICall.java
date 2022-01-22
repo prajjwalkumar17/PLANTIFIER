@@ -27,6 +27,14 @@ public class APICall {
                 .build();
     }
 
+    public static Request post4createnotes(String url, String usertoken, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .header("Authorization", Constants.bearer + usertoken)
+                .post(requestBody)
+                .build();
+    }
+
     public static Request patch4updateprofile(String url, RequestBody requestBody) {
         return new Request.Builder()
                 .patch(requestBody)
@@ -63,6 +71,14 @@ public class APICall {
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
                 .addFormDataPart("id", id)
+                .build();
+    }
+
+    public static RequestBody buildrequest4createnote(String postid, String note) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("note", note)
+                .addFormDataPart("postid", postid)
                 .build();
     }
 

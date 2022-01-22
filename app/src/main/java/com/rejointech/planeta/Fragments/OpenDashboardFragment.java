@@ -14,13 +14,24 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
+import com.rejointech.planeta.APICalls.APICall;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 import com.rejointech.planeta.WebviewFragment;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class OpenDashboardFragment extends Fragment {
 
@@ -32,6 +43,7 @@ public class OpenDashboardFragment extends Fragment {
     AppCompatButton recycleropendashboard_savenotebot;
     AppCompatEditText recycleropendashboard_addnoteedittext;
     Context thiscontext;
+    String token, postid;
 
 
     @Override
@@ -39,11 +51,77 @@ public class OpenDashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_open_dashboard, container, false);
+        initScreen();
         Init_views(root);
         retrievedatafromprefandset();
-
+        button_clicks();
+        addnotes();
 
         return root;
+    }
+
+    private void button_clicks() {
+        recycleropendashboard_backbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new DashboardFragment()).commit();
+            }
+        });
+    }
+
+    private void addnotes() {
+        SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        token = sharedPreferences.getString(Constants.token, "No data found!!!");
+        recycleropendashboard_savenotebot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String notetext = recycleropendashboard_addnoteedittext.getText().toString();
+                String url = Constants.createnoteurl;
+                APICall.okhttpmaster().newCall(APICall.post4createnotes(
+                        APICall.urlbuilderforhttp(url),
+                        token,
+                        APICall.buildrequest4createnote(postid, notetext)
+                )).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        final String myResponse = response.body().string();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONObject responsez = new JSONObject(myResponse);
+                                    String status = responsez.optString("status");
+                                    if (status.equals("success")) {
+                                        CommonMethods.DisplayShortTOAST(thiscontext, "Note Added Successfully");
+                                    } else {
+                                        CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    private void initScreen() {
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
+        ((HomeActivityContainer) getActivity()).setDrawerLocked();
+        ((HomeActivityContainer) getActivity()).setbotInvisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 
     @Override
@@ -64,7 +142,7 @@ public class OpenDashboardFragment extends Fragment {
         String genus_scientifiname = sharedPreferences.getString(Constants.prefdashboardgenus_scientificname, "No data found!!!");
         String family_scientifiname = sharedPreferences.getString(Constants.prefdashboardgenus_familyname, "No data found!!!");
         String percentagetoprint = sharedPreferences.getString(Constants.prefdashboardgenus_score, "No data found!!!");
-        String postid = sharedPreferences.getString(Constants.prefdashboardgenus_postid, "No data found!!!");
+        postid = sharedPreferences.getString(Constants.prefdashboardgenus_postid, "No data found!!!");
         Set<String> commonnameset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_commonnames, null);
         ArrayList<String> commonnames = new ArrayList<String>();
         commonnames.addAll(commonnameset);
@@ -126,7 +204,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_commonname2 = root.findViewById(R.id.recycleropendashboard_commonname2);
         recycleropendashboard_commonname3 = root.findViewById(R.id.recycleropendashboard_commonname3);
         recycleropendashboard_backbot = root.findViewById(R.id.recycleropendashboard_backbot);
-        recycleropendashboard_image = root.findViewById(R.id.recycleropendashboard_image);
+        recycleropendashboard_image = root.findViewById(R.id.recyclerallnotes_image);
         recycleropendashboard_wiki_bot = root.findViewById(R.id.recycleropendashboard_wiki_bot);
         recycleropendashboard_savenotebot = root.findViewById(R.id.recycleropendashboard_savenotebot);
         recycleropendashboard_speciesnameinner = root.findViewById(R.id.recycleropendashboard_speciesnameinner);

@@ -140,7 +140,6 @@ public class DashboardFragment extends Fragment {
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
                     editor.apply();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
-
                 }
             }
         };
