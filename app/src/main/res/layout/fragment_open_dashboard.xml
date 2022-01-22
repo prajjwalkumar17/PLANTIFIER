@@ -74,6 +74,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="SEP 28, 2021"
+                android:maxLength="10"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -105,7 +106,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:src="@drawable/icon_flower"
                 app:tint="@color/final_master" />
 
@@ -114,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1.2"
+                android:layout_weight="2"
                 android:text="34%"
                 android:textColor="@color/black"
                 android:textSize="15sp"
@@ -254,7 +255,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:elevation="10dp"
                 android:src="@drawable/icon_wiki"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -312,10 +316,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/recycleropendashboard_commonnames_container"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatEditText
