@@ -7,6 +7,7 @@ public class Constants {
     public static final int CAMERA_PIC_REQUEST = 123;
     public static final int CAMERA_PICK_PHOTO_FOR_AVATAR = 111;
     public static final String DASHHBOARDPREFS = "DASHHBOARDPREFS";
+    public static final String WIKILINK = "WIKILINK";
     public static int SPLASH_TIMEOUT = 2000;
     public static String LOGGEDIN = "notloggedin";
     public static String LOG = "###-----------LOG IS HEre BIG ONE-------------------###############";
@@ -43,4 +44,5 @@ public class Constants {
     public static String prefdashboardcreatedby = "prefdashboardcreatedby";
     public static String prefdashboardgenus_commonnames = "prefdashboardgenus_commonnames";
     public static String prefdashboardspeciessceintific_nametrue = "prefdashboardspeciessceintific_nametrue";
+    public static String prefwikireallinktoopen = "prefwikireallinktoopen";
 }

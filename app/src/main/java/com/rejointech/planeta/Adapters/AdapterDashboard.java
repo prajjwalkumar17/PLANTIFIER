@@ -2,7 +2,6 @@ package com.rejointech.planeta.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rejointech.planeta.Fragments.OpenDashboardFragment;
 import com.rejointech.planeta.R;
-import com.rejointech.planeta.Utils.Constants;
+import com.rejointech.planeta.RecyclerClickInterface.Recyclerdashboardclick;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -32,6 +29,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     Context thiscontext;
     Activity myactivity;
     int length;
+    Recyclerdashboardclick recyclerdashboardclick;
     JSONArray resultImages;
     String species_scientificname;
     String family_scientifiname;
@@ -47,10 +45,11 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     String postid;
 
 
-    public AdapterDashboard(JSONObject object, Context thiscontext, Activity myactivity) {
+    public AdapterDashboard(JSONObject object, Context thiscontext, Activity myactivity, Recyclerdashboardclick recyclerdashboardclick) {
         this.object = object;
         this.thiscontext = thiscontext;
         this.myactivity = myactivity;
+        this.recyclerdashboardclick = recyclerdashboardclick;
     }
 
     @NonNull
@@ -67,28 +66,6 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             holder.recycleritem_dashboard_text_speciesname.setText(species_scientificname);
             holder.recycleritem_dashboard_text_familyname.setText(family_scientifiname);
             holder.recycleritem_dashboard_text_createdbyname.setText(createdBy);
-            holder.recycleritem_dashboard_bot_note.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(Constants.prefdashboardcreatedby, createdBy);
-                    editor.putString(Constants.prefdashboardtimestamp, timestamp);
-                    editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
-                    editor.putString(Constants.prefdashboardusername, userimage);
-                    editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
-                    editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
-                    editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);
-                    editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
-                    editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
-                    editor.putString(Constants.prefdashboardgenus_postid, postid);
-                    editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
-                    editor.apply();
-                    ((AppCompatActivity) thiscontext).getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
-
-                }
-            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -152,7 +129,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         return length;
     }
 
-    public class viewholder extends RecyclerView.ViewHolder {
+    public class viewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView recycleritem_dashboard_text_speciesname, recycleritem_dashboard_text_familyname,
                 recycleritem_dashboard_text_createdbyname;
         private ImageView recycleritem_dashboard_bot_note;
@@ -161,6 +138,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         public viewholder(@NonNull View itemView) {
             super(itemView);
             init_views(itemView);
+            itemView.setOnClickListener(this);
 
 
         }
@@ -171,6 +149,11 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleropendashboard_picby);
             recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleropendashboard_wiki_bot);
             imageviewfordashboard = itemView.findViewById(R.id.recycleropendashboard_image);
+        }
+
+        @Override
+        public void onClick(View view) {
+            recyclerdashboardclick.onItemClick(itemView, getAdapterPosition(), object);
         }
     }
 }
