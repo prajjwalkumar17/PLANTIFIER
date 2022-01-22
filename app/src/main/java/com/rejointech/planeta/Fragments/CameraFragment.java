@@ -59,7 +59,6 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
-        initScreen();
         InitViews(root);
         ButtonClicks();
         return root;
@@ -79,8 +78,6 @@ public class CameraFragment extends Fragment {
             public void onClick(View view) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, Constants.CAMERA_PIC_REQUEST);
-
-
             }
         });
         camera_imgselect.setOnClickListener(new View.OnClickListener() {

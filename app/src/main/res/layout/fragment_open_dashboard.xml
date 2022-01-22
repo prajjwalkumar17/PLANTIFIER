@@ -82,14 +82,14 @@
 
 
             <ImageView
-                android:id="@+id/recycleropendashboard_image"
+                android:id="@+id/recyclerallnotes_image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:layout_below="@+id/recyclerportallin1"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/plantimg" />
+                android:layout_below="@+id/recyclerportallin1"
+                android:src="@drawable/icontree" />
 
             <LinearLayout
                 android:layout_width="100dp"
@@ -116,8 +116,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="2"
-                    android:text="34%"
+                    android:layout_weight="2.5"
+                    android:text="34.21%"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -127,7 +127,7 @@
                 android:id="@+id/rellytttu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recycleropendashboard_image"
+                android:layout_below="@id/recyclerallnotes_image"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
@@ -335,6 +335,7 @@
                     android:layout_margin="20dp"
                     android:background="@drawable/botregisterunfilledgreenborder"
                     android:hint="Add your Personalised notes"
+                    android:textColor="@color/black"
                     android:padding="5dp"
                     android:textColorHint="@color/final_itemcolor" />
 

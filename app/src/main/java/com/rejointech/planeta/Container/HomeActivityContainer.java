@@ -259,6 +259,11 @@ public class HomeActivityContainer extends AppCompatActivity implements
     }
 
     @Override
+    public void setfabvisible() {
+        home_fab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_menu_account:

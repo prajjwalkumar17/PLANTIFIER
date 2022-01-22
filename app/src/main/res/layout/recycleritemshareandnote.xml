@@ -31,41 +31,46 @@
                     android:gravity="center_vertical"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/recyclerallnotes_specinameout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="aloe vera"
                         android:textSize="18sp"
                         android:textColor="@color/final_itemcolor"/>
                     <TextView
+                        android:id="@+id/recyclerallnotes_familynameout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Asphodelaceae"
                         android:textColor="@color/final_itemcolor"/>
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/recyclerallnotes_Timestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SEP 28, 2021"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <include
-                android:id="@+id/recycleropendashboard_image"
-                layout="@layout/imgslider"
+            <ImageView
+                android:id="@+id/recyclerallnotes_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="220dp"
                 android:layout_below="@+id/recyclerportallin1"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp" />
+                android:layout_marginEnd="30dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/plantimg" />
+
 
             <RelativeLayout
                 android:id="@+id/recyclersharenote1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recycleropendashboard_image"
+                android:layout_below="@id/recyclerallnotes_image"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
@@ -73,6 +78,7 @@
                 android:gravity="center_vertical">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/recyclerallnotes_updatenotebot"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/botgreenwithoutborder"
@@ -80,6 +86,7 @@
                     android:textColor="@color/black" />
 
                 <ImageView
+                    android:id="@+id/recyclerallnotes_sharebot"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_alignParentEnd="true"
@@ -90,7 +97,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/recyclershareandnore_notedesc"
+                android:id="@+id/recyclerallnotes_prevnote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/recyclersharenote1"
@@ -100,10 +107,10 @@
                  It is one of several species used for the production of sago, as well as an ornamental plant"
                 android:textColor="@color/final_itemcolor" />
             <TextView
-                android:id="@+id/recyclershareandnore_showmorebot"
+                android:id="@+id/recyclerallnotes_showmorebot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recyclershareandnore_notedesc"
+                android:layout_below="@id/recyclerallnotes_prevnote"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="SHOW MORE >"

@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.RecyclerClickInterface.RecyclerSearchresultsInterface;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -22,14 +23,16 @@ import java.util.ArrayList;
 
 public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<AdapterSearchresultsfromupload.viewrecycler> {
     JSONObject object;
+    RecyclerSearchresultsInterface recyclerSearchresultsInterface;
     int length;
     String species_scientificname;
     String family_scientifiname;
     String percentagetoprint;
     ArrayList<String> resultImages_array;
 
-    public AdapterSearchresultsfromupload(JSONObject object) {
+    public AdapterSearchresultsfromupload(JSONObject object, RecyclerSearchresultsInterface recyclerSearchresultsInterface) {
         this.object = object;
+        this.recyclerSearchresultsInterface = recyclerSearchresultsInterface;
     }
 
     @NonNull
@@ -49,16 +52,20 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
             if (indexExists(resultImages_array, 0)) {
                 Picasso.get()
                         .load(resultImages_array.get(0))
+                        .error(R.drawable.icontree)
                         .into(holder.recycler_camera_results_image1);
             }
             if (indexExists(resultImages_array, 1)) {
                 Picasso.get()
                         .load(resultImages_array.get(1))
+                        .error(R.drawable.icontree)
                         .into(holder.recycler_camera_results_image2);
             }
             if (indexExists(resultImages_array, 2)) {
                 Picasso.get()
                         .load(resultImages_array.get(2))
+                        .error(R.drawable.icontree)
+
                         .into(holder.recycler_camera_results_image3);
             }
         } catch (JSONException e) {
@@ -80,15 +87,18 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
         JSONArray userUploadedImage = data.getJSONArray("userUploadedImage");
         String userimage = userUploadedImage.optString(0);
 
-        JSONArray resultImages = data.getJSONArray("resultImages");
+
+        JSONArray posts = data.optJSONArray("posts");
+        JSONObject postobject = posts.optJSONObject(position);
+
+        JSONArray resultImages = postobject.getJSONArray("images");
         resultImages_array = new ArrayList<String>();
 
         for (int i = 0; i < resultImages.length(); i++) {
             resultImages_array.add(resultImages.getString(i));
         }
 
-        JSONArray posts = data.optJSONArray("posts");
-        JSONObject postobject = posts.optJSONObject(position);
+
         String score = postobject.optString("score");
         Double percentage_match = Double.parseDouble(score) * 100.0;
         percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
@@ -119,15 +129,16 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
     }
 
 
-    public class viewrecycler extends RecyclerView.ViewHolder {
+    public class viewrecycler extends RecyclerView.ViewHolder implements View.OnClickListener {
         private AppCompatButton recycler_camera_results_bot_confirm;
         private TextView recycler_camera_results_text_plantname, recycler_camera_results_text_familyname,
                 recycler_camera_results_text_percentage;
-        private ImageView recycler_camera_results_bot_wikipedia, recycler_camera_results_image3, recycler_camera_results_image2, recycler_camera_results_image1;
+        private ImageView recycler_camera_results_image3, recycler_camera_results_image2, recycler_camera_results_image1;
 
         public viewrecycler(@NonNull View itemView) {
             super(itemView);
             initviews(itemView);
+            recycler_camera_results_bot_confirm.setOnClickListener(this);
         }
 
         private void initviews(View itemView) {
@@ -135,10 +146,14 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
             recycler_camera_results_text_plantname = itemView.findViewById(R.id.recycler_camera_results_text_plantname);
             recycler_camera_results_text_familyname = itemView.findViewById(R.id.recycler_camera_results_text_familyname);
             recycler_camera_results_text_percentage = itemView.findViewById(R.id.recycleropendashboard_Percentage);
-            recycler_camera_results_bot_wikipedia = itemView.findViewById(R.id.recycler_camera_results_bot_wikipedia);
             recycler_camera_results_image3 = itemView.findViewById(R.id.recycler_camera_results_image3);
             recycler_camera_results_image2 = itemView.findViewById(R.id.recycler_camera_results_image2);
             recycler_camera_results_image1 = itemView.findViewById(R.id.recycler_camera_results_image1);
+        }
+
+        @Override
+        public void onClick(View view) {
+            recyclerSearchresultsInterface.onItemClick(recycler_camera_results_bot_confirm, getAdapterPosition(), object);
         }
     }
 }

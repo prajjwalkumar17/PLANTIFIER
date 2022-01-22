@@ -3,6 +3,8 @@ package com.rejointech.planeta.APICalls;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.rejointech.planeta.Utils.Constants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -12,7 +14,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class APICall {
     public static OkHttpClient okhttpmaster() {
-        return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)).build();
+        return new OkHttpClient.Builder()
+                .readTimeout(20, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY)).build();
     }
 
     public static String urlbuilderforhttp(String url) {
@@ -23,6 +29,14 @@ public class APICall {
     public static Request post4signup(String url, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
+                .post(requestBody)
+                .build();
+    }
+
+    public static Request post4createnotes(String url, String usertoken, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .header("Authorization", Constants.bearer + usertoken)
                 .post(requestBody)
                 .build();
     }
@@ -63,6 +77,14 @@ public class APICall {
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
                 .addFormDataPart("id", id)
+                .build();
+    }
+
+    public static RequestBody buildrequest4createnote(String postid, String note) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("note", note)
+                .addFormDataPart("postid", postid)
                 .build();
     }
 

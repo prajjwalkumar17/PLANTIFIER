@@ -14,25 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <include layout="@layout/recycleritemshareandnote"
-                android:id="@+id/itemm1"
-                android:layout_height="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/noterecycler"
                 android:layout_width="match_parent"
-                android:layout_margin="20dp" />
-            <include layout="@layout/recycleritemshareandnote"
-                android:id="@+id/itemm2"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_margin="20dp"
-                android:layout_below="@id/itemm1"/>
-
-            <include layout="@layout/recycleritemshareandnote"
-                android:id="@+id/itemm3"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_margin="20dp"
-                android:layout_below="@id/itemm2"/>
+                android:layout_height="wrap_content" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 
