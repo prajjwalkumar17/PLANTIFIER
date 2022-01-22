@@ -6,6 +6,7 @@ public class Constants {
     public static final String CAMERAPREFS = "CAMERAPREFS";
     public static final int CAMERA_PIC_REQUEST = 123;
     public static final int CAMERA_PICK_PHOTO_FOR_AVATAR = 111;
+    public static final String DASHHBOARDPREFS = "DASHHBOARDPREFS";
     public static int SPLASH_TIMEOUT = 2000;
     public static String LOGGEDIN = "notloggedin";
     public static String LOG = "###-----------LOG IS HEre BIG ONE-------------------###############";
@@ -29,4 +30,17 @@ public class Constants {
     public static String prefprofilepic = "profilepic";
     public static String prefcamerapicencoded = "cameraclicked";
     public static String prefregisterid = "prefregisterid";
+
+
+    public static String prefdashboardtimestamp = "prefdashboardtimestamp";
+    public static String prefdashboardwikilink = "prefdashboardwikilink";
+    public static String prefdashboardusername = "prefdashboardusername";
+    public static String prefdashboardspeciessceintific_name = "prefdashboardspeciessceintific_name";
+    public static String prefdashboardgenus_scientificname = "prefdashboardgenus_scientificname";
+    public static String prefdashboardgenus_familyname = "prefdashboardgenus_familyname";
+    public static String prefdashboardgenus_score = "prefdashboardgenus_score";
+    public static String prefdashboardgenus_postid = "prefdashboardgenus_postid";
+    public static String prefdashboardcreatedby = "prefdashboardcreatedby";
+    public static String prefdashboardgenus_commonnames = "prefdashboardgenus_commonnames";
+    public static String prefdashboardspeciessceintific_nametrue = "prefdashboardspeciessceintific_nametrue";
 }

@@ -1,5 +1,8 @@
 package com.rejointech.planeta.Adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.rejointech.planeta.Fragments.OpenDashboardFragment;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -18,21 +24,34 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.viewholder> {
     JSONObject object;
+    Context thiscontext;
+    Activity myactivity;
     int length;
+    JSONArray resultImages;
     String species_scientificname;
     String family_scientifiname;
     String percentagetoprint;
     String createdBy;
-    JSONArray resultImages;
+    String timestamp;
+    String wikkipediaLink;
+    String userimage;
+    String species_scientificnametrue;
+    String genus_scientifiname;
+    Set<String> commonnamesset = new HashSet<String>();
+    String score;
+    String postid;
 
 
-    public AdapterDashboard(JSONObject object) {
+    public AdapterDashboard(JSONObject object, Context thiscontext, Activity myactivity) {
         this.object = object;
+        this.thiscontext = thiscontext;
+        this.myactivity = myactivity;
     }
-
 
     @NonNull
     @Override
@@ -48,6 +67,28 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
             holder.recycleritem_dashboard_text_speciesname.setText(species_scientificname);
             holder.recycleritem_dashboard_text_familyname.setText(family_scientifiname);
             holder.recycleritem_dashboard_text_createdbyname.setText(createdBy);
+            holder.recycleritem_dashboard_bot_note.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Constants.prefdashboardcreatedby, createdBy);
+                    editor.putString(Constants.prefdashboardtimestamp, timestamp);
+                    editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
+                    editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
+                    editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
+                    editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
+                    editor.putString(Constants.prefdashboardgenus_postid, postid);
+                    editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
+                    editor.apply();
+                    ((AppCompatActivity) thiscontext).getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
+
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,15 +98,16 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         String status = object.optString("status");
         JSONArray dataarray = object.optJSONArray("data");
         JSONObject data = dataarray.optJSONObject(position);
+
         JSONObject createdByObj = data.optJSONObject("createdBy");
         if (createdByObj != null) {
             createdBy = createdByObj.optString("name");
         }
 
-        String timestamp = data.optString("timeStamp");
-        String wikkipediaLink = data.optString("wikkipediaLink");
+        timestamp = data.optString("timeStamp");
+        wikkipediaLink = data.optString("wikkipediaLink");
         JSONArray userUploadedImage = data.optJSONArray("userUploadedImage");
-        String userimage = userUploadedImage.optString(0);
+        userimage = userUploadedImage.optString(0);
         Picasso.get()
                 .load(userimage)
                 .error(R.drawable.icon_pic_error)
@@ -77,23 +119,26 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         if (postobject != null) {
             JSONObject species = postobject.optJSONObject("species");
             species_scientificname = species.optString("scientificNameWithoutAuthor");
-            String species_scientificnametrue = species.optString("scientificName");
+            species_scientificnametrue = species.optString("scientificName");
             JSONObject genus = species.optJSONObject("genus");
-            String genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
+            genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
             JSONObject family = species.optJSONObject("family");
             family_scientifiname = family.optString("scientificNameWithoutAuthor");
+
             JSONArray common_namesarray = species.optJSONArray("commonNames");
             ArrayList<String> common_names = new ArrayList<String>();
             for (int i = 0; i < common_namesarray.length(); i++) {
                 common_names.add(common_namesarray.getString(i));
             }
+            commonnamesset.addAll(common_names);
+            resultImages = postobject.optJSONArray("images");
 
-            String score = postobject.optString("score");
-            String postid = postobject.optString("_id");
+            score = postobject.optString("score");
+            postid = postobject.optString("_id");
             Double percentage_match = Double.parseDouble(score) * 100.0;
             percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
 
-            resultImages = postobject.optJSONArray("images");
+
         }
     }
 
@@ -116,14 +161,16 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
         public viewholder(@NonNull View itemView) {
             super(itemView);
             init_views(itemView);
+
+
         }
 
         private void init_views(View itemView) {
             recycleritem_dashboard_text_speciesname = itemView.findViewById(R.id.recycleritem_dashboard_text_speciesname);
             recycleritem_dashboard_text_familyname = itemView.findViewById(R.id.recycleritem_dashboard_text_familyname);
-            recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleritem_dashboard_text_createdbyname);
-            recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleritem_dashboard_bot_note);
-            imageviewfordashboard = itemView.findViewById(R.id.imageviewfordashboard);
+            recycleritem_dashboard_text_createdbyname = itemView.findViewById(R.id.recycleropendashboard_picby);
+            recycleritem_dashboard_bot_note = itemView.findViewById(R.id.recycleropendashboard_wiki_bot);
+            imageviewfordashboard = itemView.findViewById(R.id.recycleropendashboard_image);
         }
     }
 }
