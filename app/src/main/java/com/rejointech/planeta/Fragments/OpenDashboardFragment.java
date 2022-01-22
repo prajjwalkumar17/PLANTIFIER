@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.Constants;
+import com.rejointech.planeta.WebviewFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class OpenDashboardFragment extends Fragment {
         String createdBy = sharedPreferences.getString(Constants.prefdashboardcreatedby, "No data found!!!");
         String timestamp = sharedPreferences.getString(Constants.prefdashboardtimestamp, "No data found!!!");
         String wikkipediaLink = sharedPreferences.getString(Constants.prefdashboardwikilink, "No data found!!!");
+        sendwikilink(wikkipediaLink);
         String userimage = sharedPreferences.getString(Constants.prefdashboardusername, "No data found!!!");
         String species_scientificnametrue = sharedPreferences.getString(Constants.prefdashboardspeciessceintific_nametrue, "No data found!!!");
         String species_scientificname = sharedPreferences.getString(Constants.prefdashboardspeciessceintific_name, "No data found!!!");
@@ -94,6 +96,21 @@ public class OpenDashboardFragment extends Fragment {
                 .error(R.drawable.icon_pic_error)
                 .into(recycleropendashboard_image);
 
+        recycleropendashboard_wiki_bot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new WebviewFragment()).addToBackStack(null).commit();
+            }
+        });
+
+    }
+
+    private void sendwikilink(String wikkipediaLink) {
+        SharedPreferences sharedPreferences1 = thiscontext.getSharedPreferences(Constants.WIKILINK,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.putString(Constants.prefwikireallinktoopen, wikkipediaLink);
+        editor1.commit();
     }
 
     private void Init_views(View root) {

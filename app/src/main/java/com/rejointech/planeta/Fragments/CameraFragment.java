@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.APICalls.APICall;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
@@ -58,6 +59,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
+        initScreen();
         InitViews(root);
         ButtonClicks();
         return root;
@@ -130,6 +132,12 @@ public class CameraFragment extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraIdentificationFragment()).commit();
     }
 
+    private void initScreen() {
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
+        ((HomeActivityContainer) getActivity()).setDrawerLocked();
+        ((HomeActivityContainer) getActivity()).setbotInvisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
+    }
 
     private void InitViews(View root) {
         cameraback = root.findViewById(R.id.cameraback);

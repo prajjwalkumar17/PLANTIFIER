@@ -1,6 +1,7 @@
 package com.rejointech.planeta.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,19 @@ import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterDashboard;
 import com.rejointech.planeta.Decoration.DecorationForRecyclerView;
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.RecyclerClickInterface.Recyclerdashboardclick;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,6 +38,21 @@ public class DashboardFragment extends Fragment {
     RecyclerView dashboard_recyclerview;
     AdapterDashboard adapterDashboard;
     Context thiscontext;
+    Recyclerdashboardclick recyclerdashboardclick;
+
+    JSONArray resultImages;
+    String species_scientificname;
+    String family_scientifiname;
+    String percentagetoprint;
+    String createdBy;
+    String timestamp;
+    String wikkipediaLink;
+    String userimage;
+    String species_scientificnametrue;
+    String genus_scientifiname;
+    Set<String> commonnamesset = new HashSet<String>();
+    String score;
+    String postid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +78,72 @@ public class DashboardFragment extends Fragment {
 
 
         getalldashboarditems();
+        setonclicklistner();
         return root;
+    }
+
+    private void setonclicklistner() {
+        recyclerdashboardclick = new Recyclerdashboardclick() {
+            @Override
+            public void onItemClick(View v, int position, JSONObject object) {
+                JSONArray dataarray = object.optJSONArray("data");
+                JSONObject data = dataarray.optJSONObject(position);
+
+                JSONObject createdByObj = data.optJSONObject("createdBy");
+                if (createdByObj != null) {
+                    createdBy = createdByObj.optString("name");
+                }
+
+                timestamp = data.optString("timeStamp");
+                wikkipediaLink = data.optString("wikkipediaLink");
+                JSONArray userUploadedImage = data.optJSONArray("userUploadedImage");
+                userimage = userUploadedImage.optString(0);
+
+
+                JSONArray posts = data.optJSONArray("posts");
+                JSONObject postobject = posts.optJSONObject(0);
+                if (postobject != null) {
+                    JSONObject species = postobject.optJSONObject("species");
+                    species_scientificname = species.optString("scientificNameWithoutAuthor");
+                    species_scientificnametrue = species.optString("scientificName");
+                    JSONObject genus = species.optJSONObject("genus");
+                    genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
+                    JSONObject family = species.optJSONObject("family");
+                    family_scientifiname = family.optString("scientificNameWithoutAuthor");
+
+                    JSONArray common_namesarray = species.optJSONArray("commonNames");
+                    ArrayList<String> common_names = new ArrayList<String>();
+                    for (int i = 0; i < common_namesarray.length(); i++) {
+                        common_names.add(common_namesarray.optString(i));
+                    }
+                    commonnamesset.addAll(common_names);
+                    resultImages = postobject.optJSONArray("images");
+
+                    score = postobject.optString("score");
+                    postid = postobject.optString("_id");
+                    Double percentage_match = Double.parseDouble(score) * 100.0;
+                    percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
+
+                    SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Constants.prefdashboardcreatedby, createdBy);
+                    editor.putString(Constants.prefdashboardtimestamp, timestamp);
+                    editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
+                    editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
+                    editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
+                    editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
+                    editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
+                    editor.putString(Constants.prefdashboardgenus_postid, postid);
+                    editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
+                    editor.apply();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
+
+                }
+            }
+        };
     }
 
     private void getalldashboarditems() {
@@ -80,7 +167,7 @@ public class DashboardFragment extends Fragment {
                     public void run() {
                         try {
                             JSONObject myResponsez = new JSONObject(rResponse);
-                            adapterDashboard = new AdapterDashboard(myResponsez, thiscontext, getActivity());
+                            adapterDashboard = new AdapterDashboard(myResponsez, thiscontext, getActivity(), recyclerdashboardclick);
                             dashboard_recyclerview.setAdapter(adapterDashboard);
 
                         } catch (JSONException e) {
