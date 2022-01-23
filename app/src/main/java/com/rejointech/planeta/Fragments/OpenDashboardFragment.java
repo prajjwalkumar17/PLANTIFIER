@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.APICalls.APICall;
-import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
@@ -42,7 +41,7 @@ public class OpenDashboardFragment extends Fragment {
     AppCompatButton recycleropendashboard_savenotebot;
     AppCompatEditText recycleropendashboard_addnoteedittext;
     Context thiscontext;
-    String token, postid;
+    String token, postid, notes, noteid;
 
 
     @Override
@@ -53,7 +52,6 @@ public class OpenDashboardFragment extends Fragment {
         Init_views(root);
         retrievedatafromprefandset();
         button_clicks();
-        addnotes();
 
         return root;
     }
@@ -68,60 +66,95 @@ public class OpenDashboardFragment extends Fragment {
         });
     }
 
-    private void addnotes() {
+    private void addnotes(Boolean notnotes) {
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
         recycleropendashboard_savenotebot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String notetext = recycleropendashboard_addnoteedittext.getText().toString();
-                String url = Constants.createnoteurl;
-                APICall.okhttpmaster().newCall(APICall.post4createnotes(
-                        APICall.urlbuilderforhttp(url),
-                        token,
-                        APICall.buildrequest4createnote(postid, notetext)
-                )).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        final String myResponse = response.body().string();
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    JSONObject responsez = new JSONObject(myResponse);
-                                    String status = responsez.optString("status");
-                                    if (status.equals("success")) {
-                                        CommonMethods.DisplayShortTOAST(thiscontext, "Note Added Successfully");
-                                    } else {
-                                        CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                if (notnotes) {
+                    String url = Constants.createnoteurl;
+                    APICall.okhttpmaster().newCall(APICall.post4createnotes(
+                            APICall.urlbuilderforhttp(url),
+                            token,
+                            APICall.buildrequest4createnote(postid, notetext)
+                    )).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
                                 }
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            final String myResponse = response.body().string();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        JSONObject responsez = new JSONObject(myResponse);
+                                        String status = responsez.optString("status");
+                                        if (status.equals("success")) {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Note Added Successfully\nGo to Notes for checking it out!!");
+                                        } else {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    recycleropendashboard_addnoteedittext.setHint(notes);
+                    String url = Constants.updatenoteurl;
+                    APICall.okhttpmaster().newCall(APICall.patch4updatenotes(APICall.urlbuilderforhttp(url),
+                            APICall.buildrequest4updatingnote(noteid, notetext))).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            final String myResponse = response.body().string();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        JSONObject responsez = new JSONObject(myResponse);
+                                        String status = responsez.optString("status");
+                                        if (status.equals("success")) {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Note Updated Successfully\nGo to Notes for checking it out!!");
+                                        } else {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
+                }
             }
         });
+
     }
 
-    private void initScreen() {
-        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
-        ((HomeActivityContainer) getActivity()).setDrawerLocked();
-        ((HomeActivityContainer) getActivity()).setbotInvisible();
-        ((HomeActivityContainer) getActivity()).setfabinvisible();
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -145,6 +178,14 @@ public class OpenDashboardFragment extends Fragment {
         Set<String> commonnameset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_commonnames, null);
         ArrayList<String> commonnames = new ArrayList<String>();
         commonnames.addAll(commonnameset);
+        String fromnotes = sharedPreferences.getString(Constants.prefdashboard_fromnotes, "0");
+        if (fromnotes.equals("1")) {
+            addnotes(false);
+            notes = sharedPreferences.getString(Constants.prefdashboardnote, "Not able to derive note");
+            noteid = sharedPreferences.getString(Constants.prefdashboardnoteid, "Not able to derive note");
+        } else {
+            addnotes(true);
+        }
         if (commonnames.size() > 2) {
             recycleropendashboard_commonname1.setText(commonnames.get(0));
             recycleropendashboard_commonname2.setText(commonnames.get(1));
@@ -170,7 +211,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_picby.setText(createdBy);
         Picasso.get()
                 .load(userimage)
-                .error(R.drawable.icon_pic_error)
+                .error(R.drawable.icontree)
                 .into(recycleropendashboard_image);
 
         recycleropendashboard_wiki_bot.setOnClickListener(new View.OnClickListener() {

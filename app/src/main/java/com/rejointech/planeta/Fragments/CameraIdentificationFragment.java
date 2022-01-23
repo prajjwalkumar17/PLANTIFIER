@@ -87,6 +87,7 @@ public class CameraIdentificationFragment extends Fragment {
                 JSONObject data = object.optJSONObject("data");
 
                 JSONObject createdByObj = data.optJSONObject("createdBy");
+                postid = data.optString("_id");
                 if (createdByObj != null) {
                     createdBy = createdByObj.optString("name");
                 }
@@ -117,7 +118,6 @@ public class CameraIdentificationFragment extends Fragment {
                     resultImages = postobject.optJSONArray("images");
 
                     score = postobject.optString("score");
-                    postid = postobject.optString("_id");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
                     percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
 
@@ -134,6 +134,7 @@ public class CameraIdentificationFragment extends Fragment {
                     editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
                     editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
                     editor.putString(Constants.prefdashboardgenus_postid, postid);
+                    editor.putString(Constants.prefdashboard_fromnotes, "0");
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
                     editor.apply();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();

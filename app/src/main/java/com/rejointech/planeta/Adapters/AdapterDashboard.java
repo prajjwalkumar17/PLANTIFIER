@@ -30,6 +30,7 @@ public class AdapterDashboard extends RecyclerView.Adapter<AdapterDashboard.view
     Activity myactivity;
     int length;
     Recyclerdashboardclick recyclerdashboardclick;
+
     JSONArray resultImages;
     String species_scientificname;
     String family_scientifiname;

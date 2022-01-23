@@ -41,6 +41,13 @@ public class APICall {
                 .build();
     }
 
+    public static Request patch4updatenotes(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .patch(requestBody)
+                .build();
+    }
+
     public static Request patch4updateprofile(String url, RequestBody requestBody) {
         return new Request.Builder()
                 .patch(requestBody)
@@ -54,6 +61,13 @@ public class APICall {
                 .url(url)
                 .build();
 
+    }
+
+    public static Request get4allnotes(String url, String userauthtoken) {
+        return new Request.Builder()
+                .header("Authorization", Constants.bearer + userauthtoken)
+                .url(url)
+                .build();
     }
 
     public static Request get4alldashboarditems(String url) {
@@ -71,12 +85,21 @@ public class APICall {
                 .build();
     }
 
+
     public static RequestBody buildrequest4updatingprofile(String id, String name, String email) {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
                 .addFormDataPart("id", id)
+                .build();
+    }
+
+    public static RequestBody buildrequest4updatingnote(String noteid, String note) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("note", note)
+                .addFormDataPart("noteid", noteid)
                 .build();
     }
 

@@ -88,7 +88,7 @@ public class DashboardFragment extends Fragment {
             public void onItemClick(View v, int position, JSONObject object) {
                 JSONArray dataarray = object.optJSONArray("data");
                 JSONObject data = dataarray.optJSONObject(position);
-
+                postid = data.optString("_id");
                 JSONObject createdByObj = data.optJSONObject("createdBy");
                 if (createdByObj != null) {
                     createdBy = createdByObj.optString("name");
@@ -119,7 +119,7 @@ public class DashboardFragment extends Fragment {
                     commonnamesset.addAll(common_names);
                     resultImages = postobject.optJSONArray("images");
 
-                    postid = postobject.optString("_id");
+
                     score = postobject.optString("score");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
                     percentagetoprint = new DecimalFormat("##.##").format(percentage_match) + "%";
@@ -137,6 +137,7 @@ public class DashboardFragment extends Fragment {
                     editor.putString(Constants.prefdashboardgenus_familyname, family_scientifiname);
                     editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
                     editor.putString(Constants.prefdashboardgenus_postid, postid);
+                    editor.putString(Constants.prefdashboard_fromnotes, "0");
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
                     editor.apply();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();

@@ -5,11 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.NotesFragment"
     android:background="@color/white">
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="60dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -17,9 +18,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/noterecycler"
                 android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 </RelativeLayout>

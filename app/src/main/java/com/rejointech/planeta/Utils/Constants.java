@@ -20,6 +20,8 @@ public class Constants {
     public static String updateprofileurl = baseurl + "v1/user";
     public static String dashboardmainurl = baseurl + "v1/plant/getAllPosts";
     public static String createnoteurl = baseurl + "v1/note/createNote";
+    public static String getallnoteurl = baseurl + "v1/note/getAllNotes";
+    public static String updatenoteurl = baseurl + "v1/note/updateNote";
 
 
     public static String prefregistername = "prefregistername";
@@ -46,4 +48,7 @@ public class Constants {
     public static String prefdashboardgenus_commonnames = "prefdashboardgenus_commonnames";
     public static String prefdashboardspeciessceintific_nametrue = "prefdashboardspeciessceintific_nametrue";
     public static String prefwikireallinktoopen = "prefwikireallinktoopen";
+    public static String prefdashboardnote = "prefdashboardnote";
+    public static String prefdashboard_fromnotes = "prefdashboardgenus_fromnotes";
+    public static String prefdashboardnoteid = "prefdashboardnoteid";
 }
