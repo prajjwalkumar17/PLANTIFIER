@@ -1,6 +1,8 @@
 package com.rejointech.planeta.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,11 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterNotefrag;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.Decoration.DecorationForRecyclerView;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesclickInterface;
+import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesdeleteInterface;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesshareInterface;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
@@ -42,6 +47,7 @@ public class NotesFragment extends Fragment {
     RecyclerView noterecycler;
     RecyclernotesclickInterface recyclernotesclickInterface;
     RecyclernotesshareInterface recyclernotesshareInterface;
+    RecyclernotesdeleteInterface recyclernotesdeleteInterface;
     Context thiscontext;
     String token, name;
 
@@ -55,8 +61,11 @@ public class NotesFragment extends Fragment {
     String species_scientificnametrue;
     String genus_scientifiname;
     Set<String> commonnamesset = new HashSet<String>();
+    Set<String> resultimagesset = new HashSet<String>();
     String score;
     String postid, id;
+    private ShimmerFrameLayout notesshimmmer;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -69,7 +78,10 @@ public class NotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_notes, container, false);
+        initlayout();
         noterecycler = root.findViewById(R.id.noterecycler);
+        notesshimmmer = root.findViewById(R.id.notesshimmmer);
+        shimmersetup();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(thiscontext, 1, GridLayoutManager.VERTICAL, false);
         noterecycler.setLayoutManager(gridLayoutManager);
         noterecycler.addItemDecoration(new DecorationForRecyclerView(thiscontext, R.dimen.dp_2));
@@ -80,6 +92,26 @@ public class NotesFragment extends Fragment {
         showitems();
         setonclicklistiner();
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
+        ((HomeActivityContainer) getActivity()).setfabvisible();
+    }
+
+    private void shimmersetup() {
+        noterecycler.setVisibility(View.GONE);
+        notesshimmmer.setVisibility(View.VISIBLE);
+        notesshimmmer.startShimmer();
+
+    }
+
+    private void stopshimmer() {
+        noterecycler.setVisibility(View.VISIBLE);
+        notesshimmmer.setVisibility(View.GONE);
+        notesshimmmer.stopShimmer();
+
     }
 
     private void setonclicklistiner() {
@@ -181,6 +213,13 @@ public class NotesFragment extends Fragment {
                     commonnamesset.addAll(common_names);
                     resultImages = postobject.optJSONArray("images");
 
+                    ArrayList<String> resimg = new ArrayList<String>();
+                    for (int i = 0; i < resultImages.length(); i++) {
+                        resimg.add(resultImages.optString(i));
+                    }
+
+                    resultimagesset.addAll(resimg);
+
                     score = postobject.optString("score");
                     postid = postobject.optString("_id");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
@@ -202,12 +241,72 @@ public class NotesFragment extends Fragment {
                     editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
                     editor.putString(Constants.prefdashboardgenus_postid, postid);
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
+                    editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.putString(Constants.prefdashboard_fromnotes, "1");
                     editor.apply();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
                 }
             }
         };
+        recyclernotesdeleteInterface = new RecyclernotesdeleteInterface() {
+            @Override
+            public void onItemClick(View v, int position, JSONObject object) {
+                AlertDialog alertDialog = new AlertDialog.Builder(thiscontext).create();
+                alertDialog.setTitle("Delete Dialog");
+                alertDialog.setMessage("Are you sure you want to delete the following Note");
+                alertDialog.setIcon(R.drawable.icon_delete);
+
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        deletenote(v, position, object);
+                        alertDialog.dismiss();
+                        CommonMethods.DisplayShortTOAST(thiscontext, "Note deleted Successfully");
+                    }
+                });
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
+        };
+    }
+
+    private void deletenote(View v, int position, JSONObject object) {
+        String url = Constants.deletenoteurl;
+        JSONArray dataarray = object.optJSONArray("data");
+        JSONObject dataout = dataarray.optJSONObject(position);
+        id = dataout.optString("_id");
+        APICall.okhttpmaster().newCall(
+                APICall.del4deletenote(
+                        APICall.urlbuilderforhttp(url),
+                        APICall.buildrequest4deletenote(id)))
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        final String myResponse = response.body().string();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()).commit();
+
+                            }
+                        });
+                    }
+                });
     }
 
     private void showitems() {
@@ -234,8 +333,13 @@ public class NotesFragment extends Fragment {
                         try {
                             JSONObject object = new JSONObject(myResponse);
                             AdapterNotefrag adapterNotefrag = new AdapterNotefrag(object,
-                                    recyclernotesclickInterface, recyclernotesshareInterface, thiscontext, getActivity());
+                                    recyclernotesclickInterface,
+                                    recyclernotesshareInterface,
+                                    recyclernotesdeleteInterface,
+                                    thiscontext,
+                                    getActivity());
                             noterecycler.setAdapter(adapterNotefrag);
+                            stopshimmer();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

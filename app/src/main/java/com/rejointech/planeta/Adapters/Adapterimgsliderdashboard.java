@@ -9,15 +9,13 @@ import com.rejointech.planeta.R;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import java.util.ArrayList;
 
 public class Adapterimgsliderdashboard extends SliderViewAdapter<Adapterimgsliderdashboard.viewholder> {
-    JSONArray jsonArray;
+    ArrayList<String> array;
 
-
-    public Adapterimgsliderdashboard(JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
+    public Adapterimgsliderdashboard(ArrayList<String> array) {
+        this.array = array;
     }
 
     @Override
@@ -28,22 +26,19 @@ public class Adapterimgsliderdashboard extends SliderViewAdapter<Adapterimgslide
 
     @Override
     public void onBindViewHolder(viewholder viewHolder, int position) {
-        try {
-            String image = jsonArray.getString(position);
 
-            Picasso.get()
-                    .load(image)
-                    .error(R.drawable.icon_pic_error)
-                    .into(viewHolder.sliderimage);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String image = array.get(position);
+
+        Picasso.get()
+                .load(image)
+                .error(R.drawable.icontree)
+                .into(viewHolder.sliderimage);
 
     }
 
     @Override
     public int getCount() {
-        return jsonArray.length();
+        return array.size();
     }
 
     public class viewholder extends SliderViewAdapter.ViewHolder {

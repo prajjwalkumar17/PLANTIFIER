@@ -58,6 +58,7 @@ public class CameraIdentificationFragment extends Fragment {
     String species_scientificnametrue;
     String genus_scientifiname;
     Set<String> commonnamesset = new HashSet<String>();
+    Set<String> resultimagesset = new HashSet<String>();
     String score;
     String postid;
 
@@ -114,8 +115,18 @@ public class CameraIdentificationFragment extends Fragment {
                     for (int i = 0; i < common_namesarray.length(); i++) {
                         common_names.add(common_namesarray.optString(i));
                     }
-                    commonnamesset.addAll(common_names);
+
                     resultImages = postobject.optJSONArray("images");
+
+                    ArrayList<String> resimg = new ArrayList<String>();
+                    for (int i = 0; i < resultImages.length(); i++) {
+                        resimg.add(resultImages.optString(i));
+                    }
+
+                    resultimagesset.addAll(resimg);
+
+                    commonnamesset.addAll(common_names);
+
 
                     score = postobject.optString("score");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
@@ -136,6 +147,7 @@ public class CameraIdentificationFragment extends Fragment {
                     editor.putString(Constants.prefdashboardgenus_postid, postid);
                     editor.putString(Constants.prefdashboard_fromnotes, "0");
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
+                    editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.apply();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new OpenDashboardFragment()).addToBackStack(null).commit();
                 }

@@ -19,7 +19,7 @@
             android:id="@+id/nav_menu_quiz"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-            android:title="Quizes" />
+            android:title="History" />
         <item
             android:id="@+id/nav_menu_notes"
             android:iconTint="@color/white"

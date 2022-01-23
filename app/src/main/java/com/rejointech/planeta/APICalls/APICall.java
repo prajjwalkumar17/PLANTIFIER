@@ -33,6 +33,13 @@ public class APICall {
                 .build();
     }
 
+    public static Request del4deletenote(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .delete(requestBody)
+                .build();
+    }
+
     public static Request post4createnotes(String url, String usertoken, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
@@ -58,6 +65,13 @@ public class APICall {
     public static Request get4profiledata(String url, String userauthtoken) {
         return new Request.Builder()
                 .header("Authorization", Constants.bearer + userauthtoken)
+                .url(url)
+                .build();
+
+    }
+
+    public static Request get4leaderboard(String url) {
+        return new Request.Builder()
                 .url(url)
                 .build();
 
@@ -99,6 +113,13 @@ public class APICall {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("note", note)
+                .addFormDataPart("noteid", noteid)
+                .build();
+    }
+
+    public static RequestBody buildrequest4deletenote(String noteid) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
                 .addFormDataPart("noteid", noteid)
                 .build();
     }

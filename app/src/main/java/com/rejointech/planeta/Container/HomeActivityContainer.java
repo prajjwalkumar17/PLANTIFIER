@@ -30,8 +30,9 @@ import com.rejointech.planeta.CommonInterfaces.botnavController;
 import com.rejointech.planeta.Fragments.AccountsFragment;
 import com.rejointech.planeta.Fragments.CameraFragment;
 import com.rejointech.planeta.Fragments.DashboardFragment;
+import com.rejointech.planeta.Fragments.HistoryFragment;
+import com.rejointech.planeta.Fragments.LeaderBoardFragment;
 import com.rejointech.planeta.Fragments.NotesFragment;
-import com.rejointech.planeta.Fragments.QuizFragment;
 import com.rejointech.planeta.Fragments.ShareFragment;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
@@ -172,7 +173,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
                         getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new DashboardFragment()).addToBackStack(null).commit();
                         break;
                     case R.id.botnav_menu_share:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new ShareFragment()).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new LeaderBoardFragment()).addToBackStack(null).commit();
                         break;
                     case R.id.botnav_menu_account:
 //                        SharedPreferences sharedPreferences = HomeActivityContainer.this.getSharedPreferences(Constants.METAPTEF, MODE_PRIVATE);
@@ -276,7 +277,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
                 getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_menu_quiz:
-                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new QuizFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new HistoryFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_menu_share:
                 getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new ShareFragment()).addToBackStack(null).commit();

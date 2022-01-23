@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterDashboard;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.Decoration.DecorationForRecyclerView;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.RecyclerClickInterface.Recyclerdashboardclick;
@@ -53,6 +55,7 @@ public class DashboardFragment extends Fragment {
     Set<String> commonnamesset = new HashSet<String>();
     String score;
     String postid;
+    private ShimmerFrameLayout dashboardshimmmer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,15 +74,45 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        initlayout();
+
+
         dashboard_recyclerview = root.findViewById(R.id.dashboard_recyclerview);
+        dashboardshimmmer = root.findViewById(R.id.dashboardshimmmer);
+        shimmersetup();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(thiscontext, 1, GridLayoutManager.VERTICAL, false);
         dashboard_recyclerview.setLayoutManager(gridLayoutManager);
         dashboard_recyclerview.addItemDecoration(new DecorationForRecyclerView(thiscontext, R.dimen.dp_2));
+
+        SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(Constants.prefdashboardgenus_resultimages, null);
 
 
         getalldashboarditems();
         setonclicklistner();
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
+        ((HomeActivityContainer) getActivity()).setfabvisible();
+    }
+
+    private void shimmersetup() {
+        dashboard_recyclerview.setVisibility(View.GONE);
+        dashboardshimmmer.setVisibility(View.VISIBLE);
+        dashboardshimmmer.startShimmer();
+
+    }
+
+    private void stopshimmer() {
+        dashboard_recyclerview.setVisibility(View.VISIBLE);
+        dashboardshimmmer.setVisibility(View.GONE);
+        dashboardshimmmer.stopShimmer();
+
     }
 
     private void setonclicklistner() {
@@ -119,6 +152,14 @@ public class DashboardFragment extends Fragment {
                     commonnamesset.addAll(common_names);
                     resultImages = postobject.optJSONArray("images");
 
+                    CommonMethods.LOGthesite(Constants.LOG, resultImages.toString());
+                    ArrayList<String> resimg = new ArrayList<String>();
+                    for (int i = 0; i < resultImages.length(); i++) {
+                        resimg.add(resultImages.optString(i));
+                    }
+                    Set<String> resultimagesset = new HashSet<String>();
+                    resultimagesset.addAll(resimg);
+
 
                     score = postobject.optString("score");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
@@ -131,6 +172,7 @@ public class DashboardFragment extends Fragment {
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
                     editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
                     editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);
@@ -169,6 +211,7 @@ public class DashboardFragment extends Fragment {
                             JSONObject myResponsez = new JSONObject(rResponse);
                             adapterDashboard = new AdapterDashboard(myResponsez, thiscontext, getActivity(), recyclerdashboardclick);
                             dashboard_recyclerview.setAdapter(adapterDashboard);
+                            stopshimmer();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -178,4 +221,5 @@ public class DashboardFragment extends Fragment {
             }
         });
     }
+
 }

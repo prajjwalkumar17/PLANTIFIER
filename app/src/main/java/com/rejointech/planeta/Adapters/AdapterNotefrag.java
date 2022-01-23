@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesclickInterface;
+import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesdeleteInterface;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclernotesshareInterface;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +30,7 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
     JSONObject object;
     RecyclernotesclickInterface recyclernotesclickInterface;
     RecyclernotesshareInterface recyclernotesshareInterface;
+    RecyclernotesdeleteInterface recyclernotesdeleteInterface;
     Context thiscontext;
     Activity myactivity;
     int length;
@@ -48,10 +50,11 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
     String name;
     String id;
 
-    public AdapterNotefrag(JSONObject object, RecyclernotesclickInterface recyclernotesclickInterface, RecyclernotesshareInterface recyclernotesshareInterface, Context thiscontext, Activity myactivity) {
+    public AdapterNotefrag(JSONObject object, RecyclernotesclickInterface recyclernotesclickInterface, RecyclernotesshareInterface recyclernotesshareInterface, RecyclernotesdeleteInterface recyclernotesdeleteInterface, Context thiscontext, Activity myactivity) {
         this.object = object;
         this.recyclernotesclickInterface = recyclernotesclickInterface;
         this.recyclernotesshareInterface = recyclernotesshareInterface;
+        this.recyclernotesdeleteInterface = recyclernotesdeleteInterface;
         this.thiscontext = thiscontext;
         this.myactivity = myactivity;
     }
@@ -116,7 +119,7 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
 
             holder.recyclerallnotes_specinameout.setText(species_scientificname);
             holder.recyclerallnotes_familynameout.setText(family_scientifiname);
-//            holder.recyclerallnotes_Timestamp.setText(timestamp);
+            holder.recyclerallnotes_Timestamp.setText(timestamp);
             holder.recyclerallnotes_prevnote.setText(note);
         }
     }
@@ -129,7 +132,7 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
 
     public class viewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recyclerallnotes_specinameout, recyclerallnotes_familynameout, recyclerallnotes_Timestamp, recyclerallnotes_prevnote;
-        ImageView recyclerallnotes_sharebot, recyclerallnotes_image;
+        ImageView recyclerallnotes_sharebot, recyclerallnotes_image, recyclerallnotes_delbot;
         AppCompatButton recyclerallnotes_updatenotebot;
 
         public viewholder(@NonNull View itemView) {
@@ -137,6 +140,7 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
             init_Views(itemView);
             recyclerallnotes_updatenotebot.setOnClickListener(this);
             recyclerallnotes_sharebot.setOnClickListener(this);
+            recyclerallnotes_delbot.setOnClickListener(this);
         }
 
         private void init_Views(View itemView) {
@@ -146,6 +150,7 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
             recyclerallnotes_prevnote = itemView.findViewById(R.id.recyclerallnotes_prevnote);
             recyclerallnotes_sharebot = itemView.findViewById(R.id.recyclerallnotes_sharebot);
             recyclerallnotes_image = itemView.findViewById(R.id.recyclerallnotes_image);
+            recyclerallnotes_delbot = itemView.findViewById(R.id.recyclerallnotes_delbot);
             recyclerallnotes_updatenotebot = itemView.findViewById(R.id.recyclerallnotes_updatenotebot);
         }
 
@@ -155,6 +160,8 @@ public class AdapterNotefrag extends RecyclerView.Adapter<AdapterNotefrag.viewho
                 recyclernotesclickInterface.onItemClick(recyclerallnotes_updatenotebot, getAdapterPosition(), object);
             } else if (view.getId() == R.id.recyclerallnotes_sharebot) {
                 recyclernotesshareInterface.onItemClick(recyclerallnotes_sharebot, getAdapterPosition(), object);
+            } else if (view.getId() == R.id.recyclerallnotes_delbot) {
+                recyclernotesdeleteInterface.onItemClick(recyclerallnotes_delbot, getAdapterPosition(), object);
             }
         }
     }

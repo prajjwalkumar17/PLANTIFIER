@@ -17,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.rejointech.planeta.APICalls.APICall;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Startup.Startup_container;
 import com.rejointech.planeta.Utils.CommonMethods;
@@ -50,6 +53,8 @@ public class AccountsFragment extends Fragment {
     CircleImageView circleImageView;
     Uri imageUri;
     private String id;
+    ConstraintLayout profilelayout;
+    private ShimmerFrameLayout accountshimmmer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +73,35 @@ public class AccountsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_accounts, container, false);
+        initlayout();
+        shimmersetup(root);
         InitViews(root);
         GetprofileData();
         ButtonClicks();
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
+
+    }
+
+    private void shimmersetup(View root) {
+        profilelayout = root.findViewById(R.id.profilelayout);
+        accountshimmmer = root.findViewById(R.id.accountshimmmer);
+        profilelayout.setVisibility(View.GONE);
+        accountshimmmer.setVisibility(View.VISIBLE);
+        accountshimmmer.startShimmer();
+
+    }
+
+    private void stopshimmer() {
+        profilelayout.setVisibility(View.VISIBLE);
+        accountshimmmer.setVisibility(View.GONE);
+        accountshimmmer.stopShimmer();
+
     }
 
     private void GetprofileData() {
@@ -105,6 +135,7 @@ public class AccountsFragment extends Fragment {
                                 account_nameedittext.setText(name);
                                 account_emaileditext.setText(email);
                                 account_phoneeditext.setText(phone);
+                                stopshimmer();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

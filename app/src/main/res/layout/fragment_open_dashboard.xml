@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="65dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -85,16 +86,16 @@
                 android:id="@+id/recyclerallnotes_image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
+                android:layout_below="@+id/recyclerportallin1"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:scaleType="fitXY"
-                android:layout_below="@+id/recyclerportallin1"
                 android:src="@drawable/icontree" />
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/rellytttu"
+                android:layout_above="@+id/opendashj_view"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="30dp"
@@ -123,15 +124,57 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <View
+                android:id="@+id/opendashj_view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/recyclerallnotes_image"
+                android:layout_marginHorizontal="5dp"
+                android:background="@color/final_itemcolor" />
+
+            <!-- <LinearLayout
+                 android:id="@+id/recycler_dashboardopen_imagebig"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/opendashj_view"
+                 android:background="@color/final_itemcolor"
+                 android:layout_marginHorizontal="5dp"
+                 android:layout_marginTop="20dp"
+                 android:orientation="horizontal"
+                 android:weightSum="3">
+
+                 <ImageView
+                     android:id="@+id/recycler_opendashboard_image1"
+                     android:layout_width="100dp"
+                     android:layout_height="100dp"
+                     android:layout_margin="10dp"
+                     android:layout_weight="1" />
+
+                 <ImageView
+                     android:id="@+id/recycler_opendashboard_image2"
+                     android:layout_width="100dp"
+                     android:layout_height="100dp"
+                     android:layout_margin="10dp"
+                     android:layout_weight="1" />
+
+                 <ImageView
+                     android:id="@+id/recycler_opendashboard_image3"
+                     android:layout_width="100dp"
+                     android:layout_height="100dp"
+                     android:layout_margin="10dp"
+                     android:layout_weight="1" />
+             </LinearLayout>-->
+
+
             <RelativeLayout
                 android:id="@+id/rellytttu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/recyclerallnotes_image"
+                android:layout_below="@id/opendashj_view"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/greylight">
 
 
@@ -244,7 +287,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/recycleritem_dashboard_createdby"
-                            android:text="Prajjwal Kumar"
+                            android:text="Unknown-user"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -269,11 +312,21 @@
                     app:tint="@color/black" />
             </RelativeLayout>
 
+            <include
+                android:id="@+id/slider"
+                layout="@layout/imgslider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rellytttu"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp" />
+
             <LinearLayout
                 android:id="@+id/recycleropendashboard_commonnames_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rellytttu"
+                android:layout_below="@+id/slider"
                 android:orientation="vertical">
 
                 <TextView
@@ -326,24 +379,27 @@
                 android:layout_below="@+id/recycleropendashboard_commonnames_container"
                 android:layout_margin="10dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="4">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/recycleropendashboard_addnoteedittext"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_margin="20dp"
+                    android:layout_weight="3"
                     android:background="@drawable/botregisterunfilledgreenborder"
                     android:hint="Add your Personalised notes"
-                    android:textColor="@color/black"
                     android:padding="5dp"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/final_itemcolor" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/recycleropendashboard_savenotebot"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
+                    android:layout_weight="1"
                     android:background="@drawable/botgreenwithoutborder"
                     android:text="Save"
                     android:textColor="@color/black" />

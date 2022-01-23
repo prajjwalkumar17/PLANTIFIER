@@ -45,11 +45,6 @@ public class CameraFragment extends Fragment {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         thiscontext = context;
@@ -59,9 +54,17 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_camera, container, false);
+        initlayout();
         InitViews(root);
         ButtonClicks();
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
+        ((HomeActivityContainer) getActivity()).setDrawerLocked();
+        ((HomeActivityContainer) getActivity()).setbotInvisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 
 
@@ -129,12 +132,6 @@ public class CameraFragment extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraIdentificationFragment()).commit();
     }
 
-    private void initScreen() {
-        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
-        ((HomeActivityContainer) getActivity()).setDrawerLocked();
-        ((HomeActivityContainer) getActivity()).setbotInvisible();
-        ((HomeActivityContainer) getActivity()).setfabinvisible();
-    }
 
     private void InitViews(View root) {
         cameraback = root.findViewById(R.id.cameraback);

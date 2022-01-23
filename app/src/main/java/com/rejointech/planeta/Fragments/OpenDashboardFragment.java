@@ -15,9 +15,13 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.APICalls.APICall;
+import com.rejointech.planeta.Adapters.Adapterimgsliderdashboard;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -38,10 +42,13 @@ public class OpenDashboardFragment extends Fragment {
             recycleritem_dashboard_createdby, recycleropendashboard_picby, recycleropendashboard_commonname1, recycleropendashboard_speciesnameinner,
             recycleropendashboard_commonname2, recycleropendashboard_commonname3;
     ImageView recycleropendashboard_backbot, recycleropendashboard_image, recycleropendashboard_wiki_bot;
+    ImageView recycler_opendashboard_image1, recycler_opendashboard_image2, recycler_opendashboard_image3;
     AppCompatButton recycleropendashboard_savenotebot;
     AppCompatEditText recycleropendashboard_addnoteedittext;
     Context thiscontext;
     String token, postid, notes, noteid;
+
+    SliderView sliderpager;
 
 
     @Override
@@ -49,11 +56,17 @@ public class OpenDashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_open_dashboard, container, false);
+        initlayout();
         Init_views(root);
         retrievedatafromprefandset();
         button_clicks();
 
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 
     private void button_clicks() {
@@ -176,8 +189,14 @@ public class OpenDashboardFragment extends Fragment {
         String percentagetoprint = sharedPreferences.getString(Constants.prefdashboardgenus_score, "No data found!!!");
         postid = sharedPreferences.getString(Constants.prefdashboardgenus_postid, "No data found!!!");
         Set<String> commonnameset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_commonnames, null);
+        Set<String> resultimageset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_resultimages, null);
         ArrayList<String> commonnames = new ArrayList<String>();
         commonnames.addAll(commonnameset);
+        ArrayList<String> resultImages_array = new ArrayList<String>();
+        resultImages_array.addAll(resultimageset);
+
+        CommonMethods.LOGthesite(Constants.LOG, resultImages_array.toString());
+
         String fromnotes = sharedPreferences.getString(Constants.prefdashboard_fromnotes, "0");
         if (fromnotes.equals("1")) {
             addnotes(false);
@@ -201,6 +220,30 @@ public class OpenDashboardFragment extends Fragment {
             recycleropendashboard_commonname3.setText("No name found");
         }
 
+   /*     if (indexExists(resultImages_array, 0)) {
+            Picasso.get()
+                    .load(resultImages_array.get(0))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image1);
+        }
+        if (indexExists(resultImages_array, 1)) {
+            Picasso.get()
+                    .load(resultImages_array.get(1))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image2);
+        }
+        if (indexExists(resultImages_array, 2)) {
+            Picasso.get()
+                    .load(resultImages_array.get(2))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image3);
+        }*/
+        Adapterimgsliderdashboard adapterimgsliderdashboard = new Adapterimgsliderdashboard(resultImages_array);
+        sliderpager.setSliderAdapter(adapterimgsliderdashboard);
+        sliderpager.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderpager.startAutoCycle();
+
+
         recycleropendashboard_speciename.setText(species_scientificname);
         recycleropendashboard_familyname.setText(family_scientifiname);
         recycleropendashboard_datetime.setText(timestamp);
@@ -221,6 +264,10 @@ public class OpenDashboardFragment extends Fragment {
             }
         });
 
+    }
+
+    public boolean indexExists(final ArrayList<String> list, final int index) {
+        return index >= 0 && index < list.size();
     }
 
     private void sendwikilink(String wikkipediaLink) {
@@ -249,5 +296,9 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_savenotebot = root.findViewById(R.id.recycleropendashboard_savenotebot);
         recycleropendashboard_speciesnameinner = root.findViewById(R.id.recycleropendashboard_speciesnameinner);
         recycleropendashboard_addnoteedittext = root.findViewById(R.id.recycleropendashboard_addnoteedittext);
+        sliderpager = root.findViewById(R.id.sliderpageree);
+/*        recycler_opendashboard_image1 = root.findViewById(R.id.recycler_opendashboard_image1);
+        recycler_opendashboard_image2 = root.findViewById(R.id.recycler_opendashboard_image2);
+        recycler_opendashboard_image3 = root.findViewById(R.id.recycler_opendashboard_image3);*/
     }
 }
