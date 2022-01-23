@@ -15,10 +15,13 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import com.rejointech.planeta.APICalls.APICall;
+import com.rejointech.planeta.Adapters.Adapterimgsliderdashboard;
 import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -39,10 +42,13 @@ public class OpenDashboardFragment extends Fragment {
             recycleritem_dashboard_createdby, recycleropendashboard_picby, recycleropendashboard_commonname1, recycleropendashboard_speciesnameinner,
             recycleropendashboard_commonname2, recycleropendashboard_commonname3;
     ImageView recycleropendashboard_backbot, recycleropendashboard_image, recycleropendashboard_wiki_bot;
+    ImageView recycler_opendashboard_image1, recycler_opendashboard_image2, recycler_opendashboard_image3;
     AppCompatButton recycleropendashboard_savenotebot;
     AppCompatEditText recycleropendashboard_addnoteedittext;
     Context thiscontext;
-    String token, postid;
+    String token, postid, notes, noteid;
+
+    SliderView sliderpager;
 
 
     @Override
@@ -50,12 +56,17 @@ public class OpenDashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_open_dashboard, container, false);
+        initlayout();
         Init_views(root);
         retrievedatafromprefandset();
         button_clicks();
-        addnotes();
 
         return root;
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 
     private void button_clicks() {
@@ -68,60 +79,95 @@ public class OpenDashboardFragment extends Fragment {
         });
     }
 
-    private void addnotes() {
+    private void addnotes(Boolean notnotes) {
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
         recycleropendashboard_savenotebot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String notetext = recycleropendashboard_addnoteedittext.getText().toString();
-                String url = Constants.createnoteurl;
-                APICall.okhttpmaster().newCall(APICall.post4createnotes(
-                        APICall.urlbuilderforhttp(url),
-                        token,
-                        APICall.buildrequest4createnote(postid, notetext)
-                )).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        final String myResponse = response.body().string();
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    JSONObject responsez = new JSONObject(myResponse);
-                                    String status = responsez.optString("status");
-                                    if (status.equals("success")) {
-                                        CommonMethods.DisplayShortTOAST(thiscontext, "Note Added Successfully");
-                                    } else {
-                                        CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                if (notnotes) {
+                    String url = Constants.createnoteurl;
+                    APICall.okhttpmaster().newCall(APICall.post4createnotes(
+                            APICall.urlbuilderforhttp(url),
+                            token,
+                            APICall.buildrequest4createnote(postid, notetext)
+                    )).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
                                 }
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            final String myResponse = response.body().string();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        JSONObject responsez = new JSONObject(myResponse);
+                                        String status = responsez.optString("status");
+                                        if (status.equals("success")) {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Note Added Successfully\nGo to Notes for checking it out!!");
+                                        } else {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    recycleropendashboard_addnoteedittext.setHint(notes);
+                    String url = Constants.updatenoteurl;
+                    APICall.okhttpmaster().newCall(APICall.patch4updatenotes(APICall.urlbuilderforhttp(url),
+                            APICall.buildrequest4updatingnote(noteid, notetext))).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            final String myResponse = response.body().string();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        JSONObject responsez = new JSONObject(myResponse);
+                                        String status = responsez.optString("status");
+                                        if (status.equals("success")) {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Note Updated Successfully\nGo to Notes for checking it out!!");
+                                        } else {
+                                            CommonMethods.DisplayShortTOAST(thiscontext, "Some Error occurred");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+
+                }
             }
         });
+
     }
 
-    private void initScreen() {
-        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
-        ((HomeActivityContainer) getActivity()).setDrawerLocked();
-        ((HomeActivityContainer) getActivity()).setbotInvisible();
-        ((HomeActivityContainer) getActivity()).setfabinvisible();
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -143,8 +189,22 @@ public class OpenDashboardFragment extends Fragment {
         String percentagetoprint = sharedPreferences.getString(Constants.prefdashboardgenus_score, "No data found!!!");
         postid = sharedPreferences.getString(Constants.prefdashboardgenus_postid, "No data found!!!");
         Set<String> commonnameset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_commonnames, null);
+        Set<String> resultimageset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_resultimages, null);
         ArrayList<String> commonnames = new ArrayList<String>();
         commonnames.addAll(commonnameset);
+        ArrayList<String> resultImages_array = new ArrayList<String>();
+        resultImages_array.addAll(resultimageset);
+
+        CommonMethods.LOGthesite(Constants.LOG, resultImages_array.toString());
+
+        String fromnotes = sharedPreferences.getString(Constants.prefdashboard_fromnotes, "0");
+        if (fromnotes.equals("1")) {
+            addnotes(false);
+            notes = sharedPreferences.getString(Constants.prefdashboardnote, "Not able to derive note");
+            noteid = sharedPreferences.getString(Constants.prefdashboardnoteid, "Not able to derive note");
+        } else {
+            addnotes(true);
+        }
         if (commonnames.size() > 2) {
             recycleropendashboard_commonname1.setText(commonnames.get(0));
             recycleropendashboard_commonname2.setText(commonnames.get(1));
@@ -160,6 +220,30 @@ public class OpenDashboardFragment extends Fragment {
             recycleropendashboard_commonname3.setText("No name found");
         }
 
+   /*     if (indexExists(resultImages_array, 0)) {
+            Picasso.get()
+                    .load(resultImages_array.get(0))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image1);
+        }
+        if (indexExists(resultImages_array, 1)) {
+            Picasso.get()
+                    .load(resultImages_array.get(1))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image2);
+        }
+        if (indexExists(resultImages_array, 2)) {
+            Picasso.get()
+                    .load(resultImages_array.get(2))
+                    .error(R.drawable.icontree)
+                    .into(recycler_opendashboard_image3);
+        }*/
+        Adapterimgsliderdashboard adapterimgsliderdashboard = new Adapterimgsliderdashboard(resultImages_array);
+        sliderpager.setSliderAdapter(adapterimgsliderdashboard);
+        sliderpager.setIndicatorAnimation(IndicatorAnimationType.WORM);
+        sliderpager.startAutoCycle();
+
+
         recycleropendashboard_speciename.setText(species_scientificname);
         recycleropendashboard_familyname.setText(family_scientifiname);
         recycleropendashboard_datetime.setText(timestamp);
@@ -170,7 +254,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_picby.setText(createdBy);
         Picasso.get()
                 .load(userimage)
-                .error(R.drawable.icon_pic_error)
+                .error(R.drawable.icontree)
                 .into(recycleropendashboard_image);
 
         recycleropendashboard_wiki_bot.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +264,10 @@ public class OpenDashboardFragment extends Fragment {
             }
         });
 
+    }
+
+    public boolean indexExists(final ArrayList<String> list, final int index) {
+        return index >= 0 && index < list.size();
     }
 
     private void sendwikilink(String wikkipediaLink) {
@@ -208,5 +296,9 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_savenotebot = root.findViewById(R.id.recycleropendashboard_savenotebot);
         recycleropendashboard_speciesnameinner = root.findViewById(R.id.recycleropendashboard_speciesnameinner);
         recycleropendashboard_addnoteedittext = root.findViewById(R.id.recycleropendashboard_addnoteedittext);
+        sliderpager = root.findViewById(R.id.sliderpageree);
+/*        recycler_opendashboard_image1 = root.findViewById(R.id.recycler_opendashboard_image1);
+        recycler_opendashboard_image2 = root.findViewById(R.id.recycler_opendashboard_image2);
+        recycler_opendashboard_image3 = root.findViewById(R.id.recycler_opendashboard_image3);*/
     }
 }

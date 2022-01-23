@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="30dp"
-        android:padding="20dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F7FEE7">
+        android:backgroundTint="#F7FEE7"
+        android:padding="20dp"
+        app:cardCornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <LinearLayout
                 android:id="@+id/recyclerportallin1"
                 android:layout_width="match_parent"
-                android:weightSum="5"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="5">
+
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="90dp"
                     android:layout_weight="1.2"
-                    android:src="@drawable/iconplant"/>
+                    android:src="@drawable/iconplant"
+                    app:tint="@color/final_itemcolor" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_weight="3"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
+
                     <TextView
-                        android:id="@+id/recyclerallnotes_specinameout"
+                        android:id="@+id/recycleritem_dashboard_text_speciesname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="aloe vera"
-                        android:textSize="18sp"
-                        android:textColor="@color/final_itemcolor"/>
+                        android:layout_marginEnd="50dp"
+                        android:background="@color/final_itemcolor"
+                        android:textColor="@color/final_itemcolor"
+                        android:textSize="18sp" />
+
                     <TextView
-                        android:id="@+id/recyclerallnotes_familynameout"
+                        android:id="@+id/recycleritem_dashboard_text_familyname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Asphodelaceae"
-                        android:textColor="@color/final_itemcolor"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@color/final_itemcolor"
+                        android:textColor="@color/final_itemcolor" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/recyclerallnotes_Timestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SEP 28, 2021"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/final_itemcolor"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -64,7 +80,8 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icontree" />
+                android:src="@drawable/icontree"
+                app:tint="@color/final_itemcolor" />
 
 
             <RelativeLayout
@@ -82,8 +99,7 @@
                     android:id="@+id/recyclerallnotes_updatenotebot"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/botgreenwithoutborder"
-                    android:text="Details"
+                    android:background="@drawable/shimmerbotcurved"
                     android:textColor="@color/black" />
 
                 <ImageView
@@ -91,7 +107,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/icon_whatsapp"
+                    android:background="@color/final_itemcolor"
                     app:tint="@color/final_itemcolor" />
 
                 <ImageView
@@ -100,7 +116,8 @@
                     android:layout_height="32dp"
                     android:layout_marginEnd="20dp"
                     android:layout_toLeftOf="@+id/recyclerallnotes_sharebot"
-                    android:src="@drawable/icon_delete"
+                    android:background="@color/final_itemcolor"
+
                     app:tint="@color/final_itemcolor" />
 
 
@@ -111,11 +128,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/recyclersharenote1"
+                android:background="@color/final_itemcolor"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="native to southern Japan including the Ryukyu Islands.
-                 It is one of several species used for the production of sago, as well as an ornamental plant"
                 android:textColor="@color/final_itemcolor" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.NotesFragment"
     android:background="@color/white">
-    <androidx.core.widget.NestedScrollView
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/notesshimmmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:elevation="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <include layout="@layout/shimmernotes" />
+        </LinearLayout>
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="60dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -17,9 +40,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/noterecycler"
                 android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 
 </RelativeLayout>

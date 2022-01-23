@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Planeta/app/src/main/res/drawable/borderitemcolor.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/botcirclewithborder.xml" value="0.125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/botgreenwithoutborder.xml" value="0.23489583333333333" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/botlessgreenwithoutborder.xml" value="0.39692307692307693" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Planeta/app/src/main/res/drawable/norm_bot_curved_dark.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/notificon.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/registerunfilledgreenborderbot.xml" value="0.403125" />
+        <entry key="..\:/Planeta/app/src/main/res/drawable/shimmerbotcurved.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/tool_navicon.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/drawable/toolbar.xml" value="0.403125" />
         <entry key="..\:/Planeta/app/src/main/res/font/baloo_bhaina.xml" value="0.4171875" />
@@ -25,10 +27,12 @@
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_accounts.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_camera.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_camera_identification.xml" value="0.3277511961722488" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_dashboard.xml" value="0.267515923566879" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_dashboard.xml" value="0.17993079584775087" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_feed.xml" value="0.3729166666666667" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_history.xml" value="0.26443768996960487" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_leader_board.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_login.xml" value="0.21875" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_notes.xml" value="0.2046875" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/fragment_notes.xml" value="0.1" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_onboarding1.xml" value="0.3729166666666667" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_onboarding2.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/fragment_onboarding3.xml" value="0.28894927536231885" />
@@ -45,9 +49,14 @@
         <entry key="..\:/Planeta/app/src/main/res/layout/imgslider.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/nav_header.xml" value="0.3763586956521739" />
         <entry key="..\:/Planeta/app/src/main/res/layout/recycler_camera_results.xml" value="0.27298850574712646" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/recyclerdisportalitem.xml" value="0.19327731092436976" />
-        <entry key="..\:/Planeta/app/src/main/res/layout/recycleritemshareandnote.xml" value="0.33" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/recyclerdisportalitem.xml" value="0.33" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/recycleritemshareandnote.xml" value="0.25" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/recyclerleaderboarditem.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/recyclersearchresultsfromupload.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/shimmerdashboard.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/shimmerleaderboard.xml" value="0.2753623188405797" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/shimmermyaccount.xml" value="0.38697916666666665" />
+        <entry key="..\:/Planeta/app/src/main/res/layout/shimmernotes.xml" value="0.38697916666666665" />
         <entry key="..\:/Planeta/app/src/main/res/layout/slideritem.xml" value="0.1712962962962963" />
         <entry key="..\:/Planeta/app/src/main/res/layout/startup_container.xml" value="0.25" />
         <entry key="..\:/Planeta/app/src/main/res/layout/toolbar.xml" value="0.18819655521783182" />
