@@ -55,14 +55,23 @@ public class APICall {
                 .build();
     }
 
-    public static Request patch4updateprofile(String url, RequestBody requestBody) {
+    public static Request patch4updateprofile(String url, String usertoken, RequestBody requestBody) {
         return new Request.Builder()
                 .patch(requestBody)
+                .header("Authorization", Constants.bearer + usertoken)
                 .url(url)
                 .build();
     }
 
     public static Request get4profiledata(String url, String userauthtoken) {
+        return new Request.Builder()
+                .header("Authorization", Constants.bearer + userauthtoken)
+                .url(url)
+                .build();
+
+    }
+
+    public static Request get4historydata(String url, String userauthtoken) {
         return new Request.Builder()
                 .header("Authorization", Constants.bearer + userauthtoken)
                 .url(url)
@@ -88,8 +97,8 @@ public class APICall {
         return new Request.Builder()
                 .url(url)
                 .build();
-
     }
+
 
     public static Request post4imageupload(String url, String userauthtoken, RequestBody requestBody) {
         return new Request.Builder()
@@ -99,13 +108,26 @@ public class APICall {
                 .build();
     }
 
+    public static Request post4secondtimeapicall(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+    }
 
-    public static RequestBody buildrequest4updatingprofile(String id, String name, String email) {
+
+    public static RequestBody buildrequest4updatingprofile(String name, String email) {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
-                .addFormDataPart("id", id)
+                .build();
+    }
+
+    public static RequestBody buildrequest4secondtimeapicall(String postid) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("postid", postid)
                 .build();
     }
 

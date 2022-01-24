@@ -57,11 +57,6 @@ public class DashboardFragment extends Fragment {
     String postid;
     private ShimmerFrameLayout dashboardshimmmer;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,7 +70,11 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         initlayout();
-
+        SharedPreferences sharedPreferences8 = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences8.edit();
+        editor.putString(Constants.prefdashboard_fromcameraidentification, "0");
+        editor.apply();
 
         dashboard_recyclerview = root.findViewById(R.id.dashboard_recyclerview);
         dashboardshimmmer = root.findViewById(R.id.dashboardshimmmer);
@@ -86,8 +85,8 @@ public class DashboardFragment extends Fragment {
 
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
                 Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet(Constants.prefdashboardgenus_resultimages, null);
+        SharedPreferences.Editor editor7 = sharedPreferences.edit();
+        editor7.putStringSet(Constants.prefdashboardgenus_resultimages, null);
 
 
         getalldashboarditems();
@@ -196,7 +195,7 @@ public class DashboardFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }

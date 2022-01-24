@@ -6,6 +6,13 @@
     tools:context=".Fragments.NotesFragment"
     android:background="@color/white">
 
+    <include
+        android:id="@+id/tool"
+        layout="@layout/hometoolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/notesshimmmer"
         android:layout_width="match_parent"
@@ -31,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_below="@+id/tool"
         android:layout_marginBottom="60dp">
 
         <RelativeLayout

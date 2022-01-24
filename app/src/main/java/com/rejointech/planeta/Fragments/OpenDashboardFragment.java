@@ -67,6 +67,7 @@ public class OpenDashboardFragment extends Fragment {
     private void initlayout() {
         ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setfabinvisible();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
     }
 
     private void button_clicks() {
@@ -98,7 +99,7 @@ public class OpenDashboardFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                    CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                                 }
                             });
                         }
@@ -134,7 +135,7 @@ public class OpenDashboardFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                    CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                                 }
                             });
                         }
@@ -198,6 +199,13 @@ public class OpenDashboardFragment extends Fragment {
         CommonMethods.LOGthesite(Constants.LOG, resultImages_array.toString());
 
         String fromnotes = sharedPreferences.getString(Constants.prefdashboard_fromnotes, "0");
+        if (sharedPreferences.getString(Constants.prefdashboard_fromcameraidentification, "0").equals("1")) {
+            SharedPreferences sharedPreferences5 = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor5 = sharedPreferences5.edit();
+            editor5.putString(Constants.prefdashboard_fromcameraidentification, "2");
+            editor5.apply();
+        }
         if (fromnotes.equals("1")) {
             addnotes(false);
             notes = sharedPreferences.getString(Constants.prefdashboardnote, "Not able to derive note");
