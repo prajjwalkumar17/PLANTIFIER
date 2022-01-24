@@ -200,7 +200,7 @@ public class CameraIdentificationFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }
@@ -243,7 +243,7 @@ public class CameraIdentificationFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }

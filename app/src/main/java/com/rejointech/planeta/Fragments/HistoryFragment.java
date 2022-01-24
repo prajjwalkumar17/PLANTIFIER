@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterDashboard;
 import com.rejointech.planeta.Container.HomeActivityContainer;
@@ -55,6 +57,8 @@ public class HistoryFragment extends Fragment {
     Set<String> commonnamesset = new HashSet<String>();
     String score;
     String postid;
+    TextView toolwithbackbothead;
+    private ShimmerFrameLayout dashboardshimmmer;
 
 
 //TODO profile picin leaderboard too
@@ -71,7 +75,11 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_history, container, false);
         initlayout();
+        dashboardshimmmer = root.findViewById(R.id.dashboardshimmmer);
         history_recyclerview = root.findViewById(R.id.history_recyclerview);
+        shimmersetup();
+        toolwithbackbothead = root.findViewById(R.id.toolwithbackbothead);
+        toolwithbackbothead.setText("History");
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(thiscontext, 1, GridLayoutManager.VERTICAL, false);
         history_recyclerview.setLayoutManager(gridLayoutManager);
@@ -159,6 +167,20 @@ public class HistoryFragment extends Fragment {
         };
     }
 
+    private void shimmersetup() {
+        history_recyclerview.setVisibility(View.GONE);
+        dashboardshimmmer.setVisibility(View.VISIBLE);
+        dashboardshimmmer.startShimmer();
+
+    }
+
+    private void stopshimmer() {
+        history_recyclerview.setVisibility(View.VISIBLE);
+        dashboardshimmmer.setVisibility(View.GONE);
+        dashboardshimmmer.stopShimmer();
+
+    }
+
     private void gethistory() {
         String url = Constants.historyurl;
         APICall.okhttpmaster().newCall(APICall.get4historydata(APICall.urlbuilderforhttp(url), token)).enqueue(new Callback() {
@@ -167,7 +189,8 @@ public class HistoryFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
+                        stopshimmer();
                     }
                 });
             }
@@ -182,6 +205,7 @@ public class HistoryFragment extends Fragment {
                             JSONObject myResponsez = new JSONObject(rResponse);
                             AdapterDashboard adapterDashboard = new AdapterDashboard(myResponsez, thiscontext, getActivity(), recyclerdashboardclick);
                             history_recyclerview.setAdapter(adapterDashboard);
+                            stopshimmer();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -194,7 +218,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initlayout() {
-        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setbotVisible();
         ((HomeActivityContainer) getActivity()).setfabvisible();
     }

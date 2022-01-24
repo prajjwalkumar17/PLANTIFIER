@@ -55,12 +55,8 @@ public class AccountsFragment extends Fragment {
     private String id;
     ConstraintLayout profilelayout;
     private ShimmerFrameLayout accountshimmmer;
+    TextView toolwithbackbothead;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -76,13 +72,13 @@ public class AccountsFragment extends Fragment {
         initlayout();
         shimmersetup(root);
         InitViews(root);
-        GetprofileData();
         ButtonClicks();
+        GetprofileData();
         return root;
     }
 
     private void initlayout() {
-        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setbotVisible();
         ((HomeActivityContainer) getActivity()).setfabinvisible();
 
@@ -91,10 +87,11 @@ public class AccountsFragment extends Fragment {
     private void shimmersetup(View root) {
         profilelayout = root.findViewById(R.id.profilelayout);
         accountshimmmer = root.findViewById(R.id.accountshimmmer);
+        toolwithbackbothead = root.findViewById(R.id.toolwithbackbothead);
+        toolwithbackbothead.setText("My Profile");
         profilelayout.setVisibility(View.GONE);
         accountshimmmer.setVisibility(View.VISIBLE);
         accountshimmmer.startShimmer();
-
     }
 
     private void stopshimmer() {
@@ -172,13 +169,21 @@ public class AccountsFragment extends Fragment {
         account_updatedetailbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonMethods.DisplayLongTOAST(thiscontext, "Edit your name and Email  ");
                 edittextinput(true);
-                account_submitbot.setEnabled(true);
-                String name = account_nameedittext.getText().toString();
-                String phone = account_phoneeditext.getText().toString();
-                updatedetails(name, phone);
+                account_submitbot.setVisibility(View.VISIBLE);
             }
         });
+        account_submitbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = account_nameedittext.getText().toString();
+                String email = account_emaileditext.getText().toString();
+                updatedetails(name, email);
+                account_submitbot.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private void selectimageforprofilepic() {
@@ -228,17 +233,18 @@ public class AccountsFragment extends Fragment {
         }
     }
 
-    private void updatedetails(String name, String phone) {
+    private void updatedetails(String name, String email) {
         APICall.okhttpmaster().newCall(APICall.patch4updateprofile(
                 APICall.urlbuilderforhttp(Constants.updateprofileurl)
-                , APICall.buildrequest4updatingprofile(id, name, phone)
+                , token
+                , APICall.buildrequest4updatingprofile(name, email)
         )).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }
@@ -249,7 +255,8 @@ public class AccountsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
+                        CommonMethods.DisplayShortTOAST(thiscontext, "Details Updated");
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new AccountsFragment()).commit();
                     }
                 });
             }
@@ -259,7 +266,7 @@ public class AccountsFragment extends Fragment {
 
     private void edittextinput(Boolean value) {
         account_nameedittext.setEnabled(value);
-        account_emaileditext.setEnabled(false);
-        account_phoneeditext.setEnabled(value);
+        account_emaileditext.setEnabled(value);
+        account_phoneeditext.setEnabled(false);
     }
 }

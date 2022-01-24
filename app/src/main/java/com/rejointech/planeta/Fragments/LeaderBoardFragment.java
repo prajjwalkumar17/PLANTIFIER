@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class LeaderBoardFragment extends Fragment {
     Context thiscontext;
     RecyclerView leaderboard_recyclerview;
     private ShimmerFrameLayout leaderboardshimmer;
+    TextView toolwithbackbothead;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,6 +48,8 @@ public class LeaderBoardFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_leader_board, container, false);
         initlayout();
+        toolwithbackbothead = root.findViewById(R.id.toolwithbackbothead);
+        toolwithbackbothead.setText("Leaderboard");
         leaderboard_recyclerview = root.findViewById(R.id.leaderboard_recyclerview);
         leaderboardshimmer = root.findViewById(R.id.leaderboardshimmer);
         shimmersetup();
@@ -63,7 +67,7 @@ public class LeaderBoardFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }
@@ -109,7 +113,7 @@ public class LeaderBoardFragment extends Fragment {
     }
 
     private void initlayout() {
-        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setbotVisible();
         ((HomeActivityContainer) getActivity()).setfabinvisible();
 

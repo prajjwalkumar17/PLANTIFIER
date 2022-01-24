@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -65,6 +66,7 @@ public class NotesFragment extends Fragment {
     String score;
     String postid, id;
     private ShimmerFrameLayout notesshimmmer;
+    TextView toolwithbackbothead;
 
 
     @Override
@@ -79,6 +81,8 @@ public class NotesFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_notes, container, false);
         initlayout();
+        toolwithbackbothead = root.findViewById(R.id.toolwithbackbothead);
+        toolwithbackbothead.setText("My Notes");
         noterecycler = root.findViewById(R.id.noterecycler);
         notesshimmmer = root.findViewById(R.id.notesshimmmer);
         shimmersetup();
@@ -95,7 +99,7 @@ public class NotesFragment extends Fragment {
     }
 
     private void initlayout() {
-        ((HomeActivityContainer) getActivity()).setToolbarVisible();
+        ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setbotVisible();
         ((HomeActivityContainer) getActivity()).setfabvisible();
     }
@@ -290,7 +294,7 @@ public class NotesFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                             }
                         });
                     }
@@ -319,7 +323,7 @@ public class NotesFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }

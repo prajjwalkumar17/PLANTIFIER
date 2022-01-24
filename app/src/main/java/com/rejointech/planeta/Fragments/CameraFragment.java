@@ -17,22 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 
 public class CameraFragment extends Fragment {
@@ -59,9 +50,9 @@ public class CameraFragment extends Fragment {
         ButtonClicks();
         SharedPreferences sharedPreferences8 = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
                 Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences8.edit();
+        SharedPreferences.Editor editor7 = sharedPreferences8.edit();
 
-        editor.putString(Constants.prefdashboard_fromcameraidentification, "0");
+        editor7.putString(Constants.prefdashboard_fromcameraidentification, "0");
         return root;
     }
 
@@ -91,10 +82,12 @@ public class CameraFragment extends Fragment {
         camera_imgselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                CommonMethods.DisplayLongTOAST(thiscontext, "This Feature will be available after sometime \nTry Clicking Pictures");
+                /*Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, Constants.CAMERA_PICK_PHOTO_FOR_AVATAR);
+                startActivityForResult(intent, Constants.CAMERA_PICK_PHOTO_FOR_AVATAR);*/
 
             }
         });
@@ -125,9 +118,10 @@ public class CameraFragment extends Fragment {
 
     private void uploadtheseledimage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         byte[] imageinByte = byteArrayOutputStream.toByteArray();
         encoded_pic = Base64.encodeToString(imageinByte, Base64.DEFAULT);
+        CommonMethods.LOGthesite(Constants.LOG, encoded_pic);
 
         SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.CAMERAPREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -146,39 +140,5 @@ public class CameraFragment extends Fragment {
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
     }
 
-    private void Postpicfromcamera(String encoded_string) {
-        APICall.okhttpmaster().newCall(
-                APICall.post4imageupload(APICall.urlbuilderforhttp(Constants.camerauploaderurl)
-                        , token
-                        , APICall.buildrequstbody4imageupload(encoded_string))).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
-                    }
-                });
-            }
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final String rResponse = response.body().string();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject myResponsez = new JSONObject(rResponse);
-                            String status = myResponsez.optString("status");
-                            String results = myResponsez.optString("results");
-                            JSONArray data = myResponsez.optJSONArray("data");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-    }
 }

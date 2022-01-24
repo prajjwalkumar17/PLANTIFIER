@@ -99,7 +99,7 @@ public class OpenDashboardFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                    CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                                 }
                             });
                         }
@@ -135,7 +135,7 @@ public class OpenDashboardFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                                    CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                                 }
                             });
                         }
