@@ -9,14 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.Adapters.AdapterSearchresultsfromupload;
+import com.rejointech.planeta.Container.HomeActivityContainer;
 import com.rejointech.planeta.Decoration.DecorationForRecyclerView;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclerSearchresultsInterface;
@@ -45,7 +48,8 @@ public class CameraIdentificationFragment extends Fragment {
     RecyclerView cameraresult_recyclerview;
     AdapterSearchresultsfromupload adapterSearchresultsfromupload;
     RecyclerSearchresultsInterface recyclerSearchresultsInterface;
-
+    RelativeLayout cameraidentification_layout;
+    LottieAnimationView cameraanimationView;
 
     JSONArray resultImages;
     String species_scientificname;
@@ -58,7 +62,6 @@ public class CameraIdentificationFragment extends Fragment {
     String species_scientificnametrue;
     String genus_scientifiname;
     Set<String> commonnamesset = new HashSet<String>();
-    Set<String> resultimagesset = new HashSet<String>();
     String score;
     String postid;
 
@@ -67,6 +70,7 @@ public class CameraIdentificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_camera_identification, container, false);
+        initlayout();
         Init_views(root);
         Button_Clicks();
 
@@ -122,7 +126,7 @@ public class CameraIdentificationFragment extends Fragment {
                     for (int i = 0; i < resultImages.length(); i++) {
                         resimg.add(resultImages.optString(i));
                     }
-
+                    Set<String> resultimagesset = new HashSet<String>();
                     resultimagesset.addAll(resimg);
 
                     commonnamesset.addAll(common_names);
@@ -146,6 +150,7 @@ public class CameraIdentificationFragment extends Fragment {
                     editor.putString(Constants.prefdashboardgenus_score, percentagetoprint);
                     editor.putString(Constants.prefdashboardgenus_postid, postid);
                     editor.putString(Constants.prefdashboard_fromnotes, "0");
+                    editor.putString(Constants.prefdashboard_fromcameraidentification, "1");
                     editor.putStringSet(Constants.prefdashboardgenus_commonnames, commonnamesset);
                     editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.apply();
@@ -157,13 +162,15 @@ public class CameraIdentificationFragment extends Fragment {
     }
 
     private void Init_views(View root) {
+        cameraidentification_layout = root.findViewById(R.id.cameraidentification_layout);
+        cameraanimationView = root.findViewById(R.id.cameraanimationView);
+        showanim();
         cameraresult_mypic = root.findViewById(R.id.cameraresult_mypic);
         cameraresult_recyclerview = root.findViewById(R.id.cameraresult_recyclerview);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(thiscontext, 1, GridLayoutManager.VERTICAL, false);
         cameraresult_recyclerview.setLayoutManager(gridLayoutManager);
         cameraresult_recyclerview.addItemDecoration(new DecorationForRecyclerView(thiscontext, R.dimen.dp_2));
-
 
         SharedPreferences sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
@@ -172,8 +179,59 @@ public class CameraIdentificationFragment extends Fragment {
         encoded_pic = sharedPreferencess.getString(Constants.prefcamerapicencoded, "No data found!!!");
         byte[] imageAsBytes = Base64.decode(encoded_pic.getBytes(), Base64.DEFAULT);
         cameraresult_mypic.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-        Postpicfromcamera(encoded_pic);
+
+        SharedPreferences sharedPreferences3 = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS, Context.MODE_PRIVATE);
+        String noapicall = sharedPreferences3.getString(Constants.prefdashboard_fromcameraidentification, "0");
+        if (noapicall == "2") {
+            secondndtimecall();
+        } else {
+            Postpicfromcamera(encoded_pic);
+        }
     }
+
+    private void secondndtimecall() {
+        String url1 = Constants.secondtimesearchurl;
+        APICall.okhttpmaster().newCall(APICall.post4secondtimeapicall(
+                APICall.urlbuilderforhttp(url1),
+                APICall.buildrequest4secondtimeapicall(postid)
+        )).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String rResponse = response.body().string();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject myResponsez = new JSONObject(rResponse);
+                            if (myResponsez.optString("status").equals("fail")) {
+                                stopanimation();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).commit();
+                            } else {
+                                adapterSearchresultsfromupload = new AdapterSearchresultsfromupload(myResponsez, recyclerSearchresultsInterface);
+                                cameraresult_recyclerview.setAdapter(adapterSearchresultsfromupload);
+                                stopanimation();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            stopanimation();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).commit();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
 
     private void Postpicfromcamera(String encoded_string) {
         APICall.okhttpmaster().newCall(
@@ -199,18 +257,40 @@ public class CameraIdentificationFragment extends Fragment {
                         try {
                             JSONObject myResponsez = new JSONObject(rResponse);
                             if (myResponsez.optString("status").equals("fail")) {
+                                stopanimation();
                                 CommonMethods.DisplayLongTOAST(thiscontext, "Image not clear enough to get results\nTry again");
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).commit();
                             } else {
                                 adapterSearchresultsfromupload = new AdapterSearchresultsfromupload(myResponsez, recyclerSearchresultsInterface);
                                 cameraresult_recyclerview.setAdapter(adapterSearchresultsfromupload);
+                                stopanimation();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            stopanimation();
+                            CommonMethods.DisplayLongTOAST(thiscontext, "Image not clear enough to get results\nTry again");
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new CameraFragment()).commit();
                         }
                     }
                 });
             }
         });
+    }
+
+    private void showanim() {
+        cameraidentification_layout.setVisibility(View.INVISIBLE);
+        cameraanimationView.setVisibility(View.VISIBLE);
+        CommonMethods.DisplayLongTOAST(thiscontext, "We are travelling all gardens on Earth\nTo get best Results for you\nPlease hold on!!");
+    }
+
+    private void stopanimation() {
+        cameraidentification_layout.setVisibility(View.VISIBLE);
+        cameraanimationView.setVisibility(View.INVISIBLE);
+    }
+
+    private void initlayout() {
+        ((HomeActivityContainer) getActivity()).setDrawerLocked();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
+        ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 }

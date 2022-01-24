@@ -57,13 +57,18 @@ public class CameraFragment extends Fragment {
         initlayout();
         InitViews(root);
         ButtonClicks();
+        SharedPreferences sharedPreferences8 = thiscontext.getSharedPreferences(Constants.DASHHBOARDPREFS,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences8.edit();
+
+        editor.putString(Constants.prefdashboard_fromcameraidentification, "0");
         return root;
     }
 
     private void initlayout() {
         ((HomeActivityContainer) getActivity()).setToolbarInvisible();
         ((HomeActivityContainer) getActivity()).setDrawerLocked();
-        ((HomeActivityContainer) getActivity()).setbotInvisible();
+        ((HomeActivityContainer) getActivity()).setbotVisible();
         ((HomeActivityContainer) getActivity()).setfabinvisible();
     }
 

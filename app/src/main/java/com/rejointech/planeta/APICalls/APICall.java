@@ -70,6 +70,14 @@ public class APICall {
 
     }
 
+    public static Request get4historydata(String url, String userauthtoken) {
+        return new Request.Builder()
+                .header("Authorization", Constants.bearer + userauthtoken)
+                .url(url)
+                .build();
+
+    }
+
     public static Request get4leaderboard(String url) {
         return new Request.Builder()
                 .url(url)
@@ -88,13 +96,20 @@ public class APICall {
         return new Request.Builder()
                 .url(url)
                 .build();
-
     }
+
 
     public static Request post4imageupload(String url, String userauthtoken, RequestBody requestBody) {
         return new Request.Builder()
                 .url(url)
                 .header("Authorization", Constants.bearer + userauthtoken)
+                .post(requestBody)
+                .build();
+    }
+
+    public static Request post4secondtimeapicall(String url, RequestBody requestBody) {
+        return new Request.Builder()
+                .url(url)
                 .post(requestBody)
                 .build();
     }
@@ -106,6 +121,13 @@ public class APICall {
                 .addFormDataPart("name", name)
                 .addFormDataPart("email", email)
                 .addFormDataPart("id", id)
+                .build();
+    }
+
+    public static RequestBody buildrequest4secondtimeapicall(String postid) {
+        return new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("postid", postid)
                 .build();
     }
 
