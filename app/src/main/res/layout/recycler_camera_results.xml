@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:id="@+id/recycler_camera_results_imagebig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,13 +33,25 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1" />
-    </LinearLayout>
+    </LinearLayout>-->
+
+
+    <include
+        android:id="@+id/slider"
+        layout="@layout/imgslider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp" />
+
 
     <LinearLayout
         android:id="@+id/recycler_camera_results_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recycler_camera_results_imagebig"
+        android:layout_below="@+id/slider"
         android:layout_marginHorizontal="25dp"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"

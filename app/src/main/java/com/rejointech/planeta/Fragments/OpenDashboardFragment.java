@@ -40,7 +40,7 @@ public class OpenDashboardFragment extends Fragment {
     TextView recycleropendashboard_speciename, recycleropendashboard_familyname, recycleropendashboard_datetime,
             recycleropendashboard_Percentage, recycleropendashboard_familynametextin, recycleropendashboard_genusnameinner,
             recycleritem_dashboard_createdby, recycleropendashboard_picby, recycleropendashboard_commonname1, recycleropendashboard_speciesnameinner,
-            recycleropendashboard_commonname2, recycleropendashboard_commonname3;
+            recycleropendashboard_commonname2, recycleropendashboard_commonname3, recycleropendashboard_gbifid;
     ImageView recycleropendashboard_backbot, recycleropendashboard_image, recycleropendashboard_wiki_bot;
     ImageView recycler_opendashboard_image1, recycler_opendashboard_image2, recycler_opendashboard_image3;
     AppCompatButton recycleropendashboard_savenotebot;
@@ -188,6 +188,7 @@ public class OpenDashboardFragment extends Fragment {
         String genus_scientifiname = sharedPreferences.getString(Constants.prefdashboardgenus_scientificname, "No data found!!!");
         String family_scientifiname = sharedPreferences.getString(Constants.prefdashboardgenus_familyname, "No data found!!!");
         String percentagetoprint = sharedPreferences.getString(Constants.prefdashboardgenus_score, "No data found!!!");
+        String gbif = sharedPreferences.getString(Constants.prefdashboardgenus_gbif, "No data found!!!");
         postid = sharedPreferences.getString(Constants.prefdashboardgenus_postid, "No data found!!!");
         Set<String> commonnameset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_commonnames, null);
         Set<String> resultimageset = sharedPreferences.getStringSet(Constants.prefdashboardgenus_resultimages, null);
@@ -260,6 +261,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_genusnameinner.setText(genus_scientifiname);
         recycleropendashboard_speciesnameinner.setText(species_scientificnametrue);
         recycleropendashboard_picby.setText(createdBy);
+        recycleropendashboard_gbifid.setText(gbif);
         Picasso.get()
                 .load(userimage)
                 .error(R.drawable.icontree)
@@ -295,6 +297,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_genusnameinner = root.findViewById(R.id.recycleropendashboard_genusnameinner);
         recycleritem_dashboard_createdby = root.findViewById(R.id.recycleritem_dashboard_createdby);
         recycleropendashboard_picby = root.findViewById(R.id.recycleropendashboard_picby);
+        recycleropendashboard_gbifid = root.findViewById(R.id.recycleropendashboard_gbifid);
         recycleropendashboard_commonname1 = root.findViewById(R.id.recycleropendashboard_commonname1);
         recycleropendashboard_commonname2 = root.findViewById(R.id.recycleropendashboard_commonname2);
         recycleropendashboard_commonname3 = root.findViewById(R.id.recycleropendashboard_commonname3);

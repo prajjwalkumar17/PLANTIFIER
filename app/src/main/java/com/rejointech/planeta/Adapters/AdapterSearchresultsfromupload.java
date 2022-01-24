@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.RecyclerClickInterface.RecyclerSearchresultsInterface;
-import com.squareup.picasso.Picasso;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +50,7 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
             holder.recycler_camera_results_text_plantname.setText(species_scientificname);
             holder.recycler_camera_results_text_familyname.setText(family_scientifiname);
             holder.recycler_camera_results_text_percentage.setText(percentagetoprint);
-            if (indexExists(resultImages_array, 0)) {
+       /*     if (indexExists(resultImages_array, 0)) {
                 Picasso.get()
                         .load(resultImages_array.get(0))
                         .error(R.drawable.icontree)
@@ -65,9 +66,15 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
                 Picasso.get()
                         .load(resultImages_array.get(2))
                         .error(R.drawable.icontree)
-
                         .into(holder.recycler_camera_results_image3);
-            }
+            }*/
+
+
+            Adapterimgsliderdashboard adapterimgsliderdashboard = new Adapterimgsliderdashboard(resultImages_array);
+            holder.sliderpager.setSliderAdapter(adapterimgsliderdashboard);
+            holder.sliderpager.setIndicatorAnimation(IndicatorAnimationType.WORM);
+            holder.sliderpager.startAutoCycle();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,6 +141,7 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
         private TextView recycler_camera_results_text_plantname, recycler_camera_results_text_familyname,
                 recycler_camera_results_text_percentage;
         private ImageView recycler_camera_results_image3, recycler_camera_results_image2, recycler_camera_results_image1;
+        SliderView sliderpager;
 
         public viewrecycler(@NonNull View itemView) {
             super(itemView);
@@ -146,9 +154,8 @@ public class AdapterSearchresultsfromupload extends RecyclerView.Adapter<Adapter
             recycler_camera_results_text_plantname = itemView.findViewById(R.id.recycler_camera_results_text_plantname);
             recycler_camera_results_text_familyname = itemView.findViewById(R.id.recycler_camera_results_text_familyname);
             recycler_camera_results_text_percentage = itemView.findViewById(R.id.recycleropendashboard_Percentage);
-            recycler_camera_results_image3 = itemView.findViewById(R.id.recycler_camera_results_image3);
-            recycler_camera_results_image2 = itemView.findViewById(R.id.recycler_camera_results_image2);
-            recycler_camera_results_image1 = itemView.findViewById(R.id.recycler_camera_results_image1);
+            sliderpager = itemView.findViewById(R.id.sliderpageree);
+
         }
 
         @Override

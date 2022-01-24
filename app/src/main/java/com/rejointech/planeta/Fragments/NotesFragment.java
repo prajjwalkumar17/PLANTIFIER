@@ -221,6 +221,8 @@ public class NotesFragment extends Fragment {
                     for (int i = 0; i < resultImages.length(); i++) {
                         resimg.add(resultImages.optString(i));
                     }
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    String gbifid = gbif.optString("id");
 
                     resultimagesset.addAll(resimg);
 
@@ -234,6 +236,7 @@ public class NotesFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(Constants.prefdashboardcreatedby, name);
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
+                    editor.putString(Constants.prefdashboardgenus_gbif, gbifid);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardnoteid, id);
                     editor.putString(Constants.prefdashboardnote, note);
