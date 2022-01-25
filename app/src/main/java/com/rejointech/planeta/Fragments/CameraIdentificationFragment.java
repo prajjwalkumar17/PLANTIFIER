@@ -72,6 +72,7 @@ public class CameraIdentificationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_camera_identification, container, false);
         initlayout();
         Init_views(root);
+        CommonMethods.DisplayLongTOAST(thiscontext, "Please Wait for sometime on each result to make sure Images are Loaded Properly");
         Button_Clicks();
 
 

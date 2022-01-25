@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp"
-        android:text="Your registration is successful. please go back and log-in."
+        android:text="Your registration is successful. please go back and log-in.Don't forget to remember your Email and Password!!!"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/regconfor_gobckbot"

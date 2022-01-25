@@ -42,7 +42,6 @@ public class OpenDashboardFragment extends Fragment {
             recycleritem_dashboard_createdby, recycleropendashboard_picby, recycleropendashboard_commonname1, recycleropendashboard_speciesnameinner,
             recycleropendashboard_commonname2, recycleropendashboard_commonname3, recycleropendashboard_gbifid;
     ImageView recycleropendashboard_backbot, recycleropendashboard_image, recycleropendashboard_wiki_bot;
-    ImageView recycler_opendashboard_image1, recycler_opendashboard_image2, recycler_opendashboard_image3;
     AppCompatButton recycleropendashboard_savenotebot;
     AppCompatEditText recycleropendashboard_addnoteedittext;
     Context thiscontext;
@@ -86,6 +85,7 @@ public class OpenDashboardFragment extends Fragment {
         recycleropendashboard_savenotebot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonMethods.DisplayShortTOAST(thiscontext, "Saving your Note");
                 String notetext = recycleropendashboard_addnoteedittext.getText().toString();
                 if (notnotes) {
                     String url = Constants.createnoteurl;
@@ -229,24 +229,7 @@ public class OpenDashboardFragment extends Fragment {
             recycleropendashboard_commonname3.setText("No name found");
         }
 
-   /*     if (indexExists(resultImages_array, 0)) {
-            Picasso.get()
-                    .load(resultImages_array.get(0))
-                    .error(R.drawable.icontree)
-                    .into(recycler_opendashboard_image1);
-        }
-        if (indexExists(resultImages_array, 1)) {
-            Picasso.get()
-                    .load(resultImages_array.get(1))
-                    .error(R.drawable.icontree)
-                    .into(recycler_opendashboard_image2);
-        }
-        if (indexExists(resultImages_array, 2)) {
-            Picasso.get()
-                    .load(resultImages_array.get(2))
-                    .error(R.drawable.icontree)
-                    .into(recycler_opendashboard_image3);
-        }*/
+
         Adapterimgsliderdashboard adapterimgsliderdashboard = new Adapterimgsliderdashboard(resultImages_array);
         sliderpager.setSliderAdapter(adapterimgsliderdashboard);
         sliderpager.setIndicatorAnimation(IndicatorAnimationType.WORM);

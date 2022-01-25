@@ -1,16 +1,17 @@
 package com.rejointech.planeta.Startup;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.rejointech.planeta.R;
+import com.rejointech.planeta.Utils.Constants;
 
 
 public class registerconformationFragment extends Fragment {
@@ -31,7 +32,11 @@ public class registerconformationFragment extends Fragment {
         regconfor_gobckbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer,new loginFragment()).commit();
+                SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(Constants.signupsucessfulladdemail, "1");
+                editor.apply();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new loginFragment()).commit();
             }
         });
 

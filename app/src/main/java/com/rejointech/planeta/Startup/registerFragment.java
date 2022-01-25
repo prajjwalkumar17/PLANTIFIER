@@ -17,21 +17,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 
 public class registerFragment extends Fragment {
@@ -96,7 +88,8 @@ public class registerFragment extends Fragment {
                     CommonMethods.DisplayShortTOAST(thiscontext, "Check the filled details Properly");
 
                 } else {
-                    CommonMethods.DisplayLongTOAST(thiscontext, "wait for some time don't Press anything \nVerification still in progress");
+                    CommonMethods.DisplayLongTOAST(thiscontext, "wait for some time don't Press anything \nVerification still in progress\nA Website will open for verification");
+                    Savedatatoprefs(Name, Email, Phone, Password, PasswordConfirmed);
                     sendotptophone(Phone);
                 }
             }
@@ -110,7 +103,7 @@ public class registerFragment extends Fragment {
         });
     }
 
-    private void RegisterUser(String name, String email, String phone, String passwordConfirmed, String password) {
+    /*private void RegisterUser(String name, String email, String phone, String passwordConfirmed, String password) {
         String url = Constants.signupurl;
         APICall.okhttpmaster().newCall(
                 APICall.post4signup(APICall.urlbuilderforhttp(url),
@@ -149,9 +142,6 @@ public class registerFragment extends Fragment {
                             String id = Signup.optString("_id");
                             Savedatatoprefs(token, name, email, phone, role, id);
                             if (status.equals("success")) {
-//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
-//                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
-
 
                             }
 
@@ -179,6 +169,17 @@ public class registerFragment extends Fragment {
         editor.putString(Constants.prefregisterrole, role);
         editor.apply();
     }
+    */
+    private void Savedatatoprefs(String name, String email, String phone, String password, String passwordconfirmed) {
+        preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.putString(Constants.prefregistername, name);
+        editor.putString(Constants.prefregisteremail, email);
+        editor.putString(Constants.prefregisterphone, phone);
+        editor.putString(Constants.prefregisterpassword, password);
+        editor.putString(Constants.prefregisterpasswordconfirmed, passwordconfirmed);
+        editor.apply();
+    }
 
 
     private void sendotptophone(String phone) {
@@ -202,11 +203,11 @@ public class registerFragment extends Fragment {
                 editor.putString(Constants.prerrfbackendotp, backendotp);
                 editor.apply();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerotpvalidationFragment()).commit();
-                RegisterUser(Name,
+            /*    RegisterUser(Name,
                         Email,
                         Phone,
                         PasswordConfirmed,
-                        Password);
+                        Password);*/
             }
         };
         PhoneAuthOptions options =
