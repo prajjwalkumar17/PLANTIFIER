@@ -2,8 +2,10 @@ package com.rejointech.planeta.Fragments;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -147,15 +149,27 @@ public class AccountsFragment extends Fragment {
         account_logoutbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommonMethods.DisplayShortTOAST(thiscontext, "You are going to be Logged out");
-                sharedPreferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
-                editor = sharedPreferences.edit();
-                editor.putString(Constants.LOGGEDIN, "notloggedin");
-                editor.apply();
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                firebaseAuth.signOut();
-                Intent intent = new Intent(getActivity(), Startup_container.class);
-                startActivity(intent);
+
+                AlertDialog alertDialog = new AlertDialog.Builder(thiscontext).create();
+                alertDialog.setTitle("Logout Confirmation");
+                alertDialog.setMessage("Are you sure you want to Logout?");
+                alertDialog.setIcon(R.drawable.icon_pic_error);
+
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Logout", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                        CommonMethods.DisplayShortTOAST(thiscontext, "You are going to be Logged out");
+                        logout();
+                    }
+                });
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
             }
         });
 
@@ -185,6 +199,19 @@ public class AccountsFragment extends Fragment {
         });
 
     }
+
+    private void logout() {
+        sharedPreferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString(Constants.LOGGEDIN, "notloggedin");
+        editor.putString(Constants.token, null);
+        editor.apply();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+        Intent intent = new Intent(getActivity(), Startup_container.class);
+        startActivity(intent);
+    }
+
 
     private void selectimageforprofilepic() {
         CropImage.activity()

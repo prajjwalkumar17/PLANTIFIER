@@ -51,7 +51,7 @@ public class DashboardFragment extends Fragment {
     String wikkipediaLink;
     String userimage;
     String species_scientificnametrue;
-    String genus_scientifiname;
+    String genus_scientifiname, gbifid;
     Set<String> commonnamesset = new HashSet<String>();
     String score;
     String postid;
@@ -143,6 +143,9 @@ public class DashboardFragment extends Fragment {
                     JSONObject family = species.optJSONObject("family");
                     family_scientifiname = family.optString("scientificNameWithoutAuthor");
 
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    gbifid = gbif.optString("id");
+
                     JSONArray common_namesarray = species.optJSONArray("commonNames");
                     ArrayList<String> common_names = new ArrayList<String>();
                     for (int i = 0; i < common_namesarray.length(); i++) {
@@ -171,6 +174,7 @@ public class DashboardFragment extends Fragment {
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardgenus_gbif, gbifid);
                     editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
                     editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);

@@ -57,4 +57,8 @@ public class Constants {
     public static String prefdashboardnoteid = "prefdashboardnoteid";
     public static String prefdashboardgenus_resultimages = "prefdashboardgenus_resultimages";
     public static String prefdashboard_fromcameraidentification = "prefdashboard_fromcameraidentification";
+    public static String prefdashboardgenus_gbif = "prefdashboardgenus_gbif";
+    public static String prefregisterpassword = "prefregisterpassword";
+    public static String prefregisterpasswordconfirmed = "prefregisterpasswordconfirmed";
+    public static String signupsucessfulladdemail = "0";
 }

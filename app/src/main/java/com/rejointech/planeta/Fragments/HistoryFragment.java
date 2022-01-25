@@ -139,6 +139,9 @@ public class HistoryFragment extends Fragment {
                     Set<String> resultimagesset = new HashSet<String>();
                     resultimagesset.addAll(resimg);
 
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    String gbifid = gbif.optString("id");
+
 
                     score = postobject.optString("score");
                     Double percentage_match = Double.parseDouble(score) * 100.0;
@@ -151,6 +154,7 @@ public class HistoryFragment extends Fragment {
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardgenus_gbif, gbifid);
                     editor.putStringSet(Constants.prefdashboardgenus_resultimages, resultimagesset);
                     editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
                     editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);

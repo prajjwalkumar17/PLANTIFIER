@@ -3,20 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_menu_dashboard"
-            android:iconTint="@color/white"
-            android:menuCategory="secondary"
-            android:title="Dashboard" />
-
-        <item
             android:id="@+id/nav_menu_account"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
             android:title="My Profile" />
-
-
         <item
-            android:id="@+id/nav_menu_quiz"
+            android:id="@+id/nav_menu_dashboard"
+            android:iconTint="@color/white"
+            android:menuCategory="secondary"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_menu_history"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
             android:title="History" />
@@ -25,21 +22,19 @@
             android:iconTint="@color/white"
             android:menuCategory="secondary"
             android:title="Notes" />
+
         <item
-            android:id="@+id/nav_menu_settings"
-            android:iconTint="@color/white"
-            android:menuCategory="secondary"
-            android:title="Settings" />
-        <item
-            android:id="@+id/nav_menu_tutorial"
+            android:id="@+id/nav_menu_tutorials"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
             android:title="Tutorials" />
+
         <item
-            android:id="@+id/nav_menu_share"
+            android:id="@+id/nav_menu_quiz"
             android:iconTint="@color/white"
             android:menuCategory="secondary"
-            android:title="Share" />
+            android:title="Quizzes" />
+
     </group>
     <group android:checkableBehavior="single">
         <item
@@ -47,16 +42,10 @@
             android:title="Social Handles">
             <menu>
                 <item
-                    android:id="@+id/nav_menu_telegram"
-
-                    android:title="Telegram" />
-                <item
                     android:id="@+id/nav_menu_Instagram"
-
                     android:title="Instagram" />
                 <item
                     android:id="@+id/nav_menu_Youtube"
-
                     android:title="Youtube" />
             </menu>
 

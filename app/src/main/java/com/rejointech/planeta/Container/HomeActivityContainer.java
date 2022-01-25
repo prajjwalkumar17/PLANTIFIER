@@ -33,7 +33,7 @@ import com.rejointech.planeta.Fragments.DashboardFragment;
 import com.rejointech.planeta.Fragments.HistoryFragment;
 import com.rejointech.planeta.Fragments.LeaderBoardFragment;
 import com.rejointech.planeta.Fragments.NotesFragment;
-import com.rejointech.planeta.Fragments.ShareFragment;
+import com.rejointech.planeta.Fragments.WebviewFragment;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
@@ -73,7 +73,6 @@ public class HomeActivityContainer extends AppCompatActivity implements
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
         token = sharedPreferences.getString(Constants.token, "No data found!!!");
         GetprofileData();
-
         defaultfragmentonstartup(savedInstanceState);
         muticals();
     }
@@ -109,7 +108,6 @@ public class HomeActivityContainer extends AppCompatActivity implements
                             JSONObject data = responsez.optJSONObject("data");
                             String name = data.optString("name");
                             String email = data.optString("email");
-                            String phone = data.optString("phone");
 
                             if (status.equals("success")) {
                                 nav_name.setText(name);
@@ -123,6 +121,7 @@ public class HomeActivityContainer extends AppCompatActivity implements
             }
         });
     }
+
     private void muticals() {
         nav_view = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer);
@@ -136,10 +135,20 @@ public class HomeActivityContainer extends AppCompatActivity implements
         botnav.getMenu().getItem(2).setEnabled(false);
         completebotnav = findViewById(R.id.completebotnav);
 
+
         View headerView = nav_view.getHeaderView(0);
         nav_name = headerView.findViewById(R.id.nav_name);
         nav_email = headerView.findViewById(R.id.nav_email);
+        nav_dp = headerView.findViewById(R.id.nav_dp);
+        //TODO TO change profile in header
+        nav_dp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new AccountsFragment()).addToBackStack(null).commit();
+                setDrawerLocked();
 
+            }
+        });
         NavigationUI.setupWithNavController(nav_view, navController);
         NavigationUI.setupWithNavController(botnav, navController);
         nav_view.setNavigationItemSelectedListener(this);
@@ -276,21 +285,30 @@ public class HomeActivityContainer extends AppCompatActivity implements
             case R.id.nav_menu_notes:
                 getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new NotesFragment()).addToBackStack(null).commit();
                 break;
-            case R.id.nav_menu_quiz:
+            case R.id.nav_menu_history:
                 getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new HistoryFragment()).addToBackStack(null).commit();
                 break;
-            case R.id.nav_menu_share:
-                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new ShareFragment()).addToBackStack(null).commit();
+            case R.id.nav_menu_quiz:
+                CommonMethods.DisplayLongTOAST(getApplicationContext(), "Making in Progress Will be updated soon !");
                 break;
-            case R.id.nav_menu_settings:
-                break;
-            case R.id.nav_menu_tutorial:
-                break;
-            case R.id.nav_menu_telegram:
+            case R.id.nav_menu_tutorials:
+                CommonMethods.DisplayLongTOAST(getApplicationContext(), "Making in Progress Will be updated soon !");
                 break;
             case R.id.nav_menu_Instagram:
+                SharedPreferences sharedPreferences2 = getApplicationContext().getSharedPreferences(Constants.WIKILINK,
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPreferences2.edit();
+                editor1.putString(Constants.prefwikireallinktoopen, "https://instagram.com/artofliving?utm_medium=copy_link");
+                editor1.commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new WebviewFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_menu_Youtube:
+                SharedPreferences sharedPreferences1 = getApplicationContext().getSharedPreferences(Constants.WIKILINK,
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = sharedPreferences1.edit();
+                editor2.putString(Constants.prefwikireallinktoopen, "https://www.youtube.com/c/artofliving");
+                editor2.commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.maincontainerview, new WebviewFragment()).addToBackStack(null).commit();
                 break;
         }
         closeDrawer(drawer);

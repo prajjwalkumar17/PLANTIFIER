@@ -25,11 +25,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.rejointech.planeta.APICalls.APICall;
 import com.rejointech.planeta.R;
 import com.rejointech.planeta.Utils.CommonMethods;
 import com.rejointech.planeta.Utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class registerotpvalidationFragment extends Fragment {
     ImageView confrmotp_gobckbot;
@@ -39,6 +48,7 @@ public class registerotpvalidationFragment extends Fragment {
     Context thiscontext;
     TextView textView8;
     String phone, backendotp, otp;
+    String Name, Email, Phone, Password, PasswordConfirmed;
 
 
     @Override
@@ -61,10 +71,12 @@ public class registerotpvalidationFragment extends Fragment {
         return root;
     }
 
+
     private void ButtonClicks() {
         confrmotp_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonMethods.DisplayShortTOAST(thiscontext, "Verifying");
                 otp = confrmotp_otpedittext.getText().toString().trim();
                 if (otp.length() == 0) {
                     CommonMethods.DisplayShortTOAST(thiscontext, "Please enter a valid OTP");
@@ -97,14 +109,11 @@ public class registerotpvalidationFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                CommonMethods.LOGthesite(Constants.LOG, "signInWithCredential:success");
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
+                                RegisterUser(Name, Email, Phone, Password, PasswordConfirmed);
                                 FirebaseUser user = task.getResult().getUser();
                             } else {
-                                // Sign in failed, display a message and update the UI
-                                CommonMethods.DisplayShortTOAST(thiscontext, "Check Internet Connection - Sign in Failed");
+                                CommonMethods.DisplayShortTOAST(thiscontext, "Signup Failed");
                                 if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                    // The verification code entered was invalid
                                     CommonMethods.DisplayShortTOAST(thiscontext, "Invalid OTP");
                                 }
                             }
@@ -114,7 +123,6 @@ public class registerotpvalidationFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
-                    CommonMethods.LOGthesite(Constants.LOG, e.getMessage());
                 }
             });
         } else {
@@ -123,49 +131,73 @@ public class registerotpvalidationFragment extends Fragment {
     }
 
 
- /*   private void verifyOTP(String otp) {
-        String url = Constants.verifyotpurl;
-        APICall.okhttpmaster().newCall(APICall.post4ootpverificfation(
-                APICall.urlbuilderforhttp(url),
-                APICall.buildreq4otpverification(email, otp)
-        )).enqueue(new Callback() {
+    private void RegisterUser(String name, String email, String phone, String passwordConfirmed, String password) {
+        String url = Constants.signupurl;
+        APICall.okhttpmaster().newCall(
+                APICall.post4signup(APICall.urlbuilderforhttp(url),
+                        APICall.buildrequestbody4signup(name,
+                                email,
+                                phone,
+                                passwordConfirmed,
+                                password))
+
+        ).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonMethods.DisplayShortTOAST(thiscontext, e.getMessage());
+                        CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                     }
                 });
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final String Myresponse = response.body().string();
+                final String myResponse = response.body().string();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            JSONObject responsez = new JSONObject(Myresponse);
-                            String status = responsez.optString("status");
-                            String message = responsez.optString("message");
-                            CommonMethods.DisplayShortTOAST(thiscontext, message);
-                            if (status.equals("")) {
+                            JSONObject responsez = new JSONObject(myResponse);
+                            if (!responsez.optString("status").equals("fail")) {
+                                JSONObject Signup = responsez.getJSONObject(getString(R.string.Registger_Maindetails));
+                                String token = responsez.optString(getString(R.string.Register_Token));
+                                String name = Signup.optString("name");
+                                String email = Signup.optString("email");
+                                String phone = Signup.optString("phone");
+                                String role = Signup.optString("role");
+                                String id = Signup.optString("_id");
+                                Savedatatoprefs(token, name, email, phone, role, id);
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerconformationFragment()).commit();
                             } else {
-                                CommonMethods.DisplayShortTOAST(thiscontext, "Try again Validation Failed!!");
+                                CommonMethods.DisplayLongTOAST(thiscontext, responsez.optString("message"));
                             }
+
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            CommonMethods.DisplayLongTOAST(thiscontext, e.getMessage());
                         }
-
-
                     }
                 });
+
+
             }
         });
+
     }
-*/
+
+    private void Savedatatoprefs(String token, String name, String email, String phone, String role, String id) {
+        SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.token, token);
+        editor.putString(Constants.prefregistername, name);
+        editor.putString(Constants.prefregisteremail, email);
+        editor.putString(Constants.prefregisterphone, phone);
+        editor.putString(Constants.prefregisterid, id);
+        editor.putString(Constants.prefregisterrole, role);
+        editor.apply();
+    }
+
 
     private void sendotptophone(String phone) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -198,15 +230,19 @@ public class registerotpvalidationFragment extends Fragment {
 
     private void InitViews(View root) {
         sharedPreferences = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
-//        email = sharedPreferences.getString(Constants.prefregisteremail, "No data found!!!");
-        phone = sharedPreferences.getString(Constants.prefregisterphone.toString(), "xxxx-xxxx-xx");
+        phone = sharedPreferences.getString(Constants.prefregisterphone, "xxxx-xxxx-xx");
         backendotp = sharedPreferences.getString(Constants.prerrfbackendotp, "No data found!!!");
+        Name = sharedPreferences.getString(Constants.prefregistername, "No data found!!!");
+        Email = sharedPreferences.getString(Constants.prefregisteremail, "No data found!!!");
+        Phone = sharedPreferences.getString(Constants.prefregisterphone, "xxxx-xxxx-xx");
+        Password = sharedPreferences.getString(Constants.prefregisterpassword, "No data found!!!");
+        PasswordConfirmed = sharedPreferences.getString(Constants.prefregisterpasswordconfirmed, "No data found!!!");
         confrmotp_gobckbot = root.findViewById(R.id.confrmotp_gobckbot);
         confrmotp_resend = root.findViewById(R.id.confrmotp_resend);
         confrmotp_otpedittext = root.findViewById(R.id.confrmotp_otpedittext);
         confrmotp_verify = root.findViewById(R.id.confrmotp_verify);
         textView8 = root.findViewById(R.id.textView8);
-        String text = "Please confirm your 4 digit OTP. which is sent on " + "+91" + phone;
+        String text = "Please confirm your 4 digit OTP. which is sent on " + "+91" + Phone;
         textView8.setText(text);
 
     }

@@ -11,6 +11,7 @@
         android:background="@drawable/borderitemcolor"
         android:gravity="center"
         android:orientation="horizontal"
+        android:elevation="8dp"
         android:padding="15dp"
         android:weightSum="3">
 

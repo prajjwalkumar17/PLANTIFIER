@@ -63,7 +63,7 @@ public class NotesFragment extends Fragment {
     String genus_scientifiname;
     Set<String> commonnamesset = new HashSet<String>();
     Set<String> resultimagesset = new HashSet<String>();
-    String score;
+    String score, gbifid;
     String postid, id;
     private ShimmerFrameLayout notesshimmmer;
     TextView toolwithbackbothead;
@@ -148,6 +148,8 @@ public class NotesFragment extends Fragment {
                     genus_scientifiname = genus.optString("scientificNameWithoutAuthor");
                     JSONObject family = species.optJSONObject("family");
                     family_scientifiname = family.optString("scientificNameWithoutAuthor");
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    gbifid = gbif.optString("id");
 
                     JSONArray common_namesarray = species.optJSONArray("commonNames");
                     ArrayList<String> common_names = new ArrayList<String>();
@@ -167,6 +169,7 @@ public class NotesFragment extends Fragment {
                             + "Family :- " + family_scientifiname + "\n"
                             + "Genus :- " + genus_scientifiname + "\n"
                             + "Species :- " + species_scientificname + "\n"
+                            + "GBIF :- " + gbifid + "\n"
                             + "Common names :- \n" + "\t" + "1. " + common_names.get(0) + "\n" + "\t" + "2. " + common_names.get(1) + "\n\n"
                             + "For more Information visit \n"
                             + wikkipediaLink;
@@ -221,6 +224,8 @@ public class NotesFragment extends Fragment {
                     for (int i = 0; i < resultImages.length(); i++) {
                         resimg.add(resultImages.optString(i));
                     }
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    String gbifid = gbif.optString("id");
 
                     resultimagesset.addAll(resimg);
 
@@ -234,6 +239,7 @@ public class NotesFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(Constants.prefdashboardcreatedby, name);
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
+                    editor.putString(Constants.prefdashboardgenus_gbif, gbifid);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardnoteid, id);
                     editor.putString(Constants.prefdashboardnote, note);

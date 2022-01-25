@@ -72,6 +72,7 @@ public class CameraIdentificationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_camera_identification, container, false);
         initlayout();
         Init_views(root);
+        CommonMethods.DisplayLongTOAST(thiscontext, "Please Wait for sometime on each result to make sure Images are Loaded Properly");
         Button_Clicks();
 
 
@@ -114,6 +115,9 @@ public class CameraIdentificationFragment extends Fragment {
                     JSONObject family = species.optJSONObject("family");
                     family_scientifiname = family.optString("scientificNameWithoutAuthor");
 
+                    JSONObject gbif = postobject.optJSONObject("gbif");
+                    String gbifid = gbif.optString("id");
+
                     JSONArray common_namesarray = species.optJSONArray("commonNames");
                     ArrayList<String> common_names = new ArrayList<String>();
                     for (int i = 0; i < common_namesarray.length(); i++) {
@@ -143,6 +147,7 @@ public class CameraIdentificationFragment extends Fragment {
                     editor.putString(Constants.prefdashboardtimestamp, timestamp);
                     editor.putString(Constants.prefdashboardwikilink, wikkipediaLink);
                     editor.putString(Constants.prefdashboardusername, userimage);
+                    editor.putString(Constants.prefdashboardgenus_gbif, gbifid);
                     editor.putString(Constants.prefdashboardspeciessceintific_nametrue, species_scientificnametrue);
                     editor.putString(Constants.prefdashboardspeciessceintific_name, species_scientificname);
                     editor.putString(Constants.prefdashboardgenus_scientificname, genus_scientifiname);

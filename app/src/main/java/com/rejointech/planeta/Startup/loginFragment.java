@@ -29,11 +29,12 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class loginFragment extends Fragment {
-    AppCompatButton login_loginbot, login_registerbot;
+    AppCompatButton login_loginbot, login_registerbot, login_forgotpassbot;
     AppCompatEditText login_accounidedittext, login_passwordedittext;
     Context thiscontext;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String signupcode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,42 @@ public class loginFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_login, container, false);
         InitViews(root);
+        getdetails();
         ButtonClicks();
         return root;
+    }
+
+    private void getdetails() {
+        SharedPreferences sharedPreferences1 = thiscontext.getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+        signupcode = sharedPreferences1.getString(Constants.signupsucessfulladdemail, "0");
+        if (signupcode.equals("1")) {
+            CommonMethods.DisplayShortTOAST(thiscontext, "Login with password");
+            String email = sharedPreferences1.getString(Constants.prefregisteremail, "no value found!!!");
+            login_accounidedittext.setEnabled(false);
+            login_accounidedittext.setText(email);
+            loginwithoutemail(email);
+            SharedPreferences preferences = requireActivity().getSharedPreferences(Constants.REGISTERPREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Constants.signupsucessfulladdemail, "1");
+            editor.apply();
+        } else {
+            loginwithemail();
+        }
+    }
+
+    private void loginwithoutemail(String email) {
+        login_loginbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonMethods.DisplayShortTOAST(thiscontext, "Checking");
+                String userpassword = login_passwordedittext.getText().toString();
+                if (userpassword.length() != 0) {
+                    Signinuser(email, userpassword);
+                } else {
+                    CommonMethods.DisplayShortTOAST(thiscontext, "Check the filled details Properly");
+                }
+            }
+        });
     }
 
     @Override
@@ -57,13 +92,24 @@ public class loginFragment extends Fragment {
     }
 
     private void ButtonClicks() {
+        login_forgotpassbot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonMethods.DisplayLongTOAST(thiscontext, "Contact Distributor for Assistance\nSend us Email to:\nplantifier2022@gmail.com");
+            }
+        });
         login_registerbot.setOnClickListener(view -> {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.startupviewcontainer, new registerFragment()).addToBackStack(null).commit();
         });
 
+
+    }
+
+    public void loginwithemail() {
         login_loginbot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonMethods.DisplayShortTOAST(thiscontext, "Checking");
                 String useremail = login_accounidedittext.getText().toString();
                 String userpassword = login_passwordedittext.getText().toString();
                 if (useremail.length() != 0 && userpassword.length() != 0) {
@@ -73,6 +119,7 @@ public class loginFragment extends Fragment {
                 }
             }
         });
+
     }
 
     private void Signinuser(String useremail, String userpassword) {
@@ -134,6 +181,7 @@ public class loginFragment extends Fragment {
         login_loginbot = root.findViewById(R.id.login_loginbot);
         login_registerbot = root.findViewById(R.id.login_registerbot);
         login_accounidedittext = root.findViewById(R.id.login_accounidedittext);
+        login_forgotpassbot = root.findViewById(R.id.login_forgotpassbot);
         login_passwordedittext = root.findViewById(R.id.login_passwordedittext);
     }
 }
