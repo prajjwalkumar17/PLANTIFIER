@@ -94,8 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:text="Skip for now"
-        android:textColor="@color/final_itemcolor"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/onboarding2_Registerbot"
         tools:layout_editor_absoluteX="-16dp" />
